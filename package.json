@@ -12,12 +12,15 @@
     "apollo:start": "vue-cli-service apollo:start"
   },
   "dependencies": {
-    "apollo-server": "^2.19.1",
+    "apollo-server-express": "^2.19.1",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
     "graphql": "^15.4.0",
     "graphql-type-json": "^0.2.1",
     "lowdb": "^1.0.0",
     "mkdirp": "^0.5.1",
+    "mysql2": "^2.2.5",
+    "pg": "^8.5.1",
     "register-service-worker": "^1.7.1",
     "sequelize": "^6.3.5",
     "shortid": "^2.2.8",
