@@ -5,24 +5,33 @@
 //   app.use('/files', express.static(path.resolve(__dirname, '../live/uploads')))
 // }
 
-// server.js
-
+const http = require('http');
 const express = require('express');
 
 const { ApolloServer } = require('apollo-server-express');
 
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
-const models = require('./models')
+const connection = require('./connection')
 
-const server = new ApolloServer({ typeDefs, resolvers, context: { models } });
-
+const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: {connection},
+    subscriptions: {
+        onConnect: async (connectionParams, webSocket) => {
+          
+        },
+    }
+});
 const app = express();
+
+const httpServer = http.createServer(app);
+
 server.applyMiddleware({ app });
-models.sequelize.authenticate();
+server.installSubscriptionHandlers(httpServer);
 
-models.sequelize.sync();
+connection.sequelize.authenticate();
+connection.sequelize.sync();
 
-app.listen({ port: 4000 }, () => console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-
-);
+httpServer.listen({ port: 4000 }, () => console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`));

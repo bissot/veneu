@@ -1,41 +1,29 @@
 <template>
   <div class="apollo-example">
-
     <!-- Tchat example -->
-    <ApolloQuery :query="require('../graphql/BookAPI.gql')">
-
+    <ApolloQuery :query="require('../graphql/UserAPI.gql')">
       <div slot-scope="{ result: { data } }">
         <template v-if="data">
-          <div
-            v-for="book of data.books"
-            :key="book.title"
-            class="message"
-          >
-            {{ book.title }}
+          <div v-for="user of data.users" :key="user.email" class="message">
+            {{ user.first_name }} {{ user.last_name }}
           </div>
         </template>
       </div>
     </ApolloQuery>
-
   </div>
 </template>
 
 <script>
-
 export default {
   data() {
-    return {
-    };
+    return {};
   },
 
-  apollo: {
-  },
+  apollo: {},
 
-  computed: {
-  },
+  computed: {},
 
-  methods: {
-  }
+  methods: {}
 };
 </script>
 
