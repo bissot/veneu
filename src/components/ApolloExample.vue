@@ -1,7 +1,7 @@
 <template>
   <div class="apollo-example">
     <!-- Tchat example -->
-    <ApolloQuery :query="require('../graphql/UserAPI.gql')">
+    <ApolloQuery :query="require('../graphql/Users.gql')">
       <div slot-scope="{ result: { data } }">
         <template v-if="data">
           <div v-for="user of data.users" :key="user.email" class="message">
