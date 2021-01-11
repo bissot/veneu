@@ -42,7 +42,10 @@ const books = [
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
   Query: {
-    books: () => books,
+    books: () => {
+      console.log('🚀  GraphQL - retrieved all books')
+      return books
+    },
   },
 };
 
@@ -52,5 +55,5 @@ const server = new ApolloServer({ typeDefs, resolvers });
 
 // The `listen` method launches a web server.
 server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
+  console.log(`🚀  GraphQL ready at ${url}graphql`);
 });
