@@ -9,6 +9,12 @@ const typeDefs = gql`
     email: String!
   }
 
+  input UserInput {
+    first_name: String!
+    last_name: String!
+    email: String!
+  }
+
   type Course {
     id: Int!
     title: String!
@@ -19,7 +25,12 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    addUser(first_name: String!, last_name: String!, email: String!): User
+    addUser(input: UserInput!): User
+  }
+
+  type Subscription {
+    "When a new user is added"
+    userAdded: User!
   }
 `
 

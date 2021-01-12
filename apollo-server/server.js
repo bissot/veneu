@@ -12,7 +12,7 @@ const { ApolloServer } = require('apollo-server-express');
 
 const typeDefs = require('./schema')
 const resolvers = require('./resolvers')
-const connection = require('./connection')
+const connection = require('../models/index')
 
 const server = new ApolloServer({
     typeDefs,

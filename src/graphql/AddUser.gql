@@ -1,0 +1,7 @@
+#import "./UserFrag.gql"
+
+mutation addUser ($input: UserInput!) {
+  addUser (input: $input) {
+    ...User
+  }
+}
