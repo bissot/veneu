@@ -22,7 +22,7 @@ module.exports = {
         schemaJsonFilepath: "node_modules/.temp/graphql/schema.json"
       }
     ],
-    "no-unused-vars": "warning"
+    "no-unused-vars": 0
   },
 
   plugins: ["graphql"]
