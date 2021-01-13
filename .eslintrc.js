@@ -21,7 +21,8 @@ module.exports = {
         projectName: "app",
         schemaJsonFilepath: "node_modules/.temp/graphql/schema.json"
       }
-    ]
+    ],
+    "no-unused-vars": "warning"
   },
 
   plugins: ["graphql"]

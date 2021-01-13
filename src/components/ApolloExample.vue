@@ -1,10 +1,10 @@
 <template>
   <div class="apollo-example">
     <ApolloQuery :query="require('../graphql/Users.gql')">
-      <!-- <ApolloSubscribeToMore
-        :document="require('../graphql/UserAdded.gql')"
-        :update-query="onUserAdded"
-      /> -->
+      <ApolloSubscribeToMore
+        :document="require('../graphql/UserCreated.gql')"
+        :update-query="onUserCreated"
+      />
       <div slot-scope="{ result: { data } }">
         <template v-if="data">
           <div v-for="user of data.users" :key="user.email" class="user">
@@ -24,7 +24,7 @@
         }
       }"
       class="form"
-      @done="newUser = {first_name: '',last_name: '',email: ''}"
+      @done="newUser = { first_name: '', last_name: '', email: '' }"
     >
       <template slot-scope="{ mutate }">
         <form v-on:submit.prevent="formValid && mutate()">
@@ -63,7 +63,7 @@
 export default {
   data() {
     return {
-      newUser: {first_name: '',last_name: '',email: ''}
+      newUser: { first_name: "", last_name: "", email: "" }
     };
   },
 
@@ -73,16 +73,15 @@ export default {
 
   methods: {
     formValid() {
-      return this.newUser.first_name && this.newUser.last_name && this.newUser.email
+      return (
+        this.newUser.first_name && this.newUser.last_name && this.newUser.email
+      );
     },
-    onUserAdded(previousResult, { subscriptionData }) {
+    onUserCreated(previousResult, { subscriptionData }) {
       return {
-        users: [
-          ...previousResult.users,
-          subscriptionData.data.userAdded
-        ]
+        users: [...previousResult.users, subscriptionData.data.userCreated]
       };
-    },
+    }
   }
 };
 </script>

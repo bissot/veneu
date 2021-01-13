@@ -1,9 +1,8 @@
-const { gql } = require('apollo-server-express')
+const { gql } = require("apollo-server-express");
 
 const typeDefs = gql`
-
   type User {
-    id: Int
+    id: Int!
     first_name: String!
     last_name: String!
     email: String!
@@ -15,11 +14,6 @@ const typeDefs = gql`
     email: String!
   }
 
-  type Course {
-    id: Int!
-    title: String!
-  }
-
   type Query {
     users: [User]
   }
@@ -29,9 +23,9 @@ const typeDefs = gql`
   }
 
   type Subscription {
-    "When a new user is added"
-    userAdded: User!
+    "When a new user is Created"
+    userCreated: User!
   }
-`
+`;
 
-module.exports = typeDefs
+module.exports = typeDefs;
