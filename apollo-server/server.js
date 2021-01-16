@@ -14,6 +14,12 @@ const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
 const models = require("../models");
 
+const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost:27017/venue-new", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
@@ -28,9 +34,6 @@ const httpServer = http.createServer(app);
 
 server.applyMiddleware({ app });
 server.installSubscriptionHandlers(httpServer);
-
-models.sequelize.authenticate();
-models.sequelize.sync();
 
 httpServer.listen({ port: 4000 }, () =>
   console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
