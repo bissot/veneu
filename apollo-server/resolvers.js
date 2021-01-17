@@ -6,7 +6,9 @@ const eventName = {
   USER_CREATED: "USER_CREATED",
   USER_MODIFIED: "USER_MODIFIED",
   COURSE_CREATED: "COURSE_CREATED",
-  COURSE_MODIFIED: "COURSE_MODIFIED"
+  COURSE_MODIFIED: "COURSE_MODIFIED",
+  COURSE_ROLE_CREATED: "COURSE_ROLE_CREATED",
+  COURSE_ROLE_MODIFIED: "COURSE_ROLE_MODIFIED"
 };
 
 const resolvers = {
@@ -16,6 +18,9 @@ const resolvers = {
     },
     courses: async (root, args, { models }) => {
       return models.Course.find();
+    },
+    courseRoles: async (root, args, { models }) => {
+      return models.CourseRole.find();
     }
   },
   Mutation: {
@@ -26,6 +31,21 @@ const resolvers = {
         .then(res => {
           return pubsub
             .publish(eventName.USER_CREATED, { userCreated: user })
+            .then(done => {
+              return res;
+            });
+        })
+        .catch(e => {
+          console.log("error:", e);
+        });
+    },
+    editUser: async (parent, args, { models }) => {
+      return models.User.findByIdAndUpdate(args.input.id, args.input, {
+        new: true
+      })
+        .then(res => {
+          return pubsub
+            .publish(eventName.USER_MODIFIED, { userModified: res })
             .then(done => {
               return res;
             });
@@ -48,14 +68,37 @@ const resolvers = {
         .catch(e => {
           console.log("error:", e);
         });
+    },
+    addCourseRole: async (parent, args, { models }) => {
+      const courseRole = new models.CourseRole(args.input);
+      return courseRole
+        .save()
+        .then(res => {
+          return pubsub
+            .publish(eventName.COURSE_ROLE_CREATED, {
+              courseRoleCreated: courseRole
+            })
+            .then(done => {
+              return res;
+            });
+        })
+        .catch(e => {
+          console.log("error:", e);
+        });
     }
   },
   Subscription: {
     userCreated: {
       subscribe: () => pubsub.asyncIterator([eventName.USER_CREATED])
     },
+    userModified: {
+      subscribe: () => pubsub.asyncIterator([eventName.USER_MODIFIED])
+    },
     courseCreated: {
       subscribe: () => pubsub.asyncIterator([eventName.COURSE_CREATED])
+    },
+    courseRoleCreated: {
+      subscribe: () => pubsub.asyncIterator([eventName.COURSE_ROLE_CREATED])
     }
   }
 };

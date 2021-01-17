@@ -17,7 +17,9 @@ const models = require("../models");
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost:27017/venue-new", {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false
 });
 
 const server = new ApolloServer({
@@ -35,6 +37,9 @@ const httpServer = http.createServer(app);
 server.applyMiddleware({ app });
 server.installSubscriptionHandlers(httpServer);
 
-httpServer.listen({ port: 4000 }, () =>
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-);
+httpServer.listen({ port: 4000 }, () => {
+  console.log("🚝 Express ready at http://localhost:4000");
+  console.log(
+    "📈 GraphQL ready at http://localhost:4000" + `${server.graphqlPath}`
+  );
+});

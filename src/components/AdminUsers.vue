@@ -5,13 +5,19 @@
         :document="require('../graphql/UserCreated.gql')"
         :update-query="onUserCreated"
       />
-      <div slot-scope="{ result: { data } }">
-        <template v-if="data">
+      <ApolloSubscribeToMore
+        :document="require('../graphql/UserModified.gql')"
+        :update-query="onUserModified"
+      />
+      <template slot-scope="{ result: { loading, error, data } }">
+        <div v-if="loading">Loading...</div>
+        <div v-if="error">Error...</div>
+        <div v-if="data">
           <div v-for="user of data.users" :key="user.email" class="user">
             {{ user.first_name }} {{ user.last_name }}
           </div>
-        </template>
-      </div>
+        </div>
+      </template>
     </ApolloQuery>
 
     <ApolloMutation
@@ -80,6 +86,15 @@ export default {
     onUserCreated(previousResult, { subscriptionData }) {
       return {
         users: [...previousResult.users, subscriptionData.data.userCreated]
+      };
+    },
+    onUserModified(previousResult, { subscriptionData }) {
+      const index = previousResult.users.findIndex(
+        x => x.id == subscriptionData.data.userModified.id
+      );
+      previousResult.users[index] = subscriptionData.data.userModified;
+      return {
+        users: previousResult.users
       };
     }
   }
