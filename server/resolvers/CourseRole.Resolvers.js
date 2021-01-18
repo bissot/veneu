@@ -1,4 +1,5 @@
 const { PubSub } = require("apollo-server-express");
+const UserSchema = require("../schema/User.Schema");
 const pubsub = new PubSub();
 
 const eventName = {
@@ -19,17 +20,28 @@ module.exports = {
     createCourseRole: (
       parent,
       { role, user, course },
-      { models: { CourseRole } },
+      { models: { CourseRole, User, Course } },
       info
     ) => {
       return CourseRole.create({ role, user, course }).then(courseRole => {
-        return pubsub
-          .publish(eventName.COURSE_ROLE_CREATED, {
-            courseRoleCreated: courseRole
-          })
-          .then(done => {
-            return courseRole;
-          });
+        return Promise.all([
+          User.findByIdAndUpdate(
+            { _id: user },
+            { $addToSet: { course_roles: courseRole._id } }
+          ),
+          Course.findByIdAndUpdate(
+            { _id: course },
+            { $addToSet: { course_roles: courseRole._id } }
+          )
+        ]).then(([user, course]) => {
+          return pubsub
+            .publish(eventName.COURSE_ROLE_CREATED, {
+              courseRoleCreated: courseRole
+            })
+            .then(done => {
+              return courseRole;
+            });
+        });
       });
     }
   },

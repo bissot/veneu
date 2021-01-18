@@ -38,5 +38,10 @@ module.exports = {
     courseUpdated: {
       subscribe: () => pubsub.asyncIterator([eventName.COURSE_CREATED])
     }
+  },
+  Course: {
+    course_roles: (parent, args, { models: { CourseRole } }, info) => {
+      return CourseRole.find({ _id: { $in: parent.course_roles } });
+    }
   }
 };

@@ -12,7 +12,13 @@ const Course = new mongoose.Schema({
   suffix: {
     type: Number,
     required: true
-  }
+  },
+  course_roles: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "CourseRole"
+    }
+  ]
 });
 
 module.exports = mongoose.model("Course", Course);

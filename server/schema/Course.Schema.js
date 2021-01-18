@@ -6,6 +6,7 @@ module.exports = gql`
     name: String!
     prefix: String!
     suffix: Int!
+    course_roles: [CourseRole!]!
   }
 
   extend type Query {

@@ -13,7 +13,13 @@ const User = new mongoose.Schema({
   email: {
     type: String,
     unique: true
-  }
+  },
+  course_roles: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "CourseRole"
+    }
+  ]
 });
 // .pre("save", function() {
 //   const hashedPassword = bcrypt.hashSync(this.password, 12);

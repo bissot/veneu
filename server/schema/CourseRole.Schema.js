@@ -1,9 +1,16 @@
 const { gql } = require("apollo-server-express");
 
 module.exports = gql`
+  enum Role {
+    ADMIN
+    INSTRUCTOR
+    TEACHING_ASSISTANT
+    STUDENT
+  }
+
   type CourseRole {
     id: ID!
-    role: String!
+    role: Role!
     user: User!
     course: Course!
   }
@@ -14,7 +21,7 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createCourseRole(role: String!, user: ID!, course: ID!): CourseRole!
+    createCourseRole(role: Role!, user: ID!, course: ID!): CourseRole!
   }
 
   extend type Subscription {
