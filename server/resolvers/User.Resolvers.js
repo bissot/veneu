@@ -8,15 +8,15 @@ const eventName = {
 
 module.exports = {
   Query: {
-    user: async (parent, { id }, { models: { User } }, info) => {
+    user: (parent, { id }, { models: { User } }, info) => {
       return User.findById({ _id: id });
     },
-    users: async (parent, args, { models: { User } }, info) => {
+    users: (parent, args, { models: { User } }, info) => {
       return User.find();
     }
   },
   Mutation: {
-    createUser: async (
+    createUser: (
       parent,
       { first_name, last_name, email },
       { models: { User } },

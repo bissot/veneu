@@ -8,15 +8,15 @@ const eventName = {
 
 module.exports = {
   Query: {
-    courseRole: async (parent, { id }, { models: { CourseRole } }, info) => {
+    courseRole: (parent, { id }, { models: { CourseRole } }, info) => {
       return CourseRole.findById({ _id: id });
     },
-    courseRoles: async (parent, args, { models: { CourseRole } }, info) => {
+    courseRoles: (parent, args, { models: { CourseRole } }, info) => {
       return CourseRole.find();
     }
   },
   Mutation: {
-    createCourseRole: async (
+    createCourseRole: (
       parent,
       { role, user, course },
       { models: { CourseRole } },

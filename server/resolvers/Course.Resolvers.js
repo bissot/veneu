@@ -8,15 +8,15 @@ const eventName = {
 
 module.exports = {
   Query: {
-    course: async (parent, { id }, { models: { Course } }, info) => {
+    course: (parent, { id }, { models: { Course } }, info) => {
       return Course.findById({ _id: id });
     },
-    courses: async (parent, args, { models: { Course } }, info) => {
+    courses: (parent, args, { models: { Course } }, info) => {
       return Course.find();
     }
   },
   Mutation: {
-    createCourse: async (
+    createCourse: (
       parent,
       { name, prefix, suffix },
       { models: { Course } },
