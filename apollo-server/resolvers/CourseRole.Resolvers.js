@@ -1,0 +1,52 @@
+const { PubSub } = require("apollo-server-express");
+const pubsub = new PubSub();
+
+const eventName = {
+  COURSE_ROLE_CREATED: "COURSE_ROLE_CREATED",
+  COURSE_ROLE_UPDATED: "COURSE_ROLE_UPDATED"
+};
+
+module.exports = {
+  Query: {
+    courseRole: async (parent, { id }, { models: { CourseRole } }, info) => {
+      return CourseRole.findById({ _id: id });
+    },
+    courseRoles: async (parent, args, { models: { CourseRole } }, info) => {
+      return CourseRole.find();
+    }
+  },
+  Mutation: {
+    createCourseRole: async (
+      parent,
+      { role, user, course },
+      { models: { CourseRole } },
+      info
+    ) => {
+      return CourseRole.create({ role, user, course }).then(courseRole => {
+        return pubsub
+          .publish(eventName.COURSE_ROLE_CREATED, {
+            courseRoleCreated: courseRole
+          })
+          .then(done => {
+            return courseRole;
+          });
+      });
+    }
+  },
+  Subscription: {
+    courseRoleCreated: {
+      subscribe: () => pubsub.asyncIterator([eventName.COURSE_ROLE_CREATED])
+    },
+    courseRoleUpdated: {
+      subscribe: () => pubsub.asyncIterator([eventName.COURSE_ROLE_UPDATED])
+    }
+  },
+  CourseRole: {
+    user: async (parent, args, { models: { User } }, info) => {
+      return User.findById({ _id: parent.user });
+    },
+    course: async (parent, args, { models: { Course } }, info) => {
+      return Course.findById({ _id: parent.course });
+    }
+  }
+};

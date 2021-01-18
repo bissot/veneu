@@ -6,14 +6,14 @@
         :update-query="onUserCreated"
       />
       <ApolloSubscribeToMore
-        :document="require('../graphql/UserModified.gql')"
-        :update-query="onUserModified"
+        :document="require('../graphql/UserUpdated.gql')"
+        :update-query="onUserUpdated"
       />
       <template slot-scope="{ result: { loading, error, data } }">
         <div v-if="loading">Loading...</div>
         <div v-if="error">Error...</div>
         <div v-if="data">
-          <div v-for="user of data.users" :key="user.email" class="user">
+          <div v-for="user of data.users" :key="user.id" class="user">
             {{ user.first_name }} {{ user.last_name }}
           </div>
         </div>
@@ -21,13 +21,11 @@
     </ApolloQuery>
 
     <ApolloMutation
-      :mutation="require('../graphql/AddUser.gql')"
+      :mutation="require('../graphql/CreateUser.gql')"
       :variables="{
-        input: {
-          first_name: newUser.first_name,
-          last_name: newUser.last_name,
-          email: newUser.email
-        }
+        first_name: newUser.first_name,
+        last_name: newUser.last_name,
+        email: newUser.email
       }"
       class="form"
       @done="newUser = { first_name: '', last_name: '', email: '' }"
@@ -88,11 +86,11 @@ export default {
         users: [...previousResult.users, subscriptionData.data.userCreated]
       };
     },
-    onUserModified(previousResult, { subscriptionData }) {
+    onUserUpdated(previousResult, { subscriptionData }) {
       const index = previousResult.users.findIndex(
-        x => x.id == subscriptionData.data.userModified.id
+        x => x.id == subscriptionData.data.userUpdated.id
       );
-      previousResult.users[index] = subscriptionData.data.userModified;
+      previousResult.users[index] = subscriptionData.data.userUpdated;
       return {
         users: previousResult.users
       };

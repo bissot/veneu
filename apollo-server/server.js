@@ -4,6 +4,7 @@
 // export default app => {
 //   app.use('/files', express.static(path.resolve(__dirname, '../live/uploads')))
 // }
+require("dotenv").config();
 
 const http = require("http");
 const express = require("express");
@@ -12,10 +13,10 @@ const { ApolloServer } = require("apollo-server-express");
 
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
-const models = require("../models");
+const models = require("./models");
 
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/venue-new", {
+mongoose.connect(process.env.DB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
@@ -26,9 +27,9 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: { models },
-  subscriptions: {
-    onConnect: async (connectionParams, webSocket) => {}
-  }
+  introspection: process.env.NODE_ENV === "production" ? false : true,
+  playground: process.env.NODE_ENV === "production" ? false : true,
+  tracing: process.env.NODE_ENV === "production" ? false : true
 });
 const app = express();
 

@@ -1,14 +1,13 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 
-const CourseRole = new Schema({
+const CourseRole = new mongoose.Schema({
   role: String,
   user: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   },
   course: {
-    type: Schema.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Course"
   }
 });
