@@ -25,10 +25,11 @@ module.exports = {
       return User.create({ first_name, last_name, email }).then(user => {
         return pubsub
           .publish(eventName.USER_CREATED, { userCreated: user })
-          .then(done => {
-            return user;
-          });
+          .then(done => user);
       });
+    },
+    deleteUser: (parent, { id }, { models: { User } }, info) => {
+      return User.deleteOne({ _id: id });
     }
   },
   Subscription: {

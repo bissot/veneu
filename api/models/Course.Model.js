@@ -19,6 +19,8 @@ const Course = new mongoose.Schema({
       ref: "CourseRole"
     }
   ]
+}).pre("remove", function(next) {
+  this.model("CourseRole").remove({ course: this._id }, next);
 });
 
 module.exports = mongoose.model("Course", Course);

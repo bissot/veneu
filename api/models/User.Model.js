@@ -20,6 +20,8 @@ const User = new mongoose.Schema({
       ref: "CourseRole"
     }
   ]
+}).pre("remove", function(next) {
+  this.model("CourseRole").remove({ user: this._id }, next);
 });
 // .pre("save", function() {
 //   const hashedPassword = bcrypt.hashSync(this.password, 12);

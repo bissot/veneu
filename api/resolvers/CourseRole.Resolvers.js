@@ -24,25 +24,17 @@ module.exports = {
       info
     ) => {
       return CourseRole.create({ role, user, course }).then(courseRole => {
-        return Promise.all([
-          User.findByIdAndUpdate(
-            { _id: user },
-            { $addToSet: { course_roles: courseRole._id } }
-          ),
-          Course.findByIdAndUpdate(
-            { _id: course },
-            { $addToSet: { course_roles: courseRole._id } }
-          )
-        ]).then(([user, course]) => {
-          return pubsub
-            .publish(eventName.COURSE_ROLE_CREATED, {
-              courseRoleCreated: courseRole
-            })
-            .then(done => {
-              return courseRole;
-            });
-        });
+        return pubsub
+          .publish(eventName.COURSE_ROLE_CREATED, {
+            courseRoleCreated: courseRole
+          })
+          .then(done => {
+            return courseRole;
+          });
       });
+    },
+    deleteUser: (parent, { id }, { models: { User } }, info) => {
+      return User.deleteOne({ _id: id });
     }
   },
   Subscription: {

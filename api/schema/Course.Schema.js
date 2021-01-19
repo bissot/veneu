@@ -16,10 +16,12 @@ module.exports = gql`
 
   extend type Mutation {
     createCourse(name: String!): Course!
+    deleteCourse(id: ID!): Course!
   }
 
   extend type Subscription {
     courseCreated: Course!
     courseUpdated: Course!
+    courseDeleted: Course!
   }
 `;
