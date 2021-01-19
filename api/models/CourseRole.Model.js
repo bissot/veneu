@@ -26,13 +26,13 @@ const CourseRole = new mongoose.Schema({
   .post("save", function(next) {
     if (this.isNew) {
       Promise.all([
-        User.findByIdAndUpdate(
-          { _id: user },
-          { $addToSet: { course_roles: courseRole._id } }
+        this.model("User").findOneAndUpdate(
+          { _id: this.user },
+          { $addToSet: { course_roles: this._id } }
         ),
-        Course.findByIdAndUpdate(
-          { _id: course },
-          { $addToSet: { course_roles: courseRole._id } }
+        this.model("Course").findOneAndUpdate(
+          { _id: this.course },
+          { $addToSet: { course_roles: this._id } }
         )
       ]).then(next);
     } else {
