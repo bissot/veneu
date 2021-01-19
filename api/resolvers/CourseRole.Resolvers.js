@@ -33,8 +33,8 @@ module.exports = {
           });
       });
     },
-    deleteUser: (parent, { id }, { models: { User } }, info) => {
-      return User.deleteOne({ _id: id });
+    deleteCourseRole: (parent, { id }, { models: { CourseRole } }, info) => {
+      return CourseRole.findOneAndDelete({ _id: id }).then(res => res);
     }
   },
   Subscription: {

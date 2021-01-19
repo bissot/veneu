@@ -23,8 +23,12 @@ const CourseRole = new mongoose.Schema({
       )
     ]).then(next);
   })
-  .post("save", function(next) {
-    if (this.isNew) {
+  .pre("save", function(next) {
+    this.wasNew = this.isNew;
+    next();
+  })
+  .post("save", function() {
+    if (this.wasNew) {
       Promise.all([
         this.model("User").findOneAndUpdate(
           { _id: this.user },
@@ -34,9 +38,7 @@ const CourseRole = new mongoose.Schema({
           { _id: this.course },
           { $addToSet: { course_roles: this._id } }
         )
-      ]).then(next);
-    } else {
-      next();
+      ]);
     }
   });
 

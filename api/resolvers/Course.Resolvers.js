@@ -29,6 +29,9 @@ module.exports = {
             return course;
           });
       });
+    },
+    deleteCourse: (parent, { id }, { models: { Course } }, info) => {
+      return Course.findOneAndDelete({ _id: id }).then(res => res);
     }
   },
   Subscription: {
