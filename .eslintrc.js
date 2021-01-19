@@ -18,8 +18,7 @@ module.exports = {
       "error",
       {
         env: "literal",
-        projectName: "app",
-        schemaJsonFilepath: "node_modules/.temp/graphql/schema.json"
+        projectName: "app"
       }
     ],
     "no-unused-vars": 0
