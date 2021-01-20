@@ -3,7 +3,8 @@ const pubsub = new PubSub();
 
 const eventName = {
   COURSE_CREATED: "COURSE_CREATED",
-  COURSE_UPDATED: "COURSE_UPDATED"
+  COURSE_UPDATED: "COURSE_UPDATED",
+  COURSE_DELETED: "COURSE_DELETED"
 };
 
 module.exports = {
@@ -30,8 +31,29 @@ module.exports = {
           });
       });
     },
+    updateCourse(parent, { id, ...patch }, { models: { Course } }, info) {
+      return Course.findOneAndUpdate({ _id: id }, patch, {
+        new: true
+      }).then(course => {
+        return pubsub
+          .publish(eventName.COURSE_UPDATED, {
+            courseUpdated: course
+          })
+          .then(done => {
+            return course;
+          });
+      });
+    },
     deleteCourse: (parent, { id }, { models: { Course } }, info) => {
-      return Course.findOneAndDelete({ _id: id }).then(res => res);
+      return Course.findOneAndDelete({ _id: id }).then(course => {
+        return pubsub
+          .publish(eventName.COURSE_DELETED, {
+            courseDeleted: course
+          })
+          .then(done => {
+            return course;
+          });
+      });
     }
   },
   Subscription: {
@@ -40,6 +62,9 @@ module.exports = {
     },
     courseUpdated: {
       subscribe: () => pubsub.asyncIterator([eventName.COURSE_CREATED])
+    },
+    courseDeleted: {
+      subscribe: () => pubsub.asyncIterator([eventName.COURSE_DELETED])
     }
   },
   Course: {

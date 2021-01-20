@@ -3,7 +3,8 @@ const pubsub = new PubSub();
 
 const eventName = {
   USER_CREATED: "USER_CREATED",
-  USER_UPDATED: "USER_UPDATED"
+  USER_UPDATED: "USER_UPDATED",
+  USER_DELETED: "USER_DELETED"
 };
 
 module.exports = {
@@ -30,8 +31,25 @@ module.exports = {
           });
       });
     },
+    updateUser(parent, { id, ...patch }, { models: { User } }, info) {
+      return User.findOneAndUpdate({ _id: id }, patch, { new: true }).then(
+        user => {
+          return pubsub
+            .publish(eventName.USER_UPDATED, { userUpdated: user })
+            .then(done => {
+              return user;
+            });
+        }
+      );
+    },
     deleteUser: (parent, { id }, { models: { User } }, info) => {
-      return User.findOneAndDelete({ _id: id }).then(res => res);
+      return User.findOneAndDelete({ _id: id }).then(user => {
+        return pubsub
+          .publish(eventName.USER_DELETED, { userDeleted: user })
+          .then(done => {
+            return user;
+          });
+      });
     }
   },
   Subscription: {
@@ -40,6 +58,9 @@ module.exports = {
     },
     userUpdated: {
       subscribe: () => pubsub.asyncIterator([eventName.USER_UPDATED])
+    },
+    userDeleted: {
+      subscribe: () => pubsub.asyncIterator([eventName.USER_DELETED])
     }
   },
   User: {

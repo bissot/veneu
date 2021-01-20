@@ -15,6 +15,7 @@ module.exports = gql`
 
   extend type Mutation {
     createCourseRole(role: Role!, user: ID!, course: ID!): CourseRole!
+    updateCourseRole(id: ID!, role: Role): CourseRole!
     deleteCourseRole(id: ID!): CourseRole!
   }
 
