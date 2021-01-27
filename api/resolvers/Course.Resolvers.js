@@ -17,14 +17,16 @@ module.exports = {
     }
   },
   Mutation: {
-    createCourse: (parent, { name, prefix, suffix }, { models: { Course } }, info) => {
+    createCourse: (parent, { name, prefix, suffix }, { requester, models: { Course } }, info) => {
+      if (!requester) throw new ForbiddenError("Not allowed");
       return Course.create({ name, prefix, suffix }).then(course => {
         return pubsub.publish(eventName.COURSE_CREATED, { courseCreated: course }).then(done => {
           return course;
         });
       });
     },
-    updateCourse(parent, { id, ...patch }, { models: { Course } }, info) {
+    updateCourse(parent, { id, ...patch }, { requester, models: { Course } }, info) {
+      if (!requester) throw new ForbiddenError("Not allowed");
       return Course.findOneAndUpdate({ _id: id }, patch, {
         new: true
       }).then(course => {
@@ -37,7 +39,8 @@ module.exports = {
           });
       });
     },
-    deleteCourse: (parent, { id }, { models: { Course } }, info) => {
+    deleteCourse: (parent, { id }, { requester, models: { Course } }, info) => {
+      if (!requester) throw new ForbiddenError("Not allowed");
       return Course.findOneAndDelete({ _id: id }).then(course => {
         return pubsub
           .publish(eventName.COURSE_DELETED, {

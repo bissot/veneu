@@ -22,7 +22,7 @@ module.exports = {
     }
   },
   Mutation: {
-    createUser: (parent, { first_name, last_name, email, password }, { requester, models: { User } }, info) => {
+    createUser: (parent, { first_name, last_name, email, password }, { models: { User } }, info) => {
       return bcrypt
         .hash(password, saltRounds)
         .then(hash => {

@@ -17,7 +17,8 @@ module.exports = {
     }
   },
   Mutation: {
-    createCourseRole: (parent, { role, user, course }, { models: { CourseRole, User, Course } }, info) => {
+    createCourseRole: (parent, { role, user, course }, { requester, models: { CourseRole } }, info) => {
+      if (!requester) throw new ForbiddenError("Not allowed");
       return CourseRole.create({ role, user, course }).then(courseRole => {
         return pubsub
           .publish(eventName.COURSE_ROLE_CREATED, {
@@ -28,7 +29,8 @@ module.exports = {
           });
       });
     },
-    updateCourseRole(parent, { id, ...patch }, { models: { CourseRole } }, info) {
+    updateCourseRole(parent, { id, ...patch }, { requester, models: { CourseRole } }, info) {
+      if (!requester) throw new ForbiddenError("Not allowed");
       return CourseRole.findOneAndUpdate({ _id: id }, patch, {
         new: true
       }).then(courseRole => {
@@ -41,7 +43,8 @@ module.exports = {
           });
       });
     },
-    deleteCourseRole: (parent, { id }, { models: { CourseRole } }, info) => {
+    deleteCourseRole: (parent, { id }, { requester, models: { CourseRole } }, info) => {
+      if (!requester) throw new ForbiddenError("Not allowed");
       return CourseRole.findOneAndDelete({ _id: id }).then(courseRole => {
         return pubsub
           .publish(eventName.COURSE_ROLE_DELETED, {
