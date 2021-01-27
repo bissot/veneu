@@ -1,16 +1,21 @@
 const mongoose = require("mongoose");
 
-const CourseRole = new mongoose.Schema({
-  role: String,
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+const CourseRole = new mongoose.Schema(
+  {
+    role: String,
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User"
+    },
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course"
+    }
   },
-  course: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Course"
+  {
+    timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
   }
-})
+)
   .pre("remove", function(next) {
     Promise.all([
       this.model("User").findOneAndUpdate(

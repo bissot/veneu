@@ -1,5 +1,4 @@
 const { PubSub } = require("apollo-server-express");
-const UserSchema = require("../schema/User.Schema");
 const pubsub = new PubSub();
 
 const eventName = {

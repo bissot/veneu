@@ -1,7 +1,3 @@
-// exports.User = require("./UserSchema");
-// exports.Course = require("./CourseSchema");
-// exports.CourseRole = require("./CourseRoleSchema");
-
 const { gql } = require("apollo-server-express");
 
 const linkSchema = gql`
@@ -14,6 +10,7 @@ const linkSchema = gql`
   type Subscription {
     _: Boolean
   }
+  scalar Date
 `;
 
 module.exports = [
