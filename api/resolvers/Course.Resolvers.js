@@ -17,18 +17,11 @@ module.exports = {
     }
   },
   Mutation: {
-    createCourse: (
-      parent,
-      { name, prefix, suffix },
-      { models: { Course } },
-      info
-    ) => {
+    createCourse: (parent, { name, prefix, suffix }, { models: { Course } }, info) => {
       return Course.create({ name, prefix, suffix }).then(course => {
-        return pubsub
-          .publish(eventName.COURSE_CREATED, { courseCreated: course })
-          .then(done => {
-            return course;
-          });
+        return pubsub.publish(eventName.COURSE_CREATED, { courseCreated: course }).then(done => {
+          return course;
+        });
       });
     },
     updateCourse(parent, { id, ...patch }, { models: { Course } }, info) {

@@ -18,14 +18,8 @@ const CourseRole = new mongoose.Schema(
 )
   .pre("remove", function(next) {
     Promise.all([
-      this.model("User").findOneAndUpdate(
-        { _id: this._id },
-        { $pull: { course_roles: this._id } }
-      ),
-      this.model("Course").findOneAndUpdate(
-        { _id: this._id },
-        { $pull: { course_roles: this._id } }
-      )
+      this.model("User").findOneAndUpdate({ _id: this._id }, { $pull: { course_roles: this._id } }),
+      this.model("Course").findOneAndUpdate({ _id: this._id }, { $pull: { course_roles: this._id } })
     ]).then(next);
   })
   .pre("save", function(next) {
@@ -35,14 +29,8 @@ const CourseRole = new mongoose.Schema(
   .post("save", function() {
     if (this.wasNew) {
       Promise.all([
-        this.model("User").findOneAndUpdate(
-          { _id: this.user },
-          { $addToSet: { course_roles: this._id } }
-        ),
-        this.model("Course").findOneAndUpdate(
-          { _id: this.course },
-          { $addToSet: { course_roles: this._id } }
-        )
+        this.model("User").findOneAndUpdate({ _id: this.user }, { $addToSet: { course_roles: this._id } }),
+        this.model("Course").findOneAndUpdate({ _id: this.course }, { $addToSet: { course_roles: this._id } })
       ]);
     }
   });

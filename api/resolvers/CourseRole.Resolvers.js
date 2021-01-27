@@ -17,12 +17,7 @@ module.exports = {
     }
   },
   Mutation: {
-    createCourseRole: (
-      parent,
-      { role, user, course },
-      { models: { CourseRole, User, Course } },
-      info
-    ) => {
+    createCourseRole: (parent, { role, user, course }, { models: { CourseRole, User, Course } }, info) => {
       return CourseRole.create({ role, user, course }).then(courseRole => {
         return pubsub
           .publish(eventName.COURSE_ROLE_CREATED, {
@@ -33,12 +28,7 @@ module.exports = {
           });
       });
     },
-    updateCourseRole(
-      parent,
-      { id, ...patch },
-      { models: { CourseRole } },
-      info
-    ) {
+    updateCourseRole(parent, { id, ...patch }, { models: { CourseRole } }, info) {
       return CourseRole.findOneAndUpdate({ _id: id }, patch, {
         new: true
       }).then(courseRole => {

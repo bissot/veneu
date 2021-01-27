@@ -1,19 +1,13 @@
-// import path from 'path'
-// import express from 'express'
-
-// export default app => {
-//   app.use('/files', express.static(path.resolve(__dirname, '../live/uploads')))
-// }
 require("dotenv").config();
 
 const http = require("http");
 const express = require("express");
 
-const { ApolloServer } = require("apollo-server-express");
-
-const typeDefs = require("./schema");
-const resolvers = require("./resolvers");
-const models = require("./models");
+const {
+  ApolloServer,
+  AuthenticationError,
+  gql
+} = require("apollo-server-express");
 
 const mongoose = require("mongoose");
 mongoose.connect(process.env.DB_URL, {
@@ -23,16 +17,30 @@ mongoose.connect(process.env.DB_URL, {
   useFindAndModify: false
 });
 
+const typeDefs = require("./schema");
+const resolvers = require("./resolvers");
+const models = require("./models");
+
+const jwt = require("jsonwebtoken");
+const getUser = token =>
+  jwt.verify(token, process.env.JWTAUTH_KEY, function(err, decoded) {
+    return err || !decoded ? null : models.User.findOne({ _id: decoded._id });
+  });
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: { models },
+  context: async ({ req }) => {
+    const token = req.headers.authorization || "";
+    const user = await getUser(token);
+    return { requester: user, models };
+  },
   introspection: process.env.NODE_ENV === "production" ? false : true,
   playground: process.env.NODE_ENV === "production" ? false : true,
   tracing: process.env.NODE_ENV === "production" ? false : true
 });
-const app = express();
 
+const app = express();
 const httpServer = http.createServer(app);
 
 server.applyMiddleware({ app });
