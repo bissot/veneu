@@ -1,53 +1,29 @@
 <template>
   <div class="apollo-example">
     <ApolloQuery :query="require('../graphql/Users.gql')">
-      <ApolloSubscribeToMore
-        :document="require('../graphql/UserCreated.gql')"
-        :update-query="onUserCreated"
-      />
-      <ApolloSubscribeToMore
-        :document="require('../graphql/UserUpdated.gql')"
-        :update-query="onUserUpdated"
-      />
+      <ApolloSubscribeToMore :document="require('../graphql/UserCreated.gql')" :update-query="onUserCreated" />
+      <ApolloSubscribeToMore :document="require('../graphql/UserUpdated.gql')" :update-query="onUserUpdated" />
       <template slot-scope="{ result: { loading, error, data } }">
         <div v-if="loading">Loading...</div>
         <div v-if="error">Error...</div>
         <div v-if="data">
-          <div v-for="user of data.users" :key="user.id" class="user">
-            {{ user.first_name }} {{ user.last_name }}
-          </div>
+          <div v-for="user of data.users" :key="user.id" class="user">{{ user.first_name }} {{ user.last_name }}</div>
         </div>
       </template>
     </ApolloQuery>
 
     <ApolloMutation
       :mutation="require('../graphql/CreateUser.gql')"
-      :variables="{
-        first_name: newUser.first_name,
-        last_name: newUser.last_name,
-        email: newUser.email
-      }"
+      :variables="newUser"
       class="form"
-      @done="newUser = { first_name: '', last_name: '', email: '' }"
+      @done="newUser = { first_name: '', last_name: '', email: '', password: '' }"
     >
       <template slot-scope="{ mutate }">
         <form v-on:submit.prevent="formValid && mutate()">
           <label for="field-first-name">First Name</label>
-          <input
-            id="field-first-name"
-            v-model="newUser.first_name"
-            placeholder="Teri"
-            class="input"
-            required
-          />
+          <input id="field-first-name" v-model="newUser.first_name" placeholder="Teri" class="input" required />
           <label for="field-last-name">Last Name</label>
-          <input
-            id="field-last-name"
-            v-model="newUser.last_name"
-            placeholder="Smith"
-            class="input"
-            required
-          />
+          <input id="field-last-name" v-model="newUser.last_name" placeholder="Smith" class="input" required />
           <label for="field-first-name">Email</label>
           <input
             id="field-first-name"
@@ -56,6 +32,8 @@
             class="input"
             required
           />
+          <label for="field-password">Password</label>
+          <input id="field-password" v-model="newUser.password" class="input" required />
           <button>Go</button>
         </form>
       </template>
@@ -67,7 +45,7 @@
 export default {
   data() {
     return {
-      newUser: { first_name: "", last_name: "", email: "" }
+      newUser: { first_name: "", last_name: "", email: "", password: "" }
     };
   },
 
@@ -77,9 +55,7 @@ export default {
 
   methods: {
     formValid() {
-      return (
-        this.newUser.first_name && this.newUser.last_name && this.newUser.email
-      );
+      return this.newUser.first_name && this.newUser.last_name && this.newUser.email && this.newUser.password;
     },
     onUserCreated(previousResult, { subscriptionData }) {
       return {
@@ -87,9 +63,7 @@ export default {
       };
     },
     onUserUpdated(previousResult, { subscriptionData }) {
-      const index = previousResult.users.findIndex(
-        x => x.id == subscriptionData.data.userUpdated.id
-      );
+      const index = previousResult.users.findIndex(x => x.id == subscriptionData.data.userUpdated.id);
       previousResult.users[index] = subscriptionData.data.userUpdated;
       return {
         users: previousResult.users

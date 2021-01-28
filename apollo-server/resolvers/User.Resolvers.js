@@ -14,10 +14,12 @@ const eventName = {
 
 module.exports = {
   Query: {
-    user: (parent, { id }, { models: { User } }, info) => {
+    user: (parent, { id }, { requester, models: { User } }, info) => {
+      if (!requester) throw new ForbiddenError("Not allowed");
       return User.findById({ _id: id });
     },
-    users: (parent, args, { models: { User } }, info) => {
+    users: (parent, args, { requester, models: { User } }, info) => {
+      // if (!requester) throw new ForbiddenError("Not allowed");
       return User.find();
     }
   },
@@ -67,7 +69,10 @@ module.exports = {
   },
   Subscription: {
     userCreated: {
-      subscribe: () => pubsub.asyncIterator([eventName.USER_CREATED])
+      subscribe: () => {
+        console.log("subscribe");
+        return pubsub.asyncIterator([eventName.USER_CREATED]);
+      }
     },
     userUpdated: {
       subscribe: () => pubsub.asyncIterator([eventName.USER_UPDATED])

@@ -21,7 +21,7 @@ module.exports = {
         projectName: "app"
       }
     ],
-    "no-unused-vars": 0
+    "no-unused-vars": "off"
   },
 
   plugins: ["graphql"]

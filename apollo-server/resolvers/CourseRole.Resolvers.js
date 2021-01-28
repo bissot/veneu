@@ -1,4 +1,4 @@
-const { PubSub } = require("apollo-server-express");
+const { PubSub, ForbiddenError } = require("apollo-server-express");
 const pubsub = new PubSub();
 
 const eventName = {
@@ -9,10 +9,12 @@ const eventName = {
 
 module.exports = {
   Query: {
-    courseRole: (parent, { id }, { models: { CourseRole } }, info) => {
+    courseRole: (parent, { id }, { requester, models: { CourseRole } }, info) => {
+      if (!requester) throw new ForbiddenError("Not allowed");
       return CourseRole.findById({ _id: id });
     },
-    courseRoles: (parent, args, { models: { CourseRole } }, info) => {
+    courseRoles: (parent, args, { requester, models: { CourseRole } }, info) => {
+      if (!requester) throw new ForbiddenError("Not allowed");
       return CourseRole.find();
     }
   },

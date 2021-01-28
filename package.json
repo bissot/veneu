@@ -6,8 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "apollo": "node api/server.js",
-    "apollo:dev": "nodemon api/server.js",
+    "apollo": "node apollo-server/server.js",
+    "apollo:dev": "nodemon apollo-server/server.js",
     "apollo:schema:generate": "vue-cli-service apollo:schema:generate",
     "apollo:schema:publish": "vue-cli-service apollo:schema:publish",
     "db": "sudo killall mongod;mongod"
