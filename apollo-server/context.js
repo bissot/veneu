@@ -6,12 +6,16 @@ const getUser = token =>
     return err || !decoded ? null : models.User.findById({ _id: decoded._id });
   });
 
-module.exports = async ({ req }) => {
-  const auth = (req.headers && req.headers.authorization && req.headers.authorization.split(" ")) || [];
-  if (auth.length == 2 && auth[0] == "Bearer") {
-    const user = getUser(auth[1]);
-    return { requester: user, models };
+module.exports = async ({ req, connection }) => {
+  if (connection) {
+    return connection.context;
   } else {
-    return { requester: null, models };
+    const auth = (req.headers && req.headers.authorization && req.headers.authorization.split(" ")) || [];
+    if (auth.length == 2 && auth[0] == "Bearer") {
+      const user = getUser(auth[1]);
+      return { requester: user, models };
+    } else {
+      return { requester: null, models };
+    }
   }
 };

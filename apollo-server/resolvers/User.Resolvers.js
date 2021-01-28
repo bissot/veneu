@@ -69,10 +69,7 @@ module.exports = {
   },
   Subscription: {
     userCreated: {
-      subscribe: () => {
-        console.log("subscribe");
-        return pubsub.asyncIterator([eventName.USER_CREATED]);
-      }
+      subscribe: () => pubsub.asyncIterator([eventName.USER_CREATED])
     },
     userUpdated: {
       subscribe: () => pubsub.asyncIterator([eventName.USER_UPDATED])
