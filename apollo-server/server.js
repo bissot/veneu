@@ -29,7 +29,7 @@ const server = new ApolloServer({
 const app = express();
 const httpServer = http.createServer(app);
 
-server.applyMiddleware({ app, cors: true });
+server.applyMiddleware({ app });
 server.installSubscriptionHandlers(httpServer);
 
 httpServer.listen({ port: 4000 }, () => {

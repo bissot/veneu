@@ -86,13 +86,6 @@ label {
   margin-bottom: 6px;
 }
 
-.input {
-  font-family: inherit;
-  font-size: inherit;
-  border: solid 2px #ccc;
-  border-radius: 3px;
-}
-
 .error {
   color: red;
 }

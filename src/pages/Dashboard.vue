@@ -1,0 +1,26 @@
+<template>
+  <div id="dashboard" class="container">
+    <div class="vertical-center">
+      <img alt="Venue Logo" src="../assets/venue-logo.svg" />
+      <div>
+        <h1>dashboard</h1>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "Dashboard"
+};
+</script>
+
+<style scoped>
+#dashboard {
+  width: 100w;
+  max-width: 50rem;
+  margin: auto;
+  height: 100%;
+  position: relative;
+}
+</style>

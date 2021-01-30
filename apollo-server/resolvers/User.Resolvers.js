@@ -19,7 +19,7 @@ module.exports = {
       return User.findById({ _id: id });
     },
     users: (parent, args, { requester, models: { User } }, info) => {
-      // if (!requester) throw new ForbiddenError("Not allowed");
+      if (!requester) throw new ForbiddenError("Not allowed");
       return User.find();
     }
   },
