@@ -30,7 +30,10 @@ const User = new mongoose.Schema(
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
   }
 ).pre("remove", function(next) {
-  this.model("CourseRole").remove({ user: this._id }, next);
+  Promise.all([
+    this.model("CourseRole").deleteMany({ user: this._id }),
+    this.model("Notification").deleteMany({ user: this._id })
+  ]).then(next);
 });
 // .pre("save", function() {
 //   const hashedPassword = bcrypt.hashSync(this.password, 12);

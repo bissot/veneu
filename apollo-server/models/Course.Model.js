@@ -25,7 +25,7 @@ const Course = new mongoose.Schema(
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
   }
 ).pre("remove", function(next) {
-  this.model("CourseRole").remove({ course: this._id }, next);
+  this.model("CourseRole").deleteMany({ course: this._id }, next);
 });
 
 module.exports = mongoose.model("Course", Course);
