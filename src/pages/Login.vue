@@ -16,7 +16,9 @@
             <input id="email" type="text" aria-label="email" placeholder="email" v-model="email" />
             <input id="password" type="password" aria-label="password" placeholder="password" v-model="password" />
             <!-- <button v-if="loading">...</button> -->
-            <button>Submit</button>
+            <div id="actions">
+              <button>Submit</button>
+            </div>
           </form>
         </template>
       </ApolloMutation>
@@ -75,6 +77,15 @@ h1 {
 }
 form {
   margin: 2rem;
-  padding: 1.5rem;
+  padding: 1rem;
+}
+#actions {
+  position: relative;
+  display: block;
+  width: 100%;
+  text-align: right;
+}
+button {
+  margin: 1rem 0rem 0rem 0rem;
 }
 </style>

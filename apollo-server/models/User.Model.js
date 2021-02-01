@@ -24,6 +24,12 @@ const User = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "CourseRole"
       }
+    ],
+    notifications: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Notification"
+      }
     ]
   },
   {
@@ -35,9 +41,5 @@ const User = new mongoose.Schema(
     this.model("Notification").deleteMany({ user: this._id })
   ]).then(next);
 });
-// .pre("save", function() {
-//   const hashedPassword = bcrypt.hashSync(this.password, 12);
-//   this.password = hashedPassword;
-// });
 
 module.exports = mongoose.model("User", User);

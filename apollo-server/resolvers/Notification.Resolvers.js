@@ -65,8 +65,8 @@ module.exports = {
     }
   },
   Notification: {
-    course_roles: (parent, args, { models: { CourseRole } }, info) => {
-      return CourseRole.find({ _id: { $in: parent.course_roles } });
+    user: (parent, args, { models: { User } }, info) => {
+      return User.findById({ _id: parent.user });
     }
   }
 };

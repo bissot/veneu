@@ -13,4 +13,10 @@ const linkSchema = gql`
   scalar Date
 `;
 
-module.exports = [linkSchema, require("./User.Schema"), require("./Course.Schema"), require("./CourseRole.Schema")];
+module.exports = [
+  linkSchema,
+  require("./Course.Schema"),
+  require("./CourseRole.Schema"),
+  require("./Notification.Schema"),
+  require("./User.Schema")
+];

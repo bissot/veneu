@@ -1,1 +1,6 @@
-module.exports = [require("./User.Resolvers"), require("./Course.Resolvers"), require("./CourseRole.Resolvers")];
+module.exports = [
+  require("./Course.Resolvers"),
+  require("./CourseRole.Resolvers"),
+  require("./Notification.Resolvers"),
+  require("./User.Resolvers")
+];

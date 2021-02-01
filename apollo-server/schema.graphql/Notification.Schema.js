@@ -11,7 +11,7 @@ module.exports = gql`
 
   extend type Query {
     notification(id: ID!): Notification!
-    notification: [Notification!]!
+    notifications: [Notification!]!
   }
 
   extend type Mutation {

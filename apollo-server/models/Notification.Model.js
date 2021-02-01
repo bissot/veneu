@@ -33,9 +33,7 @@ const Notification = new mongoose.Schema(
   })
   .post("save", function() {
     if (this.wasNew) {
-      Promise.all([
-        this.model("User").findOneAndUpdate({ _id: this.user }, { $addToSet: { notifications: this._id } })
-      ]);
+      this.model("User").findOneAndUpdate({ _id: this.user }, { $addToSet: { notifications: this._id } });
     }
   });
 
