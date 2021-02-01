@@ -1,17 +1,51 @@
 <!DOCTYPE html>
 <html lang="">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
     <title><%= htmlWebpackPlugin.options.title %></title>
+
+    <% if (process.env.NODE_ENV !== 'production') { %>
+    <script class="voyager-script" src="https://cdn.jsdelivr.net/npm/react@16/umd/react.production.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@16/umd/react-dom.production.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/graphql-voyager/dist/voyager.css" />
+    <script src="https://cdn.jsdelivr.net/npm/graphql-voyager/dist/voyager.min.js"></script>
+    <% } %>
   </head>
   <body>
     <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong
+        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please
+        enable it to continue.</strong
+      >
     </noscript>
     <div id="app"></div>
+    <% if (process.env.NODE_ENV !== 'production') { %>
+    <div id="voyager"></div>
+    <script id="voyager-init" defer>
+      if (window.location.href.includes("/voyager")) {
+        function introspectionProvider(introspectionQuery) {
+          return fetch("http://localhost:4000/graphql", {
+            method: "POST",
+            body: JSON.stringify({ query: introspectionQuery }),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          }).then(res => {
+            return res.json();
+          });
+        }
+
+        // Render <Voyager />
+        GraphQLVoyager.init(document.getElementById("voyager"), {
+          introspection: introspectionProvider
+        });
+      }
+    </script>
+    <% } %>
     <!-- built files will be auto injected -->
   </body>
 </html>
