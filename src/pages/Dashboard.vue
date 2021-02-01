@@ -17,9 +17,7 @@ export default {
 
 <style scoped>
 #dashboard {
-  width: 100w;
-  max-width: 50rem;
-  margin: auto;
+  width: 100%;
   height: 100%;
   position: relative;
 }

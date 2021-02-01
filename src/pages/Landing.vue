@@ -6,8 +6,9 @@
         <h1>venue</h1>
       </div>
       <div>
-        <router-link class="btn btn-primary" :to="{ path: '/login' }">Log in</router-link>
-        <router-link class="btn btn-secondary" :to="{ path: '/signup' }">Sign up</router-link>
+        <router-link :to="{ path: '/signup' }"><button id="signup-btn">Sign up</button></router-link>
+        or
+        <router-link :to="{ path: '/login' }">Log in</router-link>
       </div>
     </div>
   </div>
@@ -39,5 +40,8 @@ h1 {
 }
 .vertical-center {
   width: 100%;
+}
+#signup-btn {
+  padding: 1rem 1.5rem;
 }
 </style>

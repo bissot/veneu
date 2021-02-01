@@ -8,7 +8,8 @@ export default {
   created() {},
   mounted() {
     var element = document.getElementById("voyager");
-    document.getElementById("voyager-page").appendChild(element);
+    if (!element) location.reload();
+    else document.getElementById("voyager-page").appendChild(element);
   }
 };
 </script>

@@ -22,21 +22,24 @@ body {
   padding: 0;
 }
 * {
-  font-family: "Comfortaa";
-}
-#app {
   font-family: "Comfortaa", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+#app {
   text-align: center;
+  position: absolute;
   color: #2c3e50;
   margin: 0;
+  padding: 0;
   width: 100vw;
   height: 100vh;
   background: var(--venue-light);
 }
 #main {
-  height: calc(100vh - 3.5rem);
-  overflow-y: auto;
+  position: absolute;
+  top: 6rem;
+  height: calc(100% - 6rem);
+  width: 100%;
 }
 </style>

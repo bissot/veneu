@@ -55,13 +55,20 @@ const router = new VueRouter({
     {
       path: "/voyager",
       name: "Voyager",
-      component: Voyager
+      component: Voyager,
+      meta: {
+        auth: true
+      }
     }
   ],
   mode: "history"
 });
 
 router.beforeEach((to, from, next) => {
+  if (from.name == "Voyager") {
+    var element = document.getElementById("voyager");
+    if (element) element.parentNode.removeChild(element);
+  }
   if (to.meta.auth && !localStorage.getItem("token")) next({ name: "Login", query: { redirect: to.path } });
   else next();
 });
