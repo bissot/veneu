@@ -3,6 +3,7 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import { createProvider } from "./vue-apollo";
 import router from "./router";
+import "./quasar";
 
 Vue.config.productionTip = false;
 

@@ -1,64 +1,28 @@
 import Vue from "vue";
-import VueRouter from "vue-router";
+import Router from "vue-router";
+import DefaultLayout from "./layouts/Default.vue";
+import Home from "./views/Home.vue";
+import About from "./views/About.vue";
 
-import AdminOverview from "./components/AdminOverview";
-import AdminUsers from "./components/AdminUsers";
-import Landing from "./pages/Landing";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import Dashboard from "./pages/Dashboard";
+Vue.use(Router);
 
-Vue.use(VueRouter);
-
-const router = new VueRouter({
+export default new Router({
   routes: [
     {
-      path: "/admin",
-      name: "AdminOverview",
-      component: AdminOverview,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: "/admin/users",
-      name: "AdminUsers",
-      component: AdminUsers,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: "/dashboard",
-      name: "Dashboard",
-      component: Dashboard,
-      meta: {
-        auth: true
-      }
-    },
-    {
-      path: "/login",
-      name: "Login",
-      component: Login
-    },
-    {
-      path: "/signup",
-      name: "Signup",
-      component: Signup
-    },
-    {
       path: "/",
-      name: "Landing",
-      component: Landing
+      component: DefaultLayout,
+      children: [
+        {
+          path: "",
+          name: "home",
+          component: Home
+        },
+        {
+          path: "/about",
+          name: "about",
+          component: About
+        }
+      ]
     }
-  ],
-  mode: "history"
+  ]
 });
-
-router.beforeEach((to, from, next) => {
-  // Redirect to login
-  if (to.meta.auth && !localStorage.getItem("token")) next({ name: "Login", query: { redirect: to.path } });
-  else next();
-});
-
-export default router;

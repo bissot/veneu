@@ -4,6 +4,12 @@ module.exports = {
       enableMocks: false,
       enableEngine: false,
       lintGQL: false
+    },
+    quasar: {
+      importStrategy: "kebab",
+      rtlSupport: false
     }
-  }
+  },
+
+  transpileDependencies: ["quasar"]
 };
