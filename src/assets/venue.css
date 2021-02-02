@@ -11,7 +11,7 @@ h1 {
   color: #2c3e50;
 }
 
-input {
+/* input {
   display: block;
   left: 0;
   background: none;
@@ -21,15 +21,13 @@ input {
   width: calc(100% - 2rem);
   outline: none;
   border: none;
-  /* height: 2rem; */
   padding: 0.75rem 1rem;
   color: var(--venue-dark);
-  /* border: 0.1rem solid var(--venue-dark); */
   box-shadow: inset 0.25rem 0.25rem 0.25rem #94a5b3, inset -0.25rem -0.25rem 0.25rem #c8dff3;
 }
 input:not(:first-child) {
   margin-top: 1rem;
-}
+} */
 
 label {
   display: block;
