@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@700&family=Exo+2:ital,wght@1,900&display=swap");
-
 :root {
   --venue-dark: #2c3e50;
   --venue-blue: #1e4d6d;
@@ -9,6 +7,8 @@
 
 h1 {
   font-family: "Exo 2";
+  font-weight: 900;
+  color: #2c3e50;
 }
 
 input {
