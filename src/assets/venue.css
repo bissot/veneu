@@ -5,6 +5,10 @@
   --venue-light: #aec2d3;
 }
 
+body {
+  /* background-color: #aec2d3; */
+}
+
 h1 {
   font-family: "Exo 2";
   font-weight: 900;

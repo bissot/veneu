@@ -1,7 +1,8 @@
 <template>
-  <div id="landing-page" class="container">
+  <div id="landing-page">
     <div class="vertical-center">
-      <img alt="Venue Logo" src="../assets/venue-logo.svg" />
+      <VenueLogo />
+      <!-- <img alt="Venue Logo" src="../assets/venue-logo.svg" /> -->
       <div>
         <h1>venue</h1>
       </div>
@@ -15,22 +16,22 @@
 </template>
 
 <script>
+import VenueLogo from "../components/VenueLogo";
 export default {
-  name: "Landing"
+  name: "Landing",
+  components: {
+    VenueLogo
+  }
 };
 </script>
 
 <style scoped>
-img {
-  width: 50%;
-  max-width: 50rem;
+.venue-logo {
+  max-width: 100%;
+  width: 28rem;
 }
 #landing-page {
-  width: 100%;
-  max-width: 50rem;
-  margin: auto;
-  height: 100%;
-  position: relative;
+  text-align: center;
 }
 h1 {
   font-family: "Exo 2";

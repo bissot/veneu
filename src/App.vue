@@ -1,31 +1,33 @@
 <template>
-  <q-layout id="app" view="lHr Lpr lfr">
-    <q-header class="bg-primary text-white rounded-borders q-ma-md">
+  <q-layout id="app" view="lhr Lpr lfr">
+    <q-header elevated class="bg-white text-primary">
       <q-toolbar>
         <q-icon size="sm" flat name="menu" @click="left = !left" />
-        <q-input dark borderless v-model="searchString" class="q-ml-md">
+        <!-- <q-input borderless v-model="searchString" class="q-ml-md">
           <template v-slot:append>
             <q-icon v-if="searchString === ''" name="search" />
             <q-icon v-else name="clear" class="cursor-pointer" @click="searchString = ''" />
           </template>
-        </q-input>
+        </q-input> -->
         <q-toolbar-title>
           <q-avatar>
-            <img src="./assets/venue-logo.svg" />
+            <VenueLogo />
           </q-avatar>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above v-model="left" side="left">
-      <q-list class="bg-primary text-white rounded-borders q-ml-md q-mt-md q-mb-md">
-        <q-expansion-item
-          expand-separator
-          icon="school"
-          label="Data Structures"
-          caption="CSCI 1200"
-          expand-icon-class="text-white"
-        >
+    <q-drawer elevated show-if-above v-model="left" side="left">
+      <q-input borderless v-model="searchString" label="Search..." class="q-ml-md q-mr-md">
+        <template v-slot:prepend>
+          <q-icon name="search" />
+        </template>
+        <template v-slot:append v-if="searchString">
+          <q-icon name="close" @click="searchString = ''" class="cursor-pointer" />
+        </template>
+      </q-input>
+      <q-list class="bg-white text-primary">
+        <q-expansion-item expand-separator icon="school" label="Data Structures" caption="CSCI 1200">
           <q-list class="rounded-borders">
             <q-expansion-item
               expand-separator
@@ -33,7 +35,6 @@
               label="Registration Section 02"
               :header-inset-level="0.25"
               :content-inset-level="0.25"
-              expand-icon-class="text-white"
             >
               <q-card>
                 <q-card-section>
@@ -50,7 +51,6 @@
               label="Team 5"
               :header-inset-level="0.25"
               :content-inset-level="0.25"
-              expand-icon-class="text-white"
             >
               <q-card>
                 <q-card-section>
@@ -63,7 +63,7 @@
           </q-list>
         </q-expansion-item>
 
-        <q-expansion-item expand-separator icon="assignment" label="Assignments" expand-icon-class="text-white">
+        <q-expansion-item expand-separator icon="assignment" label="Assignments">
           <q-list class="rounded-borders">
             <q-expansion-item
               expand-separator
@@ -71,7 +71,6 @@
               label="Due"
               :header-inset-level="0.25"
               :content-inset-level="0.25"
-              expand-icon-class="text-white"
             >
               <q-card>
                 <q-card-section>
@@ -88,7 +87,6 @@
               label="Complete"
               :header-inset-level="0.25"
               :content-inset-level="0.25"
-              expand-icon-class="text-white"
             >
               <q-card>
                 <q-card-section>
@@ -118,12 +116,12 @@
 </template>
 
 <script>
-import Navbar from "./components/Navbar";
+import VenueLogo from "./components/VenueLogo";
 import "./assets/venue.css";
 export default {
   name: "App",
   components: {
-    // Navbar
+    VenueLogo
   },
   data() {
     return {
