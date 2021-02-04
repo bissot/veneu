@@ -29,7 +29,7 @@ img {
   position: relative;
 }
 h1 {
-  font-size: calc(8vw + 3rem);
+  /* font-size: calc(8vw + 3rem); */
   padding: 0;
   margin: 0;
 }

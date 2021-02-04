@@ -1,7 +1,7 @@
 <template>
-  <div id="landing-page" class="container">
+  <div id="login-page" class="container">
     <div class="vertical-center">
-      <img alt="Venue Logo" src="../assets/venue-logo.svg" />
+      <VenueLogo class="spinner" />
       <div>
         <i><h1>Login</h1></i>
       </div>
@@ -12,14 +12,29 @@
         @done="handleLogin"
       >
         <template slot-scope="{ mutate }">
-          <form v-on:submit.prevent="formValid && mutate()" class="neu-convex">
-            <input id="email" type="text" aria-label="email" placeholder="email" v-model="email" />
-            <input id="password" type="password" aria-label="password" placeholder="password" v-model="password" />
-            <!-- <button v-if="loading">...</button> -->
-            <div id="actions">
-              <button>Submit</button>
-            </div>
-          </form>
+          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-md q-pa-md q-ma-xl">
+            <q-input standout="bg-primary text-white q-ma-none" color="primary" v-model="email" label="Email">
+              <template v-slot:prepend>
+                <q-icon name="email" />
+              </template>
+            </q-input>
+            <q-input
+              type="password"
+              standout="bg-primary text-white"
+              color="primary"
+              v-model="password"
+              label="Password"
+            >
+              <template v-slot:prepend>
+                <q-icon name="password" />
+              </template>
+            </q-input>
+
+            <q-bar class="bg-none q-pa-none q-gutter-x-md q-gutter-y-md q-mb-md">
+              <q-btn label="Back" type="reset" color="primary" flat @click="handleBack" />
+              <q-btn label="Submit" type="submit" color="primary" icon-right="check" class="q-ml-sm full-width" />
+            </q-bar>
+          </q-form>
         </template>
       </ApolloMutation>
     </div>
@@ -27,15 +42,28 @@
 </template>
 
 <script>
+import VenueLogo from "../components/VenueLogo";
 export default {
   name: "Landing",
+  components: {
+    VenueLogo
+  },
   data() {
     return {
       email: "",
-      password: ""
+      password: "",
+      reset: false
     };
   },
   methods: {
+    cancelReset() {
+      this.reset = false;
+    },
+    handleReset() {
+      this.email = "";
+      this.password = "";
+      this.reset = false;
+    },
     formValid() {
       return (
         this.email != "" &&
@@ -49,35 +77,32 @@ export default {
       }
       (this.email = ""), (this.password = "");
       this.$router.push({ path: this.$router.history.current.query.redirect || "/dashboard" });
+    },
+    handleBack() {
+      this.$router.push({ name: "Landing" });
     }
   }
 };
 </script>
 
 <style scoped>
-img {
-  width: 50%;
-  max-width: 50rem;
-}
-#landing-page {
+#login-page {
+  text-align: center;
+  position: absolute;
   width: 100%;
-  max-width: 50rem;
-  margin: auto;
   height: 100%;
-  position: relative;
+  overflow-y: auto;
 }
 h1 {
   font-family: "Exo 2";
-  font-size: calc(6vw + 1rem);
+  /* font-size: calc(6vw + 1rem); */
   padding: 0;
   margin: 0;
 }
-.vertical-center {
-  width: 100%;
-}
-form {
-  margin: 2rem;
-  padding: 1rem;
+
+.q-form {
+  margin: auto;
+  max-width: 20rem;
 }
 #actions {
   position: relative;
@@ -85,7 +110,11 @@ form {
   width: 100%;
   text-align: right;
 }
-button {
+/* button {
   margin: 1rem 0rem 0rem 0rem;
+} */
+.spinner {
+  width: 14rem;
+  margin: auto;
 }
 </style>

@@ -11,13 +11,13 @@
         </q-input> -->
         <q-toolbar-title>
           <q-avatar>
-            <VenueLogo />
+            <VenueLogo id="nav-logo" />
           </q-avatar>
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
 
-    <q-drawer elevated show-if-above v-model="left" side="left">
+    <q-drawer show-if-above elevated v-model="left" side="left">
       <q-input borderless v-model="searchString" label="Search..." class="q-ml-md q-mr-md">
         <template v-slot:prepend>
           <q-icon name="search" />
@@ -26,8 +26,14 @@
           <q-icon name="close" @click="searchString = ''" class="cursor-pointer" />
         </template>
       </q-input>
-      <q-list class="bg-white text-primary">
-        <q-expansion-item expand-separator icon="school" label="Data Structures" caption="CSCI 1200">
+      <q-list class="text-primary">
+        <q-expansion-item
+          expand-separator
+          icon="school"
+          label="Data Structures"
+          caption="CSCI 1200"
+          expand-icon-class="text-primary"
+        >
           <q-list class="rounded-borders">
             <q-expansion-item
               expand-separator
@@ -35,6 +41,7 @@
               label="Registration Section 02"
               :header-inset-level="0.25"
               :content-inset-level="0.25"
+              expand-icon-class="text-primary"
             >
               <q-card>
                 <q-card-section>
@@ -51,6 +58,7 @@
               label="Team 5"
               :header-inset-level="0.25"
               :content-inset-level="0.25"
+              expand-icon-class="text-primary"
             >
               <q-card>
                 <q-card-section>
@@ -63,7 +71,7 @@
           </q-list>
         </q-expansion-item>
 
-        <q-expansion-item expand-separator icon="assignment" label="Assignments">
+        <q-expansion-item expand-separator icon="assignment" label="Assignments" expand-icon-class="text-primary">
           <q-list class="rounded-borders">
             <q-expansion-item
               expand-separator
@@ -71,6 +79,7 @@
               label="Due"
               :header-inset-level="0.25"
               :content-inset-level="0.25"
+              expand-icon-class="text-primary"
             >
               <q-card>
                 <q-card-section>
@@ -87,6 +96,7 @@
               label="Complete"
               :header-inset-level="0.25"
               :content-inset-level="0.25"
+              expand-icon-class="text-primary"
             >
               <q-card>
                 <q-card-section>
@@ -102,10 +112,12 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <q-page>
+        <router-view />
+      </q-page>
     </q-page-container>
 
-    <q-footer elevated class="bg-grey-8 text-white">
+    <q-footer reveal elevated class="text-primary">
       <q-toolbar>
         <q-toolbar-title>
           Venue
@@ -137,5 +149,14 @@ export default {
   font-family: "Comfortaa", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+main {
+  /* border-radius: 1rem 0rem 0rem 1rem; */
+  /* box-shadow: inset 0.75rem 0.75rem 0.75rem #94a5b3, inset -0.75rem -0.75rem 0.75rem #c8dff3; */
+}
+
+#nav-logo {
+  width: 100%;
 }
 </style>

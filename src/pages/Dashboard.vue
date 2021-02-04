@@ -1,7 +1,7 @@
 <template>
   <div id="dashboard" class="container">
     <div class="vertical-center">
-      <img alt="Venue Logo" src="../assets/venue-logo.svg" />
+      <!-- <img alt="Venue Logo" src="../assets/venue-logo.svg" /> -->
       <div>
         <h1>dashboard</h1>
       </div>
@@ -19,6 +19,5 @@ export default {
 #dashboard {
   width: 100%;
   height: 100%;
-  position: relative;
 }
 </style>

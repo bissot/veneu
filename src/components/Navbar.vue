@@ -1,5 +1,5 @@
 <template>
-  <nav id="navbar" class="neu-convex">
+  <nav id="navbar">
     <span id="nav-left">
       <router-link :to="{ name: 'Dashboard' }"><button>Dashboard</button></router-link>
     </span>
