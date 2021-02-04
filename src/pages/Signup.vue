@@ -1,39 +1,111 @@
 <template>
-  <div id="landing-page" class="container">
+  <div id="login-page" class="container">
     <div class="vertical-center">
-      <img alt="Venue Logo" src="../assets/venue-logo.svg" />
+      <VenueLogo class="spinner" />
       <div>
-        <h1>venue</h1>
+        <i><h1>Login</h1></i>
       </div>
-      <div>SIGNUP</div>
+      <ApolloMutation
+        :mutation="require('../graphql/Login.gql')"
+        :variables="{ email, password }"
+        class="form"
+        @done="handleLogin"
+      >
+        <template slot-scope="{ mutate }">
+          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-md q-pa-md q-ma-xl">
+            <q-input standout="bg-primary text-white q-ma-none" color="primary" v-model="email" label="Email">
+              <template v-slot:prepend>
+                <q-icon name="email" />
+              </template>
+            </q-input>
+            <q-input
+              type="password"
+              standout="bg-primary text-white"
+              color="primary"
+              v-model="password"
+              label="Password"
+            >
+              <template v-slot:prepend>
+                <q-icon name="password" />
+              </template>
+            </q-input>
+
+            <q-bar class="bg-none q-pa-none q-gutter-x-md q-gutter-y-md q-mb-md">
+              <q-btn label="Back" type="reset" color="primary" flat @click="handleBack" />
+              <q-btn label="Submit" type="submit" color="primary" icon-right="check" class="q-ml-sm full-width" />
+            </q-bar>
+          </q-form>
+        </template>
+      </ApolloMutation>
     </div>
   </div>
 </template>
 
 <script>
+import VenueLogo from "../components/VenueLogo";
 export default {
-  name: "Landing"
+  name: "Signup",
+  components: {
+    VenueLogo
+  },
+  data() {
+    return {
+      email: "",
+      password: ""
+    };
+  },
+  methods: {
+    formValid() {
+      return (
+        this.email != "" &&
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.email) &&
+        this.password.length
+      );
+    },
+    handleLogin(res) {
+      if (res && res.data && res.data.login) {
+        window.localStorage.setItem("token", "Bearer " + res.data.login);
+      }
+      (this.email = ""), (this.password = "");
+      this.$router.push({ path: this.$router.history.current.query.redirect || "/dashboard" });
+    },
+    handleBack() {
+      this.$router.push({ name: "Landing" });
+    }
+  }
 };
 </script>
 
 <style scoped>
-img {
-  width: 50%;
-  max-width: 50rem;
-}
-#landing-page {
+#login-page {
+  text-align: center;
+  position: absolute;
   width: 100%;
-  max-width: 50rem;
-  margin: auto;
   height: 100%;
-  position: relative;
+  overflow-y: auto;
 }
 h1 {
-  /* font-size: calc(8vw + 3rem); */
+  font-family: "Exo 2";
+  /* font-size: calc(6vw + 1rem); */
   padding: 0;
   margin: 0;
 }
-.vertical-center {
+
+.q-form {
+  margin: auto;
+  max-width: 20rem;
+}
+#actions {
+  position: relative;
+  display: block;
   width: 100%;
+  text-align: right;
+}
+/* button {
+  margin: 1rem 0rem 0rem 0rem;
+} */
+.spinner {
+  width: 14rem;
+  margin: auto;
 }
 </style>

@@ -44,26 +44,17 @@
 <script>
 import VenueLogo from "../components/VenueLogo";
 export default {
-  name: "Landing",
+  name: "Login",
   components: {
     VenueLogo
   },
   data() {
     return {
       email: "",
-      password: "",
-      reset: false
+      password: ""
     };
   },
   methods: {
-    cancelReset() {
-      this.reset = false;
-    },
-    handleReset() {
-      this.email = "";
-      this.password = "";
-      this.reset = false;
-    },
     formValid() {
       return (
         this.email != "" &&
