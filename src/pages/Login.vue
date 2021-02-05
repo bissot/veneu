@@ -12,8 +12,11 @@
         @done="handleLogin"
       >
         <template slot-scope="{ mutate }">
-          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-md q-pa-md q-ma-lg neu-convex">
-            <q-input standout="bg-primary text-white q-ma-none" color="primary" v-model="email" label="Email">
+          <q-form
+            @submit.prevent="formValid && mutate()"
+            class="q-gutter-y-md q-pl-lg q-pr-lg q-pb-lg q-pt-md q-ma-lg neu-convex"
+          >
+            <q-input standout="bg-primary text-white" color="primary" v-model="email" label="Email">
               <template v-slot:prepend>
                 <q-icon name="email" />
               </template>
@@ -30,9 +33,9 @@
               </template>
             </q-input>
 
-            <q-bar class="bg-none q-pa-none q-gutter-x-md q-gutter-y-md q-mb-md">
-              <q-btn label="Back" type="reset" color="primary" dense flat @click="handleBack" />
-              <q-btn label="Submit" type="submit" color="primary" dense icon-right="check" class="q-ml-sm full-width" />
+            <q-bar class="bg-none q-pa-none q-gutter-x-md q-gutter-y-none q-pl-md">
+              <q-btn label="Back" type="reset" color="primary" flat @click="handleBack" />
+              <q-btn label="Submit" type="submit" color="primary" icon-right="check" class="q-ml-sm full-width" />
             </q-bar>
           </q-form>
         </template>

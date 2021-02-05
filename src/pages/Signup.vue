@@ -23,7 +23,7 @@
               inactive-color="secondary"
               contracted
             >
-              <q-step :name="1" prefix="1">
+              <q-step :name="1" prefix="1" title="a">
                 <q-input
                   standout="bg-primary text-white q-ma-none"
                   color="primary"
@@ -37,7 +37,7 @@
                 </q-input>
               </q-step>
 
-              <q-step :name="2" prefix="2">
+              <q-step :name="2" prefix="2" title="a">
                 <q-input
                   type="password"
                   standout="bg-primary text-white"
@@ -51,7 +51,7 @@
                 </q-input>
               </q-step>
 
-              <q-step :name="3" prefix="3" class="q-gutter-y-md">
+              <q-step :name="3" prefix="3" class="q-gutter-y-md" title="a">
                 <q-input
                   standout="bg-primary text-white"
                   color="primary"

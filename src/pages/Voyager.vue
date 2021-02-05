@@ -14,12 +14,16 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 #voyager-page {
-  height: 100%;
-  width: 100%;
+  height: 100% !important;
+  width: 100% !important;
+  position: absolute !important;
 }
-.viewport {
-  border: 0.1rem solid black !important;
+
+#voyager {
+  height: 100% !important;
+  width: 100% !important;
+  position: absolute !important;
 }
 </style>
