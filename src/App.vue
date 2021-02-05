@@ -10,10 +10,54 @@
           </template>
         </q-input> -->
         <q-toolbar-title>
-          <q-avatar>
+          <q-avatar @click="$router.push({ name: 'Dashboard' })">
             <VenueLogo id="nav-logo" />
           </q-avatar>
         </q-toolbar-title>
+
+        <q-btn
+          v-if="getAuth()"
+          flat
+          round
+          size="sm"
+          icon="insights"
+          class="q-mx-sm"
+          title="Voyager"
+          aria-label="Voyager"
+          @click="$router.push({ name: 'Voyager' })"
+        />
+
+        <q-btn
+          v-if="getAuth()"
+          flat
+          size="sm"
+          round
+          icon="logout"
+          class="q-mx-sm"
+          title="Logout"
+          aria-label="Logout"
+          @click="confirmLogout = true"
+        />
+        <q-dialog v-model="confirmLogout" persistent>
+          <q-card>
+            <q-card-section class="row items-center">
+              <!-- <q-avatar icon="meeting_room" color="primary" text-color="white" /> -->
+              <span class="q-ml-sm text-primary">Are you sure? We'd hate to see you leave...</span>
+            </q-card-section>
+
+            <q-card-actions align="around">
+              <q-btn flat label="Cancel" color="primary" v-close-popup />
+              <q-btn
+                flat
+                label="Logout"
+                class="bg-primary text-white"
+                v-close-popup
+                @click="handleLogout"
+                icon-right="meeting_room"
+              />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
       </q-toolbar>
     </q-header>
 
@@ -230,8 +274,18 @@ export default {
   data() {
     return {
       left: false,
-      searchString: ""
+      searchString: "",
+      confirmLogout: false
     };
+  },
+  methods: {
+    handleLogout() {
+      localStorage.removeItem("token");
+      location.reload();
+    },
+    getAuth() {
+      return localStorage.getItem("token");
+    }
   }
 };
 </script>

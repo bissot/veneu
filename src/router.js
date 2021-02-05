@@ -40,17 +40,26 @@ const router = new VueRouter({
     {
       path: "/login",
       name: "Login",
-      component: Login
+      component: Login,
+      meta: {
+        noAuth: true
+      }
     },
     {
       path: "/signup",
       name: "Signup",
-      component: Signup
+      component: Signup,
+      meta: {
+        noAuth: true
+      }
     },
     {
       path: "/",
       name: "Landing",
-      component: Landing
+      component: Landing,
+      meta: {
+        noAuth: true
+      }
     },
     {
       path: "/voyager",
@@ -70,6 +79,7 @@ router.beforeEach((to, from, next) => {
     if (element) element.parentNode.removeChild(element);
   }
   if (to.meta.auth && !localStorage.getItem("token")) next({ name: "Login", query: { redirect: to.path } });
+  else if (to.meta.noAuth && localStorage.getItem("token")) next({ name: "Dashboard" });
   else next();
 });
 

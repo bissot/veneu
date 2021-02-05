@@ -12,6 +12,11 @@ h1 {
   color: #2c3e50;
 }
 
+.q-avatar,
+.q-icon {
+  cursor: pointer !important;
+}
+
 /* input {
   display: block;
   left: 0;

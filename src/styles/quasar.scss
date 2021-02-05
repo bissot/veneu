@@ -23,7 +23,8 @@ body,
 .q-card__section,
 .q-stepper__content,
 .q-stepper__header,
-.q-stepper__nav {
+.q-stepper__nav,
+.q-card__actions {
   background: none !important;
   background-color: var(--venue-light) !important;
 }
