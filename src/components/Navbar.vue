@@ -70,7 +70,7 @@ button {
 }
 #nav-left a:first-child button {
   margin-left: 0rem;
-  border-radius: 1rem 0rem 0rem 1rem;
+  border-radius: 0.75rem 0rem 0rem 1rem;
 }
 #nav-right a:last-child button,
 #nav-right > button:last-child {

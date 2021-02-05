@@ -245,7 +245,7 @@ export default {
 
 /* main { */
 /* border-radius: 1rem 0rem 0rem 1rem; */
-/* box-shadow: inset 0.75rem 0.75rem 0.75rem #94a5b3, inset -0.75rem -0.75rem 0.75rem #c8dff3; */
+/* box-shadow: inset 0.75rem 0.75rem 0.75rem #bebebe, inset -0.75rem -0.75rem 0.75rem #f8f8f8; */
 /* } */
 
 #nav-logo {

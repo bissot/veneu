@@ -2,7 +2,7 @@
   <div id="login-page" class="container">
     <div class="vertical-center">
       <VenueLogo class="spinner" />
-      <div>
+      <div class="q-mb-xl">
         <i><h1>Login</h1></i>
       </div>
       <ApolloMutation
@@ -12,7 +12,7 @@
         @done="handleLogin"
       >
         <template slot-scope="{ mutate }">
-          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-md q-pa-md q-ma-xl">
+          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-md q-pa-md q-ma-lg neu-convex">
             <q-input standout="bg-primary text-white q-ma-none" color="primary" v-model="email" label="Email">
               <template v-slot:prepend>
                 <q-icon name="email" />
@@ -31,8 +31,8 @@
             </q-input>
 
             <q-bar class="bg-none q-pa-none q-gutter-x-md q-gutter-y-md q-mb-md">
-              <q-btn label="Back" type="reset" color="primary" flat @click="handleBack" />
-              <q-btn label="Submit" type="submit" color="primary" icon-right="check" class="q-ml-sm full-width" />
+              <q-btn label="Back" type="reset" color="primary" dense flat @click="handleBack" />
+              <q-btn label="Submit" type="submit" color="primary" dense icon-right="check" class="q-ml-sm full-width" />
             </q-bar>
           </q-form>
         </template>
@@ -64,7 +64,7 @@ export default {
     },
     handleLogin(res) {
       if (res && res.data && res.data.login) {
-        window.localStorage.setItem("token", "Bearer " + res.data.login);
+        window.localStorage.setItem("token", res.data.login);
       }
       (this.email = ""), (this.password = "");
       this.$router.push({ path: this.$router.history.current.query.redirect || "/dashboard" });
@@ -91,9 +91,10 @@ h1 {
   margin: 0;
 }
 
-.q-form {
+.form {
   margin: auto;
-  max-width: 20rem;
+  width: 100%;
+  max-width: 28rem;
 }
 #actions {
   position: relative;
