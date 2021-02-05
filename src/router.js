@@ -65,7 +65,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (from.name == "Voyager") {
+  if (from.name == "Voyager" || to.name != "Voyager") {
     var element = document.getElementById("voyager");
     if (element) element.parentNode.removeChild(element);
   }
