@@ -79,11 +79,14 @@ module.exports = {
     }
   },
   User: {
-    course_roles: (parent, args, { models: { CourseRole } }, info) => {
-      return CourseRole.find({ _id: { $in: parent.course_roles } });
-    },
+    // course_roles: (parent, args, { models: { CourseRole } }, info) => {
+    //   return CourseRole.find({ _id: { $in: parent.course_roles } });
+    // },
     notifications: (parent, args, { models: { Notification } }, info) => {
       return Notification.find({ _id: { $in: parent.notifications } });
+    },
+    auths: (parent, args, { models: { Auth } }, info) => {
+      return Auth.find({ _id: { $in: parent.auths } });
     }
   }
 };

@@ -4,7 +4,8 @@
 
 .q-field--standout .q-field__control {
   background: none;
-  box-shadow: inset 0.25rem 0.25rem 0.25rem #bebebe, inset -0.25rem -0.25rem 0.25rem #f8f8f8;
+  box-shadow: inset 0.25rem 0.25rem 0.25rem #bebebe, inset -0.25rem -0.25rem 0.25rem #f8f8f8cc,
+    0.25rem 0.25rem 0.25rem #bebebe, -0.25rem -0.25rem 0.25rem #f8f8f8;
   transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
@@ -13,19 +14,22 @@
   margin-right: 16px;
 }
 
-body,
-.q-toolbar,
 .q-bar,
-.q-drawer__content,
 .q-footer__content,
 .q-header__content,
 .q-bar__content,
 .q-card__section,
 .q-stepper__content,
 .q-stepper__header,
-.q-stepper__nav,
-.q-card__actions {
+.q-stepper__nav {
   background: none !important;
+  // background-color: var(--venue-light) !important;
+}
+
+body,
+.q-drawer__content,
+.q-toolbar,
+.q-card {
   background-color: var(--venue-light) !important;
 }
 

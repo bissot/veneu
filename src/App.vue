@@ -1,8 +1,9 @@
 <template>
   <q-layout id="app" view="lhr Lpr lfr">
-    <q-header elevated class="text-primary">
-      <q-toolbar>
-        <q-icon size="sm" flat name="menu" @click="left = !left" />
+    <q-header class="text-primary">
+      <q-toolbar v-if="getAuth()">
+        <q-btn flat round size="sm" icon="menu" class="q-mx-sm" title="Menu" aria-label="Menu" @click="left = !left" />
+        <!-- <q-icon size="sm" flat round name="menu" @click="left = !left" /> -->
         <!-- <q-input borderless v-model="searchString" class="q-ml-md">
           <template v-slot:append>
             <q-icon v-if="searchString === ''" name="search" />
@@ -16,7 +17,6 @@
         </q-toolbar-title>
 
         <q-btn
-          v-if="getAuth()"
           flat
           round
           size="sm"
@@ -26,9 +26,17 @@
           aria-label="Voyager"
           @click="$router.push({ name: 'Voyager' })"
         />
-
         <q-btn
-          v-if="getAuth()"
+          flat
+          size="sm"
+          round
+          icon="volunteer_activism"
+          class="q-mx-sm"
+          title="Donate"
+          aria-label="Donate"
+          @click="handleDonate"
+        />
+        <q-btn
           flat
           size="sm"
           round
@@ -61,7 +69,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer show-if-above elevated v-model="left" side="left">
+    <q-drawer v-if="getAuth()" show-if-above v-model="left" side="left">
       <q-input borderless v-model="searchString" label="Search..." class="q-ml-md q-mr-md">
         <template v-slot:prepend>
           <q-icon name="search" />
@@ -70,7 +78,7 @@
           <q-icon name="close" @click="searchString = ''" class="cursor-pointer" />
         </template>
       </q-input>
-      <q-list class="text-primary">
+      <q-list class="text-primary neu-convex q-mx-lg q-mt-sm">
         <q-expansion-item
           expand-separator
           icon="school"
@@ -201,9 +209,11 @@
             </q-expansion-item>
           </q-list>
         </q-expansion-item>
+      </q-list>
 
-        <q-separator spaced="1rem" />
+      <!-- <q-separator spaced="1rem" /> -->
 
+      <q-list class="text-primary neu-convex q-mx-lg q-mt-xl">
         <q-expansion-item expand-separator icon="assignment" label="Assignments" expand-icon-class="text-primary">
           <q-list class="rounded-borders">
             <q-expansion-item
@@ -254,7 +264,7 @@
       <q-toolbar class="justify-around">
         <q-toolbar-title>
           Venue | About |
-          <q-avatar size="md">
+          <q-avatar size="sm">
             <img src="./assets/github.svg" />
           </q-avatar>
         </q-toolbar-title>
@@ -285,6 +295,13 @@ export default {
     },
     getAuth() {
       return localStorage.getItem("token");
+    },
+    handleDonate() {
+      var win = window.open(
+        "https://www.paypal.com/donate/?cmd=_donations&business=ejwhitton43%40gmail.com&currency_code=USD",
+        "_blank"
+      );
+      win.focus();
     }
   }
 };
@@ -299,7 +316,7 @@ export default {
 
 /* main { */
 /* border-radius: 1rem 0rem 0rem 1rem; */
-/* box-shadow: inset 0.75rem 0.75rem 0.75rem #bebebe, inset -0.75rem -0.75rem 0.75rem #f8f8f8; */
+/* box-shadow: inset 0.5rem 0.5rem 0.5rem #bebebe, inset -0.5rem -0.5rem 0.5rem #f8f8f8; */
 /* } */
 
 #nav-logo {

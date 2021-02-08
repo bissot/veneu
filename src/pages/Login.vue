@@ -85,7 +85,7 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  overflow-y: auto;
+  overflow: auto;
 }
 h1 {
   font-family: "Exo 2";

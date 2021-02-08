@@ -1,12 +1,15 @@
 const { gql } = require("apollo-server-express");
 
 module.exports = gql`
-  type Course {
+  type Course implements SharedResource {
     id: ID!
     name: String!
-    prefix: String!
-    suffix: Int!
-    course_roles: [CourseRole!]!
+    creator: User!
+    prefix: String
+    suffix: Int
+    # course_roles: [CourseRole!]!
+    auths: [Auth!]!
+    user_groups: [UserGroup!]!
   }
 
   extend type Query {

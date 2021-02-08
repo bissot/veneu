@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --prefix .",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "apollo": "node apollo-server/server.js",
-    "apollo:dev": "nodemon apollo-server/server.js",
+    "apollo:dev": "vue-cli-service apollo:schema:generate && nodemon apollo-server/server.js",
     "apollo:schema:generate": "vue-cli-service apollo:schema:generate",
     "apollo:schema:publish": "vue-cli-service apollo:schema:publish",
     "db": "sudo killall mongod;mongod"

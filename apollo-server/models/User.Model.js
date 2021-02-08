@@ -19,12 +19,18 @@ const User = new mongoose.Schema(
       type: String,
       required: false
     },
-    course_roles: [
+    auths: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "CourseRole"
+        ref: "User"
       }
     ],
+    // course_roles: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "CourseRole"
+    //   }
+    // ],
     notifications: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -37,9 +43,15 @@ const User = new mongoose.Schema(
   }
 ).pre("remove", function(next) {
   Promise.all([
-    this.model("CourseRole").deleteMany({ user: this._id }),
+    this.model("Auth").deleteMany({ user: this._id }),
     this.model("Notification").deleteMany({ user: this._id })
   ]).then(next);
 });
+// .pre("remove", function(next) {
+//   Promise.all([
+//     this.model("CourseRole").deleteMany({ user: this._id }),
+//     this.model("Notification").deleteMany({ user: this._id })
+//   ]).then(next);
+// });
 
 module.exports = mongoose.model("User", User);

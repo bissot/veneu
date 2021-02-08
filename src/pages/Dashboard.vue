@@ -19,5 +19,11 @@ export default {
 #dashboard {
   width: 100%;
   height: 100%;
+  position: absolute;
+  overflow: auto;
+  text-align: center;
+}
+h1 {
+  font-size: 4rem;
 }
 </style>

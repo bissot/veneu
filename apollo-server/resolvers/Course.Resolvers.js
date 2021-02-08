@@ -1,4 +1,5 @@
 const { PubSub, ForbiddenError } = require("apollo-server-express");
+const UserGroupResolvers = require("./UserGroup.Resolvers");
 const pubsub = new PubSub();
 
 const eventName = {
@@ -21,7 +22,7 @@ module.exports = {
   Mutation: {
     createCourse: (parent, { name, prefix, suffix }, { requester, models: { Course } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Course.create({ name, prefix, suffix }).then(course => {
+      return Course.create({ name, creator: requester, prefix, suffix }).then(course => {
         return pubsub.publish(eventName.COURSE_CREATED, { courseCreated: course }).then(done => {
           return course;
         });
@@ -66,8 +67,11 @@ module.exports = {
     }
   },
   Course: {
-    course_roles: (parent, args, { models: { CourseRole } }, info) => {
-      return CourseRole.find({ _id: { $in: parent.course_roles } });
+    auths: (parent, args, { models: { Auth } }, info) => {
+      return Auth.find({ _id: { $in: parent.auths } });
+    },
+    user_groups: (parent, args, { models: { UserGroup } }, info) => {
+      return UserGroup.find({ _id: { $in: parent.user_groups } });
     }
   }
 };

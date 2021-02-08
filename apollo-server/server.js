@@ -16,11 +16,13 @@ mongoose.connect(process.env.DB_URL, {
 const typeDefs = require("./schema.graphql");
 const resolvers = require("./resolvers");
 const context = require("./context");
+// const schemaDirectives = require("./directives");
 
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context,
+  // schemaDirectives,
   introspection: process.env.NODE_ENV === "production" ? false : true,
   playground: process.env.NODE_ENV === "production" ? false : true,
   tracing: process.env.NODE_ENV === "production" ? false : true
