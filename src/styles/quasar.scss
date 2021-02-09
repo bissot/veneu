@@ -2,11 +2,16 @@
 @import "quasar/dist/quasar.sass";
 // @import '~quasar-addon-styl';
 
+aside.q-drawer--mobile {
+  width: 90% !important;
+  max-width: 25rem !important;
+}
+
 .q-field--standout .q-field__control {
   background: none;
-  box-shadow: inset 0.25rem 0.25rem 0.25rem #bebebe, inset -0.25rem -0.25rem 0.25rem #f8f8f8cc,
-    0.25rem 0.25rem 0.25rem #bebebe, -0.25rem -0.25rem 0.25rem #f8f8f8;
-  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  box-shadow: var(--field-shadow);
+  transition: color 0.5s cubic-bezier(0.19, 1, 0.22, 1) !important;
+  animation: grow-in-input 1s;
 }
 
 .q-gutter-x-md > *,
@@ -35,4 +40,23 @@ body,
 
 .q-stepper__step-inner {
   padding-top: 0rem !important;
+}
+
+.q-expansion-item__container .q-item .q-focus-helper {
+  border-radius: 1rem !important;
+}
+
+.q-btn {
+  box-shadow: var(--button-shadow);
+  animation: grow-in-button 1s !important;
+}
+
+.q-btn-group {
+  box-shadow: var(--button-shadow);
+  animation: grow-in-button 1s !important;
+}
+
+.q-btn-group .q-btn {
+  border-radius: 0.25rem !important;
+  box-shadow: none !important;
 }

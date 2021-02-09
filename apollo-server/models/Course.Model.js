@@ -39,7 +39,8 @@ const Course = new mongoose.Schema(
   })
   .post("save", function() {
     if (this.wasNew) {
-      this.model("Auth").create({ shared_resource: this._id, user: this.creator, role: "INSTRUCTOR" });
+      console.log("HEEEEEEEERE", this);
+      this.model("Auth").create({ shared_resource: this._id, user: this.creator._id, role: "INSTRUCTOR" });
     }
   });
 // .pre("remove", function(next) {

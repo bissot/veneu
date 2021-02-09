@@ -14,17 +14,24 @@ module.exports = {
       if (!requester) throw new ForbiddenError("Not allowed");
       return Course.findById({ _id: id });
     },
-    courses: (parent, args, { requester, models: { Course } }, info) => {
+    courses: (parent, args, { requester, models: { Course, Auth } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Course.find();
+      return requester.then(user => {
+        return Auth.find({ user }).then(auths => {
+          return Course.find({ auths: { $in: auths } });
+        });
+      });
     }
   },
   Mutation: {
     createCourse: (parent, { name, prefix, suffix }, { requester, models: { Course } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Course.create({ name, creator: requester, prefix, suffix }).then(course => {
-        return pubsub.publish(eventName.COURSE_CREATED, { courseCreated: course }).then(done => {
-          return course;
+      return requester.then(creator => {
+        return Course.create({ name, creator, prefix, suffix }).then(course => {
+          console.log(course);
+          return pubsub.publish(eventName.COURSE_CREATED, { courseCreated: course }).then(done => {
+            return course;
+          });
         });
       });
     },

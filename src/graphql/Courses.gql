@@ -1,0 +1,10 @@
+query courses {
+  courses {
+    name
+    prefix
+    suffix
+    auths {
+      role
+    }
+  }
+}

@@ -1,0 +1,9 @@
+fragment Course on Course {
+  id
+  name
+  prefix
+  suffix
+  auths {
+    role
+  }
+}

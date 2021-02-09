@@ -1,0 +1,7 @@
+#import "./CourseFrag.gql"
+
+mutation createCourse($name: String!, $prefix: String, $suffix: String) {
+  createCourse(name: $name, prefix: $prefix, suffix: $suffix) {
+    ...Course
+  }
+}

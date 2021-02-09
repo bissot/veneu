@@ -18,7 +18,7 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createCourse(name: String!): Course!
+    createCourse(name: String!, prefix: String, suffix: String): Course!
     updateCourse(id: ID!, name: String, prefix: String, suffix: Int): Course!
     deleteCourse(id: ID!): Course!
   }

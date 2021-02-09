@@ -51,7 +51,6 @@ export default {
   background: none;
   align-items: flex-end;
   /* min-height: 3rem; */
-  /* box-shadow: 0rem -0.5rem 1rem 0.1rem; */
   /* overflow: hidden; */
 }
 button {
@@ -59,7 +58,6 @@ button {
   margin-bottom: 0;
   border-radius: 0rem;
   padding: 1rem 1.5rem;
-  box-shadow: unset;
   height: 3rem;
 }
 #nav-left {

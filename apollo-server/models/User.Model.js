@@ -25,12 +25,6 @@ const User = new mongoose.Schema(
         ref: "User"
       }
     ],
-    // course_roles: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "CourseRole"
-    //   }
-    // ],
     notifications: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Voyager from "./pages/Voyager.vue";
+import CreateCourse from "./pages/CreateCourse.vue";
 
 Vue.use(VueRouter);
 
@@ -65,6 +66,14 @@ const router = new VueRouter({
       path: "/voyager",
       name: "Voyager",
       component: Voyager,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/create-course",
+      name: "CreateCourse",
+      component: CreateCourse,
       meta: {
         auth: true
       }

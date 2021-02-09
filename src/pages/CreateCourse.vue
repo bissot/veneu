@@ -1,15 +1,15 @@
 <template>
-  <div id="login-page" class="container">
+  <div id="create-course" class="container">
     <div class="vertical-center">
-      <VenueLogo class="spinner" />
+      <!-- <img alt="Venue Logo" src="../assets/venue-logo.svg" /> -->
       <div>
-        <i><h1>Signup</h1></i>
+        <i><h1>Teach a New Course</h1></i>
       </div>
       <ApolloMutation
-        :mutation="require('../graphql/CreateUser.gql')"
-        :variables="{ email, password, first_name, last_name }"
+        :mutation="require('../graphql/CreateCourse.gql')"
+        :variables="{ name, prefix, suffix }"
         class="form"
-        @done="handleSignup"
+        @done="handleCreateCourse"
       >
         <template slot-scope="{ mutate }">
           <q-form @submit.prevent="formValid && mutate()" class="q-gutter-md q-ma-lg q-mt-xl neu-convex">
@@ -23,58 +23,51 @@
               inactive-color="secondary"
               contracted
             >
-              <q-step :name="1" prefix="1" title="a">
+              <q-step :name="1" prefix="1" title="a" class="q-pt-sm">
                 <q-input
                   standout="bg-primary text-white q-ma-none"
                   color="primary"
-                  class="text-primary q-mt-sm"
-                  v-model="email"
-                  label="Email"
+                  class="text-primary q-mt-none"
+                  v-model="name"
+                  label="Course Name"
+                  placeholder="e.g. Computer Science I"
                 >
-                  <template v-slot:prepend>
+                  <!-- <template v-slot:prepend>
                     <q-icon name="email" />
-                  </template>
+                  </template> -->
                 </q-input>
               </q-step>
 
-              <q-step :name="2" prefix="2" title="a">
+              <q-step :name="2" prefix="2" title="a" class="q-pt-sm">
                 <q-input
-                  type="password"
+                  type="text"
                   standout="bg-primary text-white"
                   color="primary"
-                  v-model="password"
-                  label="Password"
-                  class="q-mt-sm"
+                  v-model="prefix"
+                  label="Department Prefix"
+                  placeholder="e.g. CSCI"
                 >
                   <template v-slot:prepend>
-                    <q-icon name="password" />
+                    <q-icon name="sort_by_alpha" />
+                  </template>
+                </q-input>
+                <q-input
+                  type="number"
+                  standout="bg-primary text-white"
+                  color="primary"
+                  v-model="suffix"
+                  label="Course Level"
+                  class="q-mt-lg"
+                  placeholder="e.g. 101"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="pin" />
                   </template>
                 </q-input>
               </q-step>
 
-              <q-step :name="3" prefix="3" class="q-gutter-y-md" title="a">
-                <q-input
-                  standout="bg-primary text-white"
-                  color="primary"
-                  class="text-primary q-mb-lg q-mt-lg"
-                  v-model="first_name"
-                  label="First Name"
-                >
-                  <!-- <template v-slot:prepend>
-                    <q-icon name="face" />
-                  </template> -->
-                </q-input>
-                <q-input
-                  standout="bg-primary text-white"
-                  color="primary"
-                  class="text-primary"
-                  v-model="last_name"
-                  label="Last / Family Name"
-                >
-                  <!-- <template v-slot:prepend>
-                    <q-icon name="family_restroom" />
-                  </template> -->
-                </q-input>
+              <q-step :name="3" prefix="3" class="q-pt-sm" title="a">
+                <q-item> {{ name }} {{ prefix }} {{ suffix }} </q-item>
               </q-step>
 
               <template v-slot:navigation>
@@ -88,7 +81,7 @@
                       color="primary"
                       label="Continue"
                       class="q-ml-sm full-width"
-                      :disable="step == 1 && !email"
+                      :disable="(step == 1 && !name) || (step == 2 && (!prefix || !suffix))"
                     />
                     <q-btn v-else type="submit" color="primary" label="Finish" class="q-ml-sm full-width" />
                   </q-bar>
@@ -103,60 +96,41 @@
 </template>
 
 <script>
-import VenueLogo from "../components/VenueLogo";
 export default {
-  name: "Signup",
-  components: {
-    VenueLogo
-  },
+  name: "CreateCourse",
   data() {
     return {
-      email: "",
-      password: "",
-      first_name: "",
-      last_name: "",
-      step: 1
+      step: 1,
+      name: "",
+      prefix: "",
+      suffix: null
     };
   },
   methods: {
-    formValid() {
-      return (
-        this.email.length &&
-        this.password.length &&
-        this.first_name.length &&
-        this.last_name.length &&
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.email)
-      );
-    },
-    handleSignup(res) {
-      if (res && res.data && res.data.login) {
-        window.localStorage.setItem("token", res.data.login);
-      }
-      (this.email = ""), (this.password = "");
-      this.$router.push({ name: "Login" });
-    },
     handleBack() {
-      this.$router.push({ name: "Landing" });
+      this.$router.go(-1);
+    },
+    formValid() {
+      return this.name.length && this.prefix.length && this.suffix;
+    },
+    handleCreateCourse() {
+      this.$router.push({ name: "Dashboard" });
     }
   }
 };
 </script>
 
 <style scoped>
-#login-page {
-  text-align: center;
-  position: absolute;
+#create-course {
   width: 100%;
   height: 100%;
+  position: absolute;
   overflow: auto;
+  text-align: center;
 }
 h1 {
-  font-family: "Exo 2";
-  /* font-size: calc(6vw + 1rem); */
-  padding: 0;
-  margin: 0;
+  font-size: 4rem;
 }
-
 .form {
   margin: auto;
   max-width: 24rem;
