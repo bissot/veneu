@@ -17,7 +17,7 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createUserGroup(name: String!): UserGroup!
+    createUserGroup(name: String!, parent_resource: ID): UserGroup!
     updateUserGroup(id: ID!, name: String): UserGroup!
     deleteUserGroup(id: ID!): UserGroup!
   }

@@ -16,7 +16,13 @@ const UserGroup = new mongoose.Schema(
     creator: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
-    }
+    },
+    user_groups: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "UserGroup"
+      }
+    ]
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
@@ -35,14 +41,22 @@ const UserGroup = new mongoose.Schema(
   })
   .post("save", function() {
     if (this.wasNew) {
+      console.log("MONGODB", this);
       Promise.all([
         this.model("Auth").create({ shared_resource: this._id, user: this.creator, role: "INSTRUCTOR" }),
-        this.model("Course").findByIdAndUpdate({ _id: this.parent_resource }, { $addToSet: { user_groups: this._id } }),
+        this.model("Course").findByIdAndUpdate(
+          { _id: this.parent_resource },
+          { $addToSet: { user_groups: this._id } },
+          { new: true }
+        ),
         this.model("UserGroup").findByIdAndUpdate(
           { _id: this.parent_resource },
-          { $addToSet: { user_groups: this._id } }
+          { $addToSet: { user_groups: this._id } },
+          { new: true }
         )
-      ]);
+      ]).then(res => {
+        console.log("MONGODB AFTER", res[0], res[1], res[2]);
+      });
     }
   });
 

@@ -34,7 +34,39 @@
               expand-icon-class="text-primary"
             >
               <q-list class="rounded-borders q-pr-md">
-                <q-btn dense flat class="full-width q-my-sm" label="New" icon="add" :to="{ name: 'Dashboard' }" />
+                <q-item clickable class="cursor-pointer q-pr-none" v-for="group of course.user_groups" :key="group.id">
+                  <q-item-section avatar>
+                    <q-icon name="groups" />
+                  </q-item-section>
+
+                  <q-item-section>
+                    <q-item-label>{{ group.name }}</q-item-label>
+                    <q-item-label caption>
+                      {{ group.auths.filter(a => a.role == "STUDENT").length }} students
+                    </q-item-label>
+                  </q-item-section>
+
+                  <q-item-section side>
+                    <q-btn
+                      flat
+                      size="sm"
+                      round
+                      icon="share"
+                      class="q-mx-sm text-primary"
+                      title="Share"
+                      aria-label="Share"
+                      @click.stop
+                    />
+                  </q-item-section>
+                </q-item>
+                <q-btn
+                  dense
+                  flat
+                  class="full-width q-my-sm"
+                  label="New"
+                  icon="add"
+                  :to="{ path: '/create-user-group?parent_resource=' + (course.id ? course.id : '') }"
+                />
               </q-list>
             </q-expansion-item>
           </q-list>

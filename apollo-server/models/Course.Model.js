@@ -23,7 +23,13 @@ const Course = new mongoose.Schema(
     creator: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
-    }
+    },
+    user_groups: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "UserGroup"
+      }
+    ]
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
@@ -39,7 +45,6 @@ const Course = new mongoose.Schema(
   })
   .post("save", function() {
     if (this.wasNew) {
-      console.log("HEEEEEEEERE", this);
       this.model("Auth").create({ shared_resource: this._id, user: this.creator._id, role: "INSTRUCTOR" });
     }
   });

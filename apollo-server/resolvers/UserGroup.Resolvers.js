@@ -18,17 +18,25 @@ module.exports = {
       if (!requester) throw new ForbiddenError("Not allowed");
       return UserGroup.findById({ _id: id });
     },
-    userGroups: (parent, args, { requester, models: { UserGroup } }, info) => {
+    userGroups: (parent, args, { requester, models: { UserGroup, Auth } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return UserGroup.find();
+      return requester.then(user => {
+        return Auth.find({ user }).then(auths => {
+          return UserGroup.find({ auths: { $in: auths } });
+        });
+      });
     }
   },
   Mutation: {
-    createUserGroup: (parent, { name, creator, ...optional }, { requester, models: { UserGroup } }, info) => {
+    createUserGroup: (parent, { name, parent_resource }, { requester, models: { UserGroup } }, info) => {
+      console.log("RESOLVER BEFORE", { name, parent_resource });
       if (!requester) throw new ForbiddenError("Not allowed");
-      return UserGroup.create({ name, creator, ...optional }).then(userGroup => {
-        return pubsub.publish(eventName.USERGROUP_CREATED, { userGroupCreated: userGroup }).then(done => {
-          return userGroup;
+      return requester.then(creator => {
+        return UserGroup.create({ name, creator, parent_resource }).then(userGroup => {
+          console.log("RESOLVER AFTER", userGroup);
+          return pubsub.publish(eventName.COURSE_CREATED, { userGroupCreated: userGroup }).then(done => {
+            return userGroup;
+          });
         });
       });
     },
@@ -62,9 +70,12 @@ module.exports = {
   },
   UserGroup: {
     parent_resource: (parent, args, { models: { Course, UserGroup } }, info) => {
-      return Promise.all(
-        Course.findById({ _id: parent.parent_resource }) || UserGroup.findById({ _id: parent.parent_resource })
-      );
+      return Promise.all([
+        Course.findById({ _id: parent.parent_resource }),
+        UserGroup.findById({ _id: parent.parent_resource })
+      ]).then(res => {
+        return res[0] || res[1];
+      });
     },
     auths: (parent, args, { models: { Auth } }, info) => {
       return Auth.find({ _id: { $in: parent.auths } });

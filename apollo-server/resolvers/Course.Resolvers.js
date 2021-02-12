@@ -28,7 +28,6 @@ module.exports = {
       if (!requester) throw new ForbiddenError("Not allowed");
       return requester.then(creator => {
         return Course.create({ name, creator, prefix, suffix }).then(course => {
-          console.log(course);
           return pubsub.publish(eventName.COURSE_CREATED, { courseCreated: course }).then(done => {
             return course;
           });

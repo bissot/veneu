@@ -6,4 +6,12 @@ fragment Course on Course {
   auths {
     role
   }
+  user_groups {
+    id
+    name
+    auths {
+      id
+      role
+    }
+  }
 }

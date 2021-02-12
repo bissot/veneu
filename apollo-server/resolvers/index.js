@@ -34,5 +34,6 @@ module.exports = [
   require("./Course.Resolvers"),
   // require("./CourseRole.Resolvers"),
   require("./Notification.Resolvers"),
-  require("./User.Resolvers")
+  require("./User.Resolvers"),
+  require("./UserGroup.Resolvers")
 ];

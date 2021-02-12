@@ -1,10 +1,19 @@
 query courses {
   courses {
+    id
     name
     prefix
     suffix
     auths {
       role
+    }
+    user_groups {
+      id
+      name
+      auths {
+        id
+        role
+      }
     }
   }
 }
