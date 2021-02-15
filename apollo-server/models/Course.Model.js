@@ -6,14 +6,6 @@ const Course = new mongoose.Schema(
       type: String,
       required: true
     },
-    prefix: {
-      type: String,
-      required: true
-    },
-    suffix: {
-      type: Number,
-      required: true
-    },
     auths: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -24,10 +16,28 @@ const Course = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
     },
+    type: {
+      type: String,
+      default: "Course"
+    },
+    prefix: {
+      type: String,
+      required: true
+    },
+    suffix: {
+      type: Number,
+      required: true
+    },
     user_groups: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "UserGroup"
+      }
+    ],
+    registration_sections: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "RegistrationSection"
       }
     ]
   },
@@ -36,8 +46,11 @@ const Course = new mongoose.Schema(
   }
 )
   .pre("remove", function(next) {
-    this.model("Auth").deleteMany({ shared_resource: this._id }, next);
-    this.model("UserGroup").deleteMany({ parent_resource: this._id }, next);
+    Promise.all([
+      this.model("Auth").deleteMany({ shared_resource: this._id }),
+      this.model("UserGroup").deleteMany({ parent_resource: this._id }),
+      this.model("RegistrationSection").deleteMany({ parent_resource: this._id })
+    ]).then(next);
   })
   .pre("save", function(next) {
     this.wasNew = this.isNew;

@@ -18,6 +18,10 @@ const Notification = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
+    },
+    type: {
+      type: String,
+      default: "Notification"
     }
   },
   {

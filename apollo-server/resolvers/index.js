@@ -1,29 +1,12 @@
 const SharedResourceResolvers = {
   SharedResource: {
-    __resolveType: sharedResource => {
-      console.log(sharedResource);
-      if (sharedResource.prefix) {
-        return "Course";
-      } else {
-        return "UserGroup";
-      }
-    }
+    __resolveType: sharedResource => sharedResource.type
   }
 };
 
 const SearchResultResolvers = {
   SearchResult: {
-    __resolveType: searchResult => {
-      console.log(searchResult);
-      if (searchResult.first_name) {
-        return "User";
-      }
-      if (searchResult.prefix) {
-        return "Course";
-      } else {
-        return "UserGroup";
-      }
-    }
+    __resolveType: searchResult => searchResult.type
   }
 };
 
@@ -32,8 +15,8 @@ module.exports = [
   SearchResultResolvers,
   require("./Auth.Resolvers"),
   require("./Course.Resolvers"),
-  // require("./CourseRole.Resolvers"),
   require("./Notification.Resolvers"),
+  require("./RegistrationSection.Resolvers"),
   require("./User.Resolvers"),
   require("./UserGroup.Resolvers")
 ];

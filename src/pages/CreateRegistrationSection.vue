@@ -2,13 +2,13 @@
   <div id="create-course" class="container">
     <div class="vertical-center">
       <div>
-        <i><h1>Create a New Group</h1></i>
+        <i><h1>Create a New Registration Section</h1></i>
       </div>
       <ApolloMutation
-        :mutation="require('../graphql/CreateUserGroup.gql')"
+        :mutation="require('../graphql/CreateRegistrationSection.gql')"
         :variables="{ name, parent_resource }"
         class="form"
-        @done="handleCreateUserGroup"
+        @done="handleCreateRegistrationSection"
       >
         <template slot-scope="{ mutate }">
           <q-form @submit.prevent="formValid && mutate()" class="q-gutter-md q-ma-lg q-mt-xl q-py-md neu-convex">
@@ -17,8 +17,8 @@
               color="primary"
               class="text-primary q-mt-none"
               v-model="name"
-              label="Group Name"
-              placeholder="e.g. Team 2"
+              label="Section Name"
+              placeholder="e.g. S-2021 01"
             >
             </q-input>
             <q-bar class="q-pa-none q-gutter-x-md">
@@ -33,7 +33,7 @@
 
 <script>
 export default {
-  name: "CreateUserGroup",
+  name: "CreateRegistrationSection",
   data() {
     return {
       step: 1,
@@ -41,7 +41,7 @@ export default {
       parent_resource: null
     };
   },
-  mounted() {
+  created() {
     if (this.$route.query.parent_resource) {
       this.parent_resource = this.$route.query.parent_resource;
     }
@@ -54,7 +54,7 @@ export default {
     formValid() {
       return this.name.length;
     },
-    handleCreateUserGroup() {
+    handleCreateRegistrationSection() {
       this.name = "";
       this.parent_resource = null;
       this.$router.push({ name: "Dashboard" });

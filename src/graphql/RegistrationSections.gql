@@ -1,0 +1,18 @@
+query registrationSections {
+  registrationSections {
+    name
+    parent_resource {
+      id
+      name
+    }
+    auths {
+      id
+      role
+      user {
+        id
+        first_name
+        last_name
+      }
+    }
+  }
+}

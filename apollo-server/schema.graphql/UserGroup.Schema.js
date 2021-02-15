@@ -5,8 +5,8 @@ module.exports = gql`
     id: ID!
     name: String!
     creator: User!
+    type: String!
     parent_resource: SharedResource
-    # parent_user_group: UserGroup
     auths: [Auth!]!
     user_groups: [UserGroup!]!
   }

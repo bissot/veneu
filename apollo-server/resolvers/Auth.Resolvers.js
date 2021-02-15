@@ -73,11 +73,12 @@ module.exports = {
     user: async (parent, args, { models: { User } }, info) => {
       return User.findById({ _id: parent.user });
     },
-    shared_resource: async (parent, args, { models: { Course, UserGroup } }, info) => {
+    shared_resource: async (parent, args, { models: { Course, UserGroup, RegistrationSection } }, info) => {
       return Promise.all([
         Course.findById({ _id: parent.shared_resource }),
-        UserGroup.findById({ _id: parent.shared_resource })
-      ]).then(res => res[0] || res[1]);
+        UserGroup.findById({ _id: parent.shared_resource }),
+        RegistrationSection.findById({ _id: parent.shared_resource })
+      ]).then(res => res[0] || res[1] || res[2]);
     }
   }
 };

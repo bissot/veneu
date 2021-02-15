@@ -7,7 +7,11 @@ const Auth = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
     },
-    shared_resource: mongoose.Schema.Types.ObjectId
+    shared_resource: mongoose.Schema.Types.ObjectId,
+    type: {
+      type: String,
+      default: "Auth"
+    }
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }

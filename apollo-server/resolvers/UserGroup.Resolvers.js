@@ -1,11 +1,6 @@
 const { PubSub, AuthenticationError, ForbiddenError } = require("apollo-server-express");
 const pubsub = new PubSub();
 
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
-
-const jwt = require("jsonwebtoken");
-
 const eventName = {
   USERGROUP_CREATED: "USERGROUP_CREATED",
   USERGROUP_UPDATED: "USERGROUP_UPDATED",
@@ -29,11 +24,9 @@ module.exports = {
   },
   Mutation: {
     createUserGroup: (parent, { name, parent_resource }, { requester, models: { UserGroup } }, info) => {
-      console.log("RESOLVER BEFORE", { name, parent_resource });
       if (!requester) throw new ForbiddenError("Not allowed");
       return requester.then(creator => {
         return UserGroup.create({ name, creator, parent_resource }).then(userGroup => {
-          console.log("RESOLVER AFTER", userGroup);
           return pubsub.publish(eventName.COURSE_CREATED, { userGroupCreated: userGroup }).then(done => {
             return userGroup;
           });
@@ -58,23 +51,24 @@ module.exports = {
     }
   },
   Subscription: {
-    userCreated: {
+    userGroupCreated: {
       subscribe: () => pubsub.asyncIterator([eventName.USERGROUP_CREATED])
     },
-    userUpdated: {
+    userGroupUpdated: {
       subscribe: () => pubsub.asyncIterator([eventName.USERGROUP_UPDATED])
     },
-    userDeleted: {
+    userGroupDeleted: {
       subscribe: () => pubsub.asyncIterator([eventName.USERGROUP_DELETED])
     }
   },
   UserGroup: {
-    parent_resource: (parent, args, { models: { Course, UserGroup } }, info) => {
+    parent_resource: (parent, args, { models: { Course, UserGroup, RegistrationSection } }, info) => {
       return Promise.all([
         Course.findById({ _id: parent.parent_resource }),
-        UserGroup.findById({ _id: parent.parent_resource })
+        UserGroup.findById({ _id: parent.parent_resource }),
+        RegistrationSection.findById({ _id: parent.parent_resource })
       ]).then(res => {
-        return res[0] || res[1];
+        return res[0] || res[1] || res[2];
       });
     },
     auths: (parent, args, { models: { Auth } }, info) => {
