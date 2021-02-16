@@ -1,5 +1,7 @@
 # venue-new
 
+<p align="center"><img src="https://github.com/TheStopsign/venue-new/blob/main/src/assets/venue-logo.svg" alt="alt text" width="96" height="96"></p>
+
 ## Project setup
 ```
 npm install
