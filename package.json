@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --prefix .",
+    "serve": "vue-cli-service apollo:schema:generate && vue-cli-service serve --prefix .",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "apollo": "node apollo-server/server.js",
