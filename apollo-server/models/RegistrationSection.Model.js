@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const UserGroup = new mongoose.Schema(
+const RegistrationSection = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -18,7 +18,7 @@ const UserGroup = new mongoose.Schema(
     },
     type: {
       type: String,
-      default: "UserGroup"
+      default: "RegistrationSection"
     },
     parent_resource: mongoose.Schema.Types.ObjectId,
     user_groups: [
@@ -35,11 +35,9 @@ const UserGroup = new mongoose.Schema(
   .pre("remove", function(next) {
     Promise.all([
       this.model("Auth").deleteMany({ resource: this._id }),
-      this.model("Course").findByIdAndUpdate({ _id: this.parent_resource }, { $pull: { user_groups: this._id } }),
-      this.model("UserGroup").findByIdAndUpdate({ _id: this.parent_resource }, { $pull: { user_groups: this._id } }),
-      this.model("RegistrationSection").findByIdAndUpdate(
+      this.model("Course").findByIdAndUpdate(
         { _id: this.parent_resource },
-        { $pull: { user_groups: this._id } }
+        { $pull: { registration_sections: this._id } }
       ),
       this.model("UserGroup").deleteMany({ _id: { $in: this.user_groups } })
     ]).then(next);
@@ -52,17 +50,12 @@ const UserGroup = new mongoose.Schema(
     if (this.wasNew) {
       Promise.all([
         this.model("Auth").create({ shared_resource: this._id, user: this.creator, role: "INSTRUCTOR" }),
-        this.model("Course").findByIdAndUpdate({ _id: this.parent_resource }, { $addToSet: { user_groups: this._id } }),
-        this.model("UserGroup").findByIdAndUpdate(
+        this.model("Course").findByIdAndUpdate(
           { _id: this.parent_resource },
-          { $addToSet: { user_groups: this._id } }
-        ),
-        this.model("RegistrationSection").findByIdAndUpdate(
-          { _id: this.parent_resource },
-          { $addToSet: { user_groups: this._id } }
+          { $addToSet: { registration_sections: this._id } }
         )
       ]);
     }
   });
 
-module.exports = mongoose.model("UserGroup", UserGroup);
+module.exports = mongoose.model("RegistrationSection", RegistrationSection);

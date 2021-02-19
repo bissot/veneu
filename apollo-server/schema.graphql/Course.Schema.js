@@ -5,11 +5,12 @@ module.exports = gql`
     id: ID!
     name: String!
     creator: User!
+    type: String!
     prefix: String
     suffix: Int
-    # course_roles: [CourseRole!]!
     auths: [Auth!]!
     user_groups: [UserGroup!]!
+    registration_sections: [RegistrationSection!]!
   }
 
   extend type Query {

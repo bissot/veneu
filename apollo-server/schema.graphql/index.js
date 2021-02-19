@@ -26,6 +26,7 @@ const linkSchema = gql`
     creator: User!
     auths: [Auth!]!
     name: String!
+    type: String!
   }
 
   union SearchResult = User | Course | UserGroup
@@ -37,8 +38,8 @@ module.exports = [
   linkSchema,
   require("./Auth.Schema"),
   require("./Course.Schema"),
-  // require("./CourseRole.Schema"),
   require("./Notification.Schema"),
+  require("./RegistrationSection.Schema"),
   require("./User.Schema"),
   require("./UserGroup.Schema")
 ];

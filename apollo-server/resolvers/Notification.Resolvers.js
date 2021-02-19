@@ -1,11 +1,6 @@
 const { PubSub, AuthenticationError, ForbiddenError } = require("apollo-server-express");
 const pubsub = new PubSub();
 
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
-
-const jwt = require("jsonwebtoken");
-
 const eventName = {
   NOTIFICATION_CREATED: "NOTIFICATION_CREATED",
   NOTIFICATION_UPDATED: "NOTIFICATION_UPDATED",

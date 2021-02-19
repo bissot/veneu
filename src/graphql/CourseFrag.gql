@@ -14,4 +14,20 @@ fragment Course on Course {
       role
     }
   }
+  registration_sections {
+    id
+    name
+    auths {
+      id
+      role
+    }
+    user_groups {
+      id
+      name
+      auths {
+        id
+        role
+      }
+    }
+  }
 }

@@ -10,6 +10,7 @@ import Dashboard from "./pages/Dashboard";
 import Voyager from "./pages/Voyager.vue";
 import CreateCourse from "./pages/CreateCourse.vue";
 import CreateUserGroup from "./pages/CreateUserGroup.vue";
+import CreateRegistrationSection from "./pages/CreateRegistrationSection.vue";
 
 Vue.use(VueRouter);
 
@@ -83,6 +84,14 @@ const router = new VueRouter({
       path: "/create-user-group",
       name: "CreateUserGroup",
       component: CreateUserGroup,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/create-registration-section",
+      name: "CreateRegistrationSection",
+      component: CreateRegistrationSection,
       meta: {
         auth: true
       }

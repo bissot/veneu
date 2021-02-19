@@ -30,7 +30,11 @@ const User = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Notification"
       }
-    ]
+    ],
+    type: {
+      type: String,
+      default: "User"
+    }
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
