@@ -15,7 +15,7 @@ services:
   server:
     container_name: venue_new_server
     build: ./apollo-server
-    command: node server
+    command: ./node_modules/.bin/nodemon server
     restart: unless-stopped
     volumes:
       - ./apollo-server:/app
