@@ -109,14 +109,19 @@
       </q-list>
 
       <q-list class="text-primary neu-convex q-mx-lg q-mt-md">
-        <q-expansion-item expand-separator icon="assignment" label="Assignments" expand-icon-class="text-primary">
+        <q-expansion-item
+          expand-separator
+          icon="assignment"
+          label="Assignments"
+          expand-icon-class="text-primary"
+          :content-inset-level="0.5"
+        >
           <q-list class="rounded-borders">
             <q-expansion-item
               expand-separator
               icon="assignment_late"
               label="Due"
-              :header-inset-level="0.25"
-              :content-inset-level="0.25"
+              :content-inset-level="0.5"
               expand-icon-class="text-primary"
             >
               <q-card>
@@ -132,7 +137,6 @@
               expand-separator
               icon="assignment_turned_in"
               label="Complete"
-              :header-inset-level="0.25"
               :content-inset-level="0.25"
               expand-icon-class="text-primary"
             >
