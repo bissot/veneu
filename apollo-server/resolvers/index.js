@@ -29,6 +29,7 @@ module.exports = [
   SearchResultResolvers,
   require("./Auth.Resolvers"),
   require("./Course.Resolvers"),
+  require("./Lecture.Resolvers"),
   require("./Notification.Resolvers"),
   require("./RegistrationSection.Resolvers"),
   require("./User.Resolvers"),

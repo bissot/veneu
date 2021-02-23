@@ -9,6 +9,8 @@ services:
       - mongo_data:/data/db
     ports:
       - 27017:27017
+    logging:
+      driver: none
     environment:
       - MONGO_INITDB_DATABASE=venue-new
 

@@ -39,6 +39,12 @@ const Course = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "RegistrationSection"
       }
+    ],
+    lectures: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Lecture"
+      }
     ]
   },
   {
@@ -49,7 +55,8 @@ const Course = new mongoose.Schema(
     Promise.all([
       this.model("Auth").deleteMany({ shared_resource: this._id }),
       this.model("UserGroup").deleteMany({ parent_resource: this._id }),
-      this.model("RegistrationSection").deleteMany({ parent_resource: this._id })
+      this.model("RegistrationSection").deleteMany({ parent_resource: this._id }),
+      this.model("Lecture").deleteMany({ parent_resource: this._id })
     ]).then(next);
   })
   .pre("save", function(next) {

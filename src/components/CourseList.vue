@@ -4,6 +4,20 @@
       <div v-if="loading">Loading...</div>
       <div v-if="error">Error...</div>
       <div v-if="data">
+        <q-item-label header class="text-primary">Courses </q-item-label>
+        <div class="q-pb-md">
+          <q-btn-group spread flat class="q-ml-md q-mr-md">
+            <q-btn dense size="sm" label="New" icon="add" :to="{ name: 'CreateCourse' }" />
+            <q-btn disabled dense size="sm" label="Join" icon="group_add" />
+            <q-btn
+              dense
+              size="sm"
+              :label="editing ? 'Done' : 'Edit'"
+              :icon="editing ? 'check' : 'edit'"
+              @click="editing = !editing"
+            />
+          </q-btn-group>
+        </div>
         <q-expansion-item
           v-for="course of data.courses"
           :key="course.id"
@@ -27,7 +41,24 @@
               
             </q-expansion-item> -->
 
-            <div class="q-px-md">
+            <q-btn-group v-if="editing" spread flat class="q-ml-md q-mr-md">
+              <q-btn
+                dense
+                size="sm"
+                label="Section"
+                icon="add"
+                :to="{ path: '/create-registration-section?course=' + (course.id ? course.id : '') }"
+              />
+              <q-btn
+                dense
+                size="sm"
+                label="Group"
+                icon="add"
+                :to="{ path: '/create-user-group?parent_resource=' + (course.id ? course.id : '') }"
+              />
+            </q-btn-group>
+
+            <!-- <div class="q-px-md">
               <q-btn
                 dense
                 flat
@@ -48,7 +79,7 @@
                 icon="add"
                 :to="{ path: '/create-user-group?parent_resource=' + (course.id ? course.id : '') }"
               />
-            </div>
+            </div> -->
             <q-list class="rounded-borders">
               <q-expansion-item
                 expand-separator
@@ -62,7 +93,7 @@
                 :content-inset-level="0.5"
                 :title="section.name"
               >
-                <div class="q-px-md">
+                <div v-if="editing" class="q-px-md">
                   <q-btn
                     dense
                     size="sm"
@@ -102,7 +133,11 @@
                         title="Share"
                         aria-label="Share"
                         @click.stop
-                      />
+                      >
+                        <q-menu>
+                          <q-input class="q-mx-md" />
+                        </q-menu>
+                      </q-btn>
                     </q-item-section>
                   </q-item>
                 </q-list>
@@ -167,7 +202,8 @@ export default {
   name: "CourseList",
   data() {
     return {
-      courses: []
+      courses: [],
+      editing: false
     };
   }
 };

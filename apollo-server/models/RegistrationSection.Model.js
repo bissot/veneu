@@ -20,11 +20,20 @@ const RegistrationSection = new mongoose.Schema(
       type: String,
       default: "RegistrationSection"
     },
-    parent_resource: mongoose.Schema.Types.ObjectId,
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course"
+    },
     user_groups: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "UserGroup"
+      }
+    ],
+    lectures: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Lecture"
       }
     ]
   },
@@ -39,7 +48,8 @@ const RegistrationSection = new mongoose.Schema(
         { _id: this.parent_resource },
         { $pull: { registration_sections: this._id } }
       ),
-      this.model("UserGroup").deleteMany({ _id: { $in: this.user_groups } })
+      this.model("UserGroup").deleteMany({ _id: { $in: this.user_groups } }),
+      this.model("Lecture").deleteMany({ parent_resource: this._id })
     ]).then(next);
   })
   .pre("save", function(next) {
@@ -50,10 +60,7 @@ const RegistrationSection = new mongoose.Schema(
     if (this.wasNew) {
       Promise.all([
         this.model("Auth").create({ shared_resource: this._id, user: this.creator, role: "INSTRUCTOR" }),
-        this.model("Course").findByIdAndUpdate(
-          { _id: this.parent_resource },
-          { $addToSet: { registration_sections: this._id } }
-        )
+        this.model("Course").findByIdAndUpdate({ _id: this.course }, { $addToSet: { registration_sections: this._id } })
       ]);
     }
   });

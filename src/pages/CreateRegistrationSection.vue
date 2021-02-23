@@ -6,7 +6,7 @@
       </div>
       <ApolloMutation
         :mutation="require('../graphql/CreateRegistrationSection.gql')"
-        :variables="{ name, parent_resource }"
+        :variables="{ name, course }"
         class="form"
         @done="handleCreateRegistrationSection"
       >
@@ -38,14 +38,14 @@ export default {
     return {
       step: 1,
       name: "",
-      parent_resource: null
+      course: null
     };
   },
   created() {
-    if (this.$route.query.parent_resource) {
-      this.parent_resource = this.$route.query.parent_resource;
+    if (this.$route.query.course) {
+      this.course = this.$route.query.course;
     }
-    console.log("PARENTRESOURCE", this.parent_resource);
+    console.log("PARENTRESOURCE", this.course);
   },
   methods: {
     handleBack() {
@@ -56,7 +56,7 @@ export default {
     },
     handleCreateRegistrationSection() {
       this.name = "";
-      this.parent_resource = null;
+      this.course = null;
       this.$router.push({ name: "Dashboard" });
     }
   }

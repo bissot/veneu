@@ -9,6 +9,7 @@ module.exports = gql`
     parent_resource: SharedResource
     auths: [Auth!]!
     user_groups: [UserGroup!]!
+    lectures: [Lecture!]!
   }
 
   extend type Query {

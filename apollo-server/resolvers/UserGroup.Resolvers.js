@@ -15,21 +15,17 @@ module.exports = {
     },
     userGroups: (parent, args, { requester, models: { UserGroup, Auth } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return requester.then(user => {
-        return Auth.find({ user }).then(auths => {
-          return UserGroup.find({ auths: { $in: auths } });
-        });
+      return Auth.find({ user: requester._id }).then(auths => {
+        return UserGroup.find({ auths: { $in: auths } });
       });
     }
   },
   Mutation: {
     createUserGroup: (parent, { name, parent_resource }, { requester, models: { UserGroup } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return requester.then(creator => {
-        return UserGroup.create({ name, creator, parent_resource }).then(userGroup => {
-          return pubsub.publish(eventName.COURSE_CREATED, { userGroupCreated: userGroup }).then(done => {
-            return userGroup;
-          });
+      return UserGroup.create({ name, creator: requester._id, parent_resource }).then(userGroup => {
+        return pubsub.publish(eventName.COURSE_CREATED, { userGroupCreated: userGroup }).then(done => {
+          return userGroup;
         });
       });
     },
@@ -76,6 +72,9 @@ module.exports = {
     },
     user_groups: (parent, args, { models: { UserGroup } }, info) => {
       return UserGroup.find({ _id: { $in: parent.user_groups } });
+    },
+    lectures: (parent, args, { models: { Lecture } }, info) => {
+      return Lecture.find({ _id: { $in: parent.lectures } });
     }
   }
 };
