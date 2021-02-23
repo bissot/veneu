@@ -15,10 +15,8 @@ module.exports = {
     },
     registrationSections: (parent, args, { requester, models: { RegistrationSection, Auth } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return requester.then(user => {
-        return Auth.find({ user }).then(auths => {
-          return RegistrationSection.find({ auths: { $in: auths } });
-        });
+      return Auth.find({ user: requester._id }).then(auths => {
+        return RegistrationSection.find({ auths: { $in: auths } });
       });
     }
   },
@@ -30,14 +28,12 @@ module.exports = {
       info
     ) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return requester.then(creator => {
-        return RegistrationSection.create({ name, creator, parent_resource }).then(registrationSection => {
-          return pubsub
-            .publish(eventName.COURSE_CREATED, { registrationSectionCreated: registrationSection })
-            .then(done => {
-              return registrationSection;
-            });
-        });
+      return RegistrationSection.create({ name, creator: requester._id, parent_resource }).then(registrationSection => {
+        return pubsub
+          .publish(eventName.COURSE_CREATED, { registrationSectionCreated: registrationSection })
+          .then(done => {
+            return registrationSection;
+          });
       });
     },
     updateRegistrationSection(parent, { id, ...patch }, { requester, models: { RegistrationSection } }, info) {
@@ -73,14 +69,17 @@ module.exports = {
     }
   },
   RegistrationSection: {
-    parent_resource: (parent, args, { models: { Course, RegistrationSection } }, info) => {
-      return Course.findById({ _id: parent.parent_resource });
+    course: (parent, args, { models: { Course } }, info) => {
+      return Course.findById({ _id: parent.course });
     },
     auths: (parent, args, { models: { Auth } }, info) => {
       return Auth.find({ _id: { $in: parent.auths } });
     },
     user_groups: (parent, args, { models: { UserGroup } }, info) => {
       return UserGroup.find({ _id: { $in: parent.user_groups } });
+    },
+    lectures: (parent, args, { models: { Lecture } }, info) => {
+      return Lecture.find({ _id: { $in: parent.lectures } });
     }
   }
 };

@@ -11,6 +11,7 @@ module.exports = gql`
     auths: [Auth!]!
     user_groups: [UserGroup!]!
     registration_sections: [RegistrationSection!]!
+    lectures: [Lecture!]!
   }
 
   extend type Query {

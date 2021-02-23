@@ -3,7 +3,7 @@ const { gql } = require("apollo-server-express");
 module.exports = gql`
   type Auth {
     id: ID!
-    user: User!
+    user: User
     shared_resource: SharedResource
     role: Role
   }
@@ -14,8 +14,8 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createAuth(user: ID!): Auth!
-    updateAuth(id: ID!, role: Role!): Auth!
+    createAuth(user: ID, role: Role!): Auth!
+    updateAuth(id: ID!, role: Role, user: ID): Auth!
     deleteAuth(id: ID!): Auth!
   }
 

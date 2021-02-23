@@ -26,6 +26,12 @@ const UserGroup = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "UserGroup"
       }
+    ],
+    lectures: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Lecture"
+      }
     ]
   },
   {
@@ -41,7 +47,8 @@ const UserGroup = new mongoose.Schema(
         { _id: this.parent_resource },
         { $pull: { user_groups: this._id } }
       ),
-      this.model("UserGroup").deleteMany({ _id: { $in: this.user_groups } })
+      this.model("UserGroup").deleteMany({ _id: { $in: this.user_groups } }),
+      this.model("Lecture").deleteMany({ parent_resource: this._id })
     ]).then(next);
   })
   .pre("save", function(next) {

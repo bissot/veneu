@@ -6,9 +6,10 @@ module.exports = gql`
     name: String!
     creator: User!
     type: String!
-    parent_resource: SharedResource
+    course: Course
     auths: [Auth!]!
     user_groups: [UserGroup!]!
+    lectures: [Lecture!]!
   }
 
   extend type Query {
@@ -17,7 +18,7 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createRegistrationSection(name: String!, parent_resource: ID): RegistrationSection!
+    createRegistrationSection(name: String!, course: ID): RegistrationSection!
     updateRegistrationSection(id: ID!, name: String): RegistrationSection!
     deleteRegistrationSection(id: ID!): RegistrationSection!
   }

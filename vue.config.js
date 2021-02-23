@@ -1,4 +1,7 @@
 module.exports = {
+  devServer: {
+    progress: false
+  },
   pluginOptions: {
     apollo: {
       enableMocks: false,

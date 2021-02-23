@@ -97,26 +97,23 @@
       </q-item>
 
       <q-list class="text-primary neu-convex q-mx-lg q-my-md q-mb-lg">
-        <q-item-label header class="text-primary">Courses </q-item-label>
-        <div class="q-pb-md">
-          <q-btn-group spread flat class="q-ml-md q-mr-md">
-            <q-btn dense size="sm" label="New" icon="add" :to="{ name: 'CreateCourse' }" />
-            <q-btn disabled dense size="sm" label="Join" icon="group_add" />
-            <q-btn disabled dense size="sm" label="Edit" icon="edit" />
-          </q-btn-group>
-        </div>
         <course-list />
       </q-list>
 
       <q-list class="text-primary neu-convex q-mx-lg q-mt-md">
-        <q-expansion-item expand-separator icon="assignment" label="Assignments" expand-icon-class="text-primary">
+        <q-expansion-item
+          expand-separator
+          icon="assignment"
+          label="Assignments"
+          expand-icon-class="text-primary"
+          :content-inset-level="0.5"
+        >
           <q-list class="rounded-borders">
             <q-expansion-item
               expand-separator
               icon="assignment_late"
               label="Due"
-              :header-inset-level="0.25"
-              :content-inset-level="0.25"
+              :content-inset-level="0.5"
               expand-icon-class="text-primary"
             >
               <q-card>
@@ -132,7 +129,6 @@
               expand-separator
               icon="assignment_turned_in"
               label="Complete"
-              :header-inset-level="0.25"
               :content-inset-level="0.25"
               expand-icon-class="text-primary"
             >

@@ -15,21 +15,17 @@ module.exports = {
     },
     courses: (parent, args, { requester, models: { Course, Auth } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return requester.then(user => {
-        return Auth.find({ user }).then(auths => {
-          return Course.find({ auths: { $in: auths } });
-        });
+      return Auth.find({ user: requester._id }).then(auths => {
+        return Course.find({ auths: { $in: auths } });
       });
     }
   },
   Mutation: {
     createCourse: (parent, { name, ...optional }, { requester, models: { Course } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return requester.then(creator => {
-        return Course.create({ name, creator, ...optional }).then(course => {
-          return pubsub.publish(eventName.COURSE_CREATED, { courseCreated: course }).then(done => {
-            return course;
-          });
+      return Course.create({ name, creator: requester, ...optional }).then(course => {
+        return pubsub.publish(eventName.COURSE_CREATED, { courseCreated: course }).then(done => {
+          return course;
         });
       });
     },
@@ -80,6 +76,9 @@ module.exports = {
     },
     registration_sections: (parent, args, { models: { RegistrationSection } }, info) => {
       return RegistrationSection.find({ _id: { $in: parent.registration_sections } });
+    },
+    lectures: (parent, args, { models: { Lecture } }, info) => {
+      return Lecture.find({ _id: { $in: parent.lectures } });
     }
   }
 };
