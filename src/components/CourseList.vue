@@ -13,18 +13,30 @@
           </q-btn-group>
         </div>
         <q-expansion-item
-          v-for="(course, courseindex) of data.courses"
+          v-for="course of data.courses"
           :key="course.id"
+          expand-icon-toggle
           expand-separator
           icon="school"
-          :label="course.name"
-          :caption="course.prefix + ' ' + course.suffix"
+          class="courses"
           expand-icon-class="text-primary"
           :header-inset-level="0"
           :content-inset-level="0.5"
           group="courseGroup"
-          v-model="data.courses[courseindex].is_expanded"
         >
+          <q-item slot="header" class="col q-pl-md q-py-sm q-mr-sm q-pr-none" clickable>
+            <!-- <q-item clickable class="q-pa-none"> -->
+            <q-item-section avatar>
+              <q-icon name="school" />
+            </q-item-section>
+
+            <q-item-section :title="course.name">
+              <q-item-label>{{ course.name }}</q-item-label>
+              <q-item-label caption> {{ course.auths.filter(a => a.role == "STUDENT").length }} students </q-item-label>
+            </q-item-section>
+            <!-- <q-item-section side></q-item-section> -->
+            <!-- </q-item> -->
+          </q-item>
           <!-- <q-separator /> -->
           <q-list class="rounded-borders">
             <!-- <q-expansion-item
@@ -80,16 +92,28 @@
             <q-list class="rounded-borders">
               <q-expansion-item
                 expand-separator
+                expand-icon-toggle
                 icon="event_seat"
-                class="cursor-pointer q-pr-none"
-                :label="section.name"
-                :caption="section.auths.filter(a => a.role == 'STUDENT').length + ' students'"
+                class="q-pr-none"
+                expand-icon-class="text-primary"
                 v-for="section of course.registration_sections"
                 :key="section.id"
                 :header-inset-level="0"
                 :content-inset-level="0.5"
-                :title="section.name"
               >
+                <q-item slot="header" class="col q-px-md q-py-sm q-mr-sm" clickable>
+                  <q-item-section avatar>
+                    <q-icon name="event_seat" />
+                  </q-item-section>
+
+                  <q-item-section :title="section.name">
+                    <q-item-label>{{ section.name }}</q-item-label>
+                    <q-item-label caption>
+                      {{ section.auths.filter(a => a.role == "STUDENT").length }} students
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+
                 <div class="q-px-md">
                   <q-btn
                     dense
@@ -120,7 +144,7 @@
                       </q-item-label>
                     </q-item-section>
 
-                    <q-item-section side>
+                    <!-- <q-item-section side>
                       <q-btn
                         flat
                         size="sm"
@@ -135,7 +159,7 @@
                           <q-input class="q-mx-md" />
                         </q-menu>
                       </q-btn>
-                    </q-item-section>
+                    </q-item-section> -->
                   </q-item>
                 </q-list>
               </q-expansion-item>
@@ -169,7 +193,7 @@
                   </q-item-label>
                 </q-item-section>
 
-                <q-item-section side>
+                <!-- <q-item-section side>
                   <q-btn
                     flat
                     size="sm"
@@ -184,7 +208,7 @@
                       <q-input class="q-mx-md" />
                     </q-menu>
                   </q-btn>
-                </q-item-section>
+                </q-item-section> -->
               </q-item>
             </q-list>
           </q-list>

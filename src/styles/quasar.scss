@@ -60,3 +60,11 @@ body,
   border-radius: 0.25rem !important;
   box-shadow: none !important;
 }
+
+.courses div.q-item .q-item__section--side {
+  padding-right: 0rem !important;
+}
+
+.courses .q-expansion-item__container > .q-item {
+  padding: 0px 16px 0px 0px !important;
+}

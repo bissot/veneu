@@ -21,7 +21,9 @@ module.exports = {
     users: (parent, args, { requester, models: { User } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
       return User.find();
-    }
+    },
+    me: (parent, args, context, info) =>
+      module.exports.Query.user(parent, { ...args, id: context.requester._id }, context, info)
   },
   Mutation: {
     createUser: (parent, { first_name, last_name, email, password }, { models: { User } }, info) => {

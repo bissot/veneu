@@ -3,6 +3,7 @@
     <q-header class="text-primary">
       <q-toolbar v-if="getAuth()">
         <q-btn flat round size="sm" icon="menu" class="q-mx-sm" title="Menu" aria-label="Menu" @click="left = !left" />
+
         <!-- <q-icon size="sm" flat round name="menu" @click="left = !left" /> -->
         <!-- <q-input borderless v-model="searchString" class="q-ml-md">
           <template v-slot:append>
@@ -49,7 +50,7 @@
           <q-icon name="close" @click="searchString = ''" class="cursor-pointer" />
         </template>
       </q-input>
-      <q-item class="cursor-pointer">
+      <q-item clickable class="rounded-borders">
         <q-item-section avatar>
           <q-avatar>
             <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
