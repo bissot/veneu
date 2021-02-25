@@ -1,7 +1,7 @@
 #import "./RegistrationSectionFrag.gql"
 
-mutation createRegistrationSection($name: String!, $parent_resource: ID) {
-  createRegistrationSection(name: $name, parent_resource: $parent_resource) {
+mutation createRegistrationSection($name: String!, $course: ID) {
+  createRegistrationSection(name: $name, course: $course) {
     ...RegistrationSection
   }
 }

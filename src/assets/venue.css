@@ -82,8 +82,7 @@ button {
     box-shadow: none;
   }
   to {
-    box-shadow: inset 0.25rem 0.25rem 0.25rem #bebebe, inset -0.25rem -0.25rem 0.25rem #f8f8f8aa,
-      0.05rem 0.05rem 0.05rem #bebebe, -0.05rem -0.05rem 0.05rem #f8f8f8aa;
+    box-shadow: var(--field-shadow);
   }
 }
 

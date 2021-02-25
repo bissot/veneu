@@ -4,22 +4,16 @@
       <div v-if="loading">Loading...</div>
       <div v-if="error">Error...</div>
       <div v-if="data">
-        <q-item-label header class="text-primary">Courses </q-item-label>
+        <q-item-label header class="text-primary q-pb-md">Courses </q-item-label>
         <div class="q-pb-md">
-          <q-btn-group spread flat class="q-ml-md q-mr-md">
+          <q-btn-group spread flat class="q-mx-md q-mb-none">
             <q-btn dense size="sm" label="New" icon="add" :to="{ name: 'CreateCourse' }" />
             <q-btn disabled dense size="sm" label="Join" icon="group_add" />
-            <q-btn
-              dense
-              size="sm"
-              :label="editing ? 'Done' : 'Edit'"
-              :icon="editing ? 'check' : 'edit'"
-              @click="editing = !editing"
-            />
+            <q-btn dense size="sm" label="Edit" icon="edit" disabled />
           </q-btn-group>
         </div>
         <q-expansion-item
-          v-for="course of data.courses"
+          v-for="(course, courseindex) of data.courses"
           :key="course.id"
           expand-separator
           icon="school"
@@ -28,7 +22,10 @@
           expand-icon-class="text-primary"
           :header-inset-level="0"
           :content-inset-level="0.5"
+          group="courseGroup"
+          v-model="data.courses[courseindex].is_expanded"
         >
+          <!-- <q-separator /> -->
           <q-list class="rounded-borders">
             <!-- <q-expansion-item
               expand-separator
@@ -40,24 +37,24 @@
             >
               
             </q-expansion-item> -->
-
-            <q-btn-group v-if="editing" spread flat class="q-ml-md q-mr-md">
-              <q-btn
-                dense
-                size="sm"
-                label="Section"
-                icon="add"
-                :to="{ path: '/create-registration-section?course=' + (course.id ? course.id : '') }"
-              />
-              <q-btn
-                dense
-                size="sm"
-                label="Group"
-                icon="add"
-                :to="{ path: '/create-user-group?parent_resource=' + (course.id ? course.id : '') }"
-              />
-            </q-btn-group>
-
+            <div class="q-pb-sm">
+              <q-btn-group spread flat class="q-mx-md q-mt-sm">
+                <q-btn
+                  dense
+                  size="sm"
+                  label="Section"
+                  icon="add"
+                  :to="{ path: '/create-registration-section?course=' + (course.id ? course.id : '') }"
+                />
+                <q-btn
+                  dense
+                  size="sm"
+                  label="Group"
+                  icon="add"
+                  :to="{ path: '/create-user-group?parent_resource=' + (course.id ? course.id : '') }"
+                />
+              </q-btn-group>
+            </div>
             <!-- <div class="q-px-md">
               <q-btn
                 dense
@@ -93,7 +90,7 @@
                 :content-inset-level="0.5"
                 :title="section.name"
               >
-                <div v-if="editing" class="q-px-md">
+                <div class="q-px-md">
                   <q-btn
                     dense
                     size="sm"
@@ -191,6 +188,7 @@
               </q-item>
             </q-list>
           </q-list>
+          <!-- <q-separator /> -->
         </q-expansion-item>
       </div>
     </template>

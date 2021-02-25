@@ -1,7 +1,7 @@
 query registrationSections {
   registrationSections {
     name
-    parent_resource {
+    course {
       id
       name
     }

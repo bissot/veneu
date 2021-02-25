@@ -1,7 +1,7 @@
 fragment RegistrationSection on RegistrationSection {
   id
   name
-  parent_resource {
+  course {
     id
     name
   }

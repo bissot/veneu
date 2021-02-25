@@ -100,7 +100,7 @@
         <course-list />
       </q-list>
 
-      <q-list class="text-primary neu-convex q-mx-lg q-mt-md">
+      <q-list class="text-primary neu-convex q-mx-lg q-my-md">
         <q-expansion-item
           expand-separator
           icon="assignment"
@@ -113,7 +113,7 @@
               expand-separator
               icon="assignment_late"
               label="Due"
-              :content-inset-level="0.5"
+              :content-inset-level="0"
               expand-icon-class="text-primary"
             >
               <q-card>
@@ -129,7 +129,7 @@
               expand-separator
               icon="assignment_turned_in"
               label="Complete"
-              :content-inset-level="0.25"
+              :content-inset-level="0"
               expand-icon-class="text-primary"
             >
               <q-card>
