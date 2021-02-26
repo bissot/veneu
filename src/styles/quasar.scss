@@ -34,8 +34,15 @@ aside.q-drawer--mobile {
 body,
 .q-drawer__content,
 .q-toolbar,
-.q-card {
+.q-card,
+.q-time,
+.q-time__container-child,
+.q-date {
   background-color: var(--venue-light) !important;
+}
+
+.q-dialog__backdrop {
+  background-color: var(--venue-light-backdrop) !important;
 }
 
 .q-stepper__step-inner {
@@ -70,4 +77,10 @@ body,
 
 .courses .q-expansion-item__container > .q-item {
   padding: 0px 16px 0px 0px !important;
+}
+
+.q-time__container-child,
+.q-dialog__inner > div,
+.q-menu {
+  box-shadow: var(--button-shadow) !important;
 }

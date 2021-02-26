@@ -1,6 +1,6 @@
 #import "./RegistrationSectionFrag.gql"
 
-mutation createRegistrationSection($name: String!, $course: ID) {
+mutation createRegistrationSection($name: String!, $course: ID!) {
   createRegistrationSection(name: $name, course: $course) {
     ...RegistrationSection
   }
