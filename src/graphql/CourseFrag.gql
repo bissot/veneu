@@ -3,6 +3,8 @@ fragment Course on Course {
   name
   prefix
   suffix
+  start
+  end
   auths {
     role
   }

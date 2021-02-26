@@ -50,52 +50,60 @@
           <q-icon name="close" @click="searchString = ''" class="cursor-pointer" />
         </template>
       </q-input>
-      <q-item clickable class="rounded-borders">
-        <q-item-section avatar>
-          <q-avatar>
-            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
-          </q-avatar>
-        </q-item-section>
+      <ApolloQuery :query="require('./graphql/Me.gql')">
+        <template slot-scope="{ result: { loading, error, data } }">
+          <div v-if="loading">Loading...</div>
+          <div v-if="error">Error...</div>
+          <div v-if="data">
+            <q-item clickable class="rounded-borders">
+              <q-item-section avatar>
+                <q-avatar>
+                  <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+                </q-avatar>
+              </q-item-section>
 
-        <q-item-section>
-          <q-item-label>Ethan Whitton</q-item-label>
-          <q-item-label caption>
-            ITWS 2021
-          </q-item-label>
-        </q-item-section>
+              <q-item-section>
+                <q-item-label>{{ data.me.first_name }} {{ data.me.last_name }}</q-item-label>
+                <q-item-label caption>
+                  ITWS 2021
+                </q-item-label>
+              </q-item-section>
 
-        <q-item-section side>
-          <q-btn
-            flat
-            size="sm"
-            round
-            icon="logout"
-            class="q-mx-sm text-primary"
-            title="Logout"
-            aria-label="Logout"
-            @click="confirmLogout = true"
-          />
-          <q-dialog v-model="confirmLogout">
-            <q-card>
-              <q-card-section class="row items-center">
-                <span class="q-ml-sm text-primary">Are you sure? We'd hate to see you leave...</span>
-              </q-card-section>
-
-              <q-card-actions align="around">
-                <q-btn flat label="Cancel" color="primary" v-close-popup />
+              <q-item-section side>
                 <q-btn
                   flat
-                  label="Logout"
-                  class="bg-primary text-white"
-                  v-close-popup
-                  @click="handleLogout"
-                  icon-right="meeting_room"
+                  size="sm"
+                  round
+                  icon="logout"
+                  class="q-mx-sm text-primary"
+                  title="Logout"
+                  aria-label="Logout"
+                  @click="confirmLogout = true"
                 />
-              </q-card-actions>
-            </q-card>
-          </q-dialog>
-        </q-item-section>
-      </q-item>
+                <q-dialog v-model="confirmLogout">
+                  <q-card>
+                    <q-card-section class="row items-center">
+                      <span class="q-ml-sm text-primary">Are you sure? We'd hate to see you leave...</span>
+                    </q-card-section>
+
+                    <q-card-actions align="around">
+                      <q-btn flat label="Cancel" color="primary" v-close-popup />
+                      <q-btn
+                        flat
+                        label="Logout"
+                        class="bg-primary text-white"
+                        v-close-popup
+                        @click="handleLogout"
+                        icon-right="meeting_room"
+                      />
+                    </q-card-actions>
+                  </q-card>
+                </q-dialog>
+              </q-item-section>
+            </q-item>
+          </div>
+        </template>
+      </ApolloQuery>
 
       <q-list class="text-primary neu-convex q-mx-lg q-my-md q-mb-lg">
         <course-list />

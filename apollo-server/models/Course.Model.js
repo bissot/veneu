@@ -28,6 +28,14 @@ const Course = new mongoose.Schema(
       type: Number,
       required: true
     },
+    start: {
+      type: Date,
+      required: true
+    },
+    end: {
+      type: Date,
+      required: true
+    },
     user_groups: [
       {
         type: mongoose.Schema.Types.ObjectId,

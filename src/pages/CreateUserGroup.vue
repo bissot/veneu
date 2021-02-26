@@ -72,7 +72,7 @@ export default {
   text-align: center;
 }
 h1 {
-  font-size: 4rem;
+  font-size: 3rem;
 }
 .form {
   margin: auto;

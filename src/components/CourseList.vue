@@ -25,7 +25,6 @@
           group="courseGroup"
         >
           <q-item slot="header" class="col q-pl-md q-py-sm q-mr-sm q-pr-none" clickable>
-            <!-- <q-item clickable class="q-pa-none"> -->
             <q-item-section avatar>
               <q-icon name="school" />
             </q-item-section>
@@ -34,21 +33,8 @@
               <q-item-label>{{ course.name }}</q-item-label>
               <q-item-label caption> {{ course.auths.filter(a => a.role == "STUDENT").length }} students </q-item-label>
             </q-item-section>
-            <!-- <q-item-section side></q-item-section> -->
-            <!-- </q-item> -->
           </q-item>
-          <!-- <q-separator /> -->
           <q-list class="rounded-borders">
-            <!-- <q-expansion-item
-              expand-separator
-              icon="event_seat"
-              label="Registration Sections"
-              :header-inset-level="0.25"
-              :content-inset-level="0.5"
-              expand-icon-class="text-primary"
-            >
-              
-            </q-expansion-item> -->
             <div class="q-pb-sm">
               <q-btn-group spread flat class="q-mx-md q-mt-sm">
                 <q-btn
@@ -67,28 +53,6 @@
                 />
               </q-btn-group>
             </div>
-            <!-- <div class="q-px-md">
-              <q-btn
-                dense
-                flat
-                size="sm"
-                class="full-width q-my-sm"
-                label="Registration Section"
-                icon="add"
-                :to="{ path: '/create-registration-section?parent_resource=' + (course.id ? course.id : '') }"
-              />
-            </div>
-            <div class="q-px-md">
-              <q-btn
-                dense
-                size="sm"
-                flat
-                class="full-width q-my-sm"
-                label="Course Group"
-                icon="add"
-                :to="{ path: '/create-user-group?parent_resource=' + (course.id ? course.id : '') }"
-              />
-            </div> -->
             <q-list class="rounded-borders">
               <q-expansion-item
                 expand-separator
@@ -143,37 +107,10 @@
                         {{ group.auths.filter(a => a.role == "STUDENT").length }} students
                       </q-item-label>
                     </q-item-section>
-
-                    <!-- <q-item-section side>
-                      <q-btn
-                        flat
-                        size="sm"
-                        round
-                        icon="share"
-                        class="q-mx-sm text-primary"
-                        title="Share"
-                        aria-label="Share"
-                        @click.stop
-                      >
-                        <q-menu>
-                          <q-input class="q-mx-md" />
-                        </q-menu>
-                      </q-btn>
-                    </q-item-section> -->
                   </q-item>
                 </q-list>
               </q-expansion-item>
             </q-list>
-
-            <!-- <q-expansion-item
-              icon="groups"
-              label="Groups"
-              :header-inset-level="0.25"
-              :content-inset-level="0.5"
-              expand-icon-class="text-primary"
-            >
-              
-            </q-expansion-item> -->
             <q-list class="rounded-borders">
               <q-item
                 clickable
@@ -192,27 +129,9 @@
                     {{ group.auths.filter(a => a.role == "STUDENT").length }} students
                   </q-item-label>
                 </q-item-section>
-
-                <!-- <q-item-section side>
-                  <q-btn
-                    flat
-                    size="sm"
-                    round
-                    icon="share"
-                    class="q-mx-sm text-primary"
-                    title="Share"
-                    aria-label="Share"
-                    @click.stop
-                  >
-                    <q-menu>
-                      <q-input class="q-mx-md" />
-                    </q-menu>
-                  </q-btn>
-                </q-item-section> -->
               </q-item>
             </q-list>
           </q-list>
-          <!-- <q-separator /> -->
         </q-expansion-item>
       </div>
     </template>

@@ -1,7 +1,7 @@
 const { gql } = require("apollo-server-express");
 
 module.exports = gql`
-  type Course implements SharedResource {
+  type Course implements SharedResource & CalendarEvent {
     id: ID!
     name: String!
     creator: User!
@@ -9,6 +9,8 @@ module.exports = gql`
     prefix: String
     suffix: Int
     auths: [Auth!]!
+    start: Date!
+    end: Date!
     user_groups: [UserGroup!]!
     registration_sections: [RegistrationSection!]!
     lectures: [Lecture!]!
@@ -20,7 +22,7 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createCourse(name: String!, prefix: String, suffix: String): Course!
+    createCourse(name: String!, start: Date!, end: Date!, prefix: String, suffix: String): Course!
     updateCourse(id: ID!, name: String, prefix: String, suffix: Int): Course!
     deleteCourse(id: ID!): Course!
   }

@@ -21,9 +21,9 @@ module.exports = {
     }
   },
   Mutation: {
-    createCourse: (parent, { name, ...optional }, { requester, models: { Course } }, info) => {
+    createCourse: (parent, args, { requester, models: { Course } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Course.create({ name, creator: requester._id, ...optional }).then(course => {
+      return Course.create({ creator: requester._id, ...args }).then(course => {
         return pubsub.publish(eventName.COURSE_CREATED, { courseCreated: course }).then(done => {
           return course;
         });

@@ -50,6 +50,9 @@ body,
   box-shadow: var(--button-shadow);
   animation: grow-in-button 1s !important;
 }
+.q-date__content .q-btn {
+  box-shadow: unset !important;
+}
 
 .q-btn-group {
   box-shadow: var(--button-shadow);

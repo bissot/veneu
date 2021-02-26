@@ -7,7 +7,7 @@
       </div>
       <ApolloMutation
         :mutation="require('../graphql/CreateCourse.gql')"
-        :variables="{ name, prefix, suffix }"
+        :variables="{ name, prefix, suffix, start, end }"
         class="form"
         @done="handleCreateCourse"
       >
@@ -67,7 +67,72 @@
               </q-step>
 
               <q-step :name="3" prefix="3" class="q-pt-sm" title="a">
-                <q-item> {{ name }} {{ prefix }} {{ suffix }} </q-item>
+                <q-input
+                  v-model="start"
+                  type="text"
+                  standout="bg-primary text-white"
+                  color="primary"
+                  label="Start Time"
+                  placeholder="e.g. 1970-01-01 14:00"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy transition-show="scale" transition-hide="scale">
+                        <q-date v-model="start" mask="YYYY-MM-DD HH:mm">
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="Close" color="primary" flat />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+
+                  <template v-slot:append>
+                    <q-icon name="access_time" class="cursor-pointer">
+                      <q-popup-proxy transition-show="scale" transition-hide="scale">
+                        <q-time v-model="start" mask="YYYY-MM-DD HH:mm">
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="Close" color="primary" flat />
+                          </div>
+                        </q-time>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
+
+                <q-input
+                  v-model="end"
+                  type="text"
+                  standout="bg-primary text-white"
+                  color="primary"
+                  label="End Time"
+                  placeholder="e.g. 1970-01-01 14:00"
+                  class="q-mt-lg"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="event" class="cursor-pointer">
+                      <q-popup-proxy transition-show="scale" transition-hide="scale">
+                        <q-date v-model="end" mask="YYYY-MM-DD HH:mm">
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="Close" color="primary" flat />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+
+                  <template v-slot:append>
+                    <q-icon name="access_time" class="cursor-pointer">
+                      <q-popup-proxy transition-show="scale" transition-hide="scale">
+                        <q-time v-model="end" mask="YYYY-MM-DD HH:mm">
+                          <div class="row items-center justify-end">
+                            <q-btn v-close-popup label="Close" color="primary" flat />
+                          </div>
+                        </q-time>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+                </q-input>
               </q-step>
 
               <template v-slot:navigation>
@@ -103,7 +168,9 @@ export default {
       step: 1,
       name: "",
       prefix: "",
-      suffix: null
+      suffix: null,
+      start: "",
+      end: ""
     };
   },
   methods: {
@@ -111,7 +178,7 @@ export default {
       this.$router.go(-1);
     },
     formValid() {
-      return this.name.length && this.prefix.length && this.suffix;
+      return this.name.length && this.prefix.length && this.suffix && this.start && this.end;
     },
     handleCreateCourse() {
       this.$router.push({ name: "Dashboard" });
@@ -129,7 +196,7 @@ export default {
   text-align: center;
 }
 h1 {
-  font-size: 4rem;
+  font-size: 3rem;
 }
 .form {
   margin: auto;
