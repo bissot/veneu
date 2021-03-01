@@ -15,7 +15,7 @@ module.exports = {
     },
     auths: (parent, args, { requester, models: { Auth } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Auth.find();
+      return requester.auths;
     }
   },
   Mutation: {

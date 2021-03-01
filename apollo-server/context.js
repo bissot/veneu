@@ -3,7 +3,13 @@ const models = require("./models");
 const jwt = require("jsonwebtoken");
 const getUser = async token =>
   jwt.verify(token, process.env.JWTAUTH_KEY, function(err, decoded) {
-    return err || !decoded ? null : models.User.findById({ _id: decoded._id });
+    return err || !decoded
+      ? null
+      : models.User.findOne({ _id: decoded._id }).then(user => {
+          return models.Auth.find({ _id: { $in: user._doc.auths } }).then(auths => {
+            return { ...user._doc, auths };
+          });
+        });
   });
 
 module.exports = async ({ req, connection }) => {

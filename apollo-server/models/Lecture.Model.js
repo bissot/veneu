@@ -41,7 +41,8 @@ const Lecture = new mongoose.Schema(
         { id: this.parent_resource },
         { $pull: { lectures: this._id } }
       ),
-      this.model("UserGroup").findByIdAndUpdate({ id: this.parent_resource }, { $pull: { lectures: this._id } })
+      this.model("UserGroup").findByIdAndUpdate({ id: this.parent_resource }, { $pull: { lectures: this._id } }),
+      this.model("Course").findByIdAndUpdate({ id: this.parent_resource }, { $pull: { lectures: this._id } })
     ]).then(next);
   })
   .pre("save", function(next) {

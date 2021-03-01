@@ -55,7 +55,7 @@
           <div v-if="loading">Loading...</div>
           <div v-if="error">Error...</div>
           <div v-if="data">
-            <q-item clickable class="rounded-borders">
+            <q-item clickable class="rounded-borders" id="me">
               <q-item-section avatar>
                 <q-avatar>
                   <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
@@ -65,7 +65,7 @@
               <q-item-section>
                 <q-item-label>{{ data.me.first_name }} {{ data.me.last_name }}</q-item-label>
                 <q-item-label caption>
-                  ITWS 2021
+                  {{ data.me.email }}
                 </q-item-label>
               </q-item-section>
 
@@ -105,11 +105,11 @@
         </template>
       </ApolloQuery>
 
-      <q-list class="text-primary neu-convex q-mx-lg q-my-md q-mb-lg">
+      <q-list class="text-primary neu-convex q-mx-md q-my-md q-mb-lg">
         <course-list />
       </q-list>
 
-      <q-list class="text-primary neu-convex q-mx-lg q-my-md">
+      <q-list class="text-primary neu-convex q-mx-md q-my-md">
         <q-expansion-item
           expand-separator
           icon="assignment"
