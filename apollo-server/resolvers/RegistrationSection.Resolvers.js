@@ -1,5 +1,4 @@
 const { PubSub, AuthenticationError, ForbiddenError } = require("apollo-server-express");
-const pubsub = new PubSub();
 
 const eventName = {
   REGISTRATIONSECTION_CREATED: "REGISTRATIONSECTION_CREATED",
@@ -9,9 +8,9 @@ const eventName = {
 
 module.exports = {
   Query: {
-    registrationSection: (parent, { id }, { requester, models: { RegistrationSection } }, info) => {
+    registrationSection: (parent, { _id }, { requester, models: { RegistrationSection } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return RegistrationSection.findById({ _id: id });
+      return RegistrationSection.findById({ _id: _id });
     },
     registrationSections: (parent, args, { requester, models: { RegistrationSection, Auth } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
@@ -24,27 +23,27 @@ module.exports = {
     createRegistrationSection: (parent, { name, course }, { requester, models: { RegistrationSection } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
       return RegistrationSection.create({ name, creator: requester._id, course }).then(registrationSection => {
-        return pubsub
+        return global.pubsub
           .publish(eventName.COURSE_CREATED, { registrationSectionCreated: registrationSection })
           .then(done => {
             return registrationSection;
           });
       });
     },
-    updateRegistrationSection(parent, { id, ...patch }, { requester, models: { RegistrationSection } }, info) {
+    updateRegistrationSection(parent, { _id, ...patch }, { requester, models: { RegistrationSection } }, info) {
       if (!requester || requester._id != id) throw new ForbiddenError("Not allowed");
-      return RegistrationSection.findOneAndUpdate({ _id: id }, patch, { new: true }).then(registrationSection => {
-        return pubsub
+      return RegistrationSection.findOneAndUpdate({ _id: _id }, patch, { new: true }).then(registrationSection => {
+        return global.pubsub
           .publish(eventName.REGISTRATIONSECTION_UPDATED, { registrationSectionUpdated: registrationSection })
           .then(done => {
             return registrationSection;
           });
       });
     },
-    deleteRegistrationSection: (parent, { id }, { requester, models: { RegistrationSection } }, info) => {
+    deleteRegistrationSection: (parent, { _id }, { requester, models: { RegistrationSection } }, info) => {
       if (!requester || requester._id != id) throw new ForbiddenError("Not allowed");
-      return RegistrationSection.findOneAndDelete({ _id: id }).then(registrationSection => {
-        return pubsub
+      return RegistrationSection.findOneAndDelete({ _id: _id }).then(registrationSection => {
+        return global.pubsub
           .publish(eventName.REGISTRATIONSECTION_DELETED, { registrationSectionDeleted: registrationSection })
           .then(done => {
             return registrationSection;
@@ -54,13 +53,13 @@ module.exports = {
   },
   Subscription: {
     registrationSectionCreated: {
-      subscribe: () => pubsub.asyncIterator([eventName.REGISTRATIONSECTION_CREATED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.REGISTRATIONSECTION_CREATED])
     },
     registrationSectionUpdated: {
-      subscribe: () => pubsub.asyncIterator([eventName.REGISTRATIONSECTION_UPDATED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.REGISTRATIONSECTION_UPDATED])
     },
     registrationSectionDeleted: {
-      subscribe: () => pubsub.asyncIterator([eventName.REGISTRATIONSECTION_DELETED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.REGISTRATIONSECTION_DELETED])
     }
   },
   RegistrationSection: {

@@ -22,7 +22,7 @@ const linkSchema = gql`
   }
 
   interface SharedResource {
-    id: ID!
+    _id: ID!
     creator: User!
     auths: [Auth!]!
     name: String!
@@ -30,14 +30,14 @@ const linkSchema = gql`
   }
 
   interface CalendarEvent {
-    id: ID!
+    _id: ID!
     start: Date!
     end: Date!
     type: String!
   }
 
   interface CalendarDeadline {
-    id: ID!
+    _id: ID!
     due: Date!
     type: String!
   }

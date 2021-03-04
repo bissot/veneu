@@ -1,5 +1,5 @@
 fragment Course on Course {
-  id
+  _id
   name
   prefix
   suffix
@@ -9,25 +9,25 @@ fragment Course on Course {
     role
   }
   user_groups {
-    id
+    _id
     name
     auths {
-      id
+      _id
       role
     }
   }
   registration_sections {
-    id
+    _id
     name
     auths {
-      id
+      _id
       role
     }
     user_groups {
-      id
+      _id
       name
       auths {
-        id
+        _id
         role
       }
     }

@@ -45,11 +45,5 @@ const User = new mongoose.Schema(
     this.model("Notification").deleteMany({ user: this._id })
   ]).then(next);
 });
-// .pre("remove", function(next) {
-//   Promise.all([
-//     this.model("CourseRole").deleteMany({ user: this._id }),
-//     this.model("Notification").deleteMany({ user: this._id })
-//   ]).then(next);
-// });
 
 module.exports = mongoose.model("User", User);

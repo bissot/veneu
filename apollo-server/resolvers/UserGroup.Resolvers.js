@@ -1,5 +1,4 @@
 const { PubSub, AuthenticationError, ForbiddenError } = require("apollo-server-express");
-const pubsub = new PubSub();
 
 const eventName = {
   USERGROUP_CREATED: "USERGROUP_CREATED",
@@ -9,9 +8,9 @@ const eventName = {
 
 module.exports = {
   Query: {
-    userGroup: (parent, { id }, { requester, models: { UserGroup } }, info) => {
+    userGroup: (parent, { _id }, { requester, models: { UserGroup } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return UserGroup.findById({ _id: id });
+      return UserGroup.findById({ _id: _id });
     },
     userGroups: (parent, args, { requester, models: { UserGroup, Auth } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
@@ -24,23 +23,23 @@ module.exports = {
     createUserGroup: (parent, { name, parent_resource }, { requester, models: { UserGroup } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
       return UserGroup.create({ name, creator: requester._id, parent_resource }).then(userGroup => {
-        return pubsub.publish(eventName.COURSE_CREATED, { userGroupCreated: userGroup }).then(done => {
+        return global.pubsub.publish(eventName.COURSE_CREATED, { userGroupCreated: userGroup }).then(done => {
           return userGroup;
         });
       });
     },
-    updateUserGroup(parent, { id, ...patch }, { requester, models: { UserGroup } }, info) {
+    updateUserGroup(parent, { _id, ...patch }, { requester, models: { UserGroup } }, info) {
       if (!requester || requester._id != id) throw new ForbiddenError("Not allowed");
-      return UserGroup.findOneAndUpdate({ _id: id }, patch, { new: true }).then(userGroup => {
-        return pubsub.publish(eventName.USERGROUP_UPDATED, { userGroupUpdated: userGroup }).then(done => {
+      return UserGroup.findOneAndUpdate({ _id: _id }, patch, { new: true }).then(userGroup => {
+        return global.pubsub.publish(eventName.USERGROUP_UPDATED, { userGroupUpdated: userGroup }).then(done => {
           return userGroup;
         });
       });
     },
-    deleteUserGroup: (parent, { id }, { requester, models: { UserGroup } }, info) => {
+    deleteUserGroup: (parent, { _id }, { requester, models: { UserGroup } }, info) => {
       if (!requester || requester._id != id) throw new ForbiddenError("Not allowed");
-      return UserGroup.findOneAndDelete({ _id: id }).then(userGroup => {
-        return pubsub.publish(eventName.USERGROUP_DELETED, { userGroupDeleted: userGroup }).then(done => {
+      return UserGroup.findOneAndDelete({ _id: _id }).then(userGroup => {
+        return global.pubsub.publish(eventName.USERGROUP_DELETED, { userGroupDeleted: userGroup }).then(done => {
           return userGroup;
         });
       });
@@ -48,13 +47,13 @@ module.exports = {
   },
   Subscription: {
     userGroupCreated: {
-      subscribe: () => pubsub.asyncIterator([eventName.USERGROUP_CREATED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.USERGROUP_CREATED])
     },
     userGroupUpdated: {
-      subscribe: () => pubsub.asyncIterator([eventName.USERGROUP_UPDATED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.USERGROUP_UPDATED])
     },
     userGroupDeleted: {
-      subscribe: () => pubsub.asyncIterator([eventName.USERGROUP_DELETED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.USERGROUP_DELETED])
     }
   },
   UserGroup: {

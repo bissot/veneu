@@ -1,5 +1,4 @@
 const { PubSub, AuthenticationError, ForbiddenError } = require("apollo-server-express");
-const pubsub = new PubSub();
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -14,16 +13,16 @@ const eventName = {
 
 module.exports = {
   Query: {
-    user: (parent, { id }, { requester, models: { User } }, info) => {
+    user: (parent, { _id }, { requester, models: { User } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return User.findById({ _id: id });
+      return User.findById({ _id: _id });
     },
     users: (parent, args, { requester, models: { User } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
       return User.find();
     },
     me: (parent, args, context, info) =>
-      module.exports.Query.user(parent, { ...args, id: context.requester._id }, context, info)
+      module.exports.Query.user(parent, { ...args, _id: context.requester._id }, context, info)
   },
   Mutation: {
     createUser: (parent, { first_name, last_name, email, password }, { models: { User } }, info) => {
@@ -38,23 +37,23 @@ module.exports = {
           });
         })
         .then(user => {
-          return pubsub.publish(eventName.USER_CREATED, { userCreated: user }).then(done => {
+          return global.pubsub.publish(eventName.USER_CREATED, { userCreated: user }).then(done => {
             return user;
           });
         });
     },
-    updateUser(parent, { id, ...patch }, { requester, models: { User } }, info) {
+    updateUser(parent, { _id, ...patch }, { requester, models: { User } }, info) {
       if (!requester || requester._id != id) throw new ForbiddenError("Not allowed");
-      return User.findOneAndUpdate({ _id: id }, patch, { new: true }).then(user => {
-        return pubsub.publish(eventName.USER_UPDATED, { userUpdated: user }).then(done => {
+      return User.findOneAndUpdate({ _id: _id }, patch, { new: true }).then(user => {
+        return global.pubsub.publish(eventName.USER_UPDATED, { userUpdated: user }).then(done => {
           return user;
         });
       });
     },
-    deleteUser: (parent, { id }, { requester, models: { User } }, info) => {
+    deleteUser: (parent, { _id }, { requester, models: { User } }, info) => {
       if (!requester || requester._id != id) throw new ForbiddenError("Not allowed");
-      return User.findOneAndDelete({ _id: id }).then(user => {
-        return pubsub.publish(eventName.USER_DELETED, { userDeleted: user }).then(done => {
+      return User.findOneAndDelete({ _id: _id }).then(user => {
+        return global.pubsub.publish(eventName.USER_DELETED, { userDeleted: user }).then(done => {
           return user;
         });
       });
@@ -71,19 +70,16 @@ module.exports = {
   },
   Subscription: {
     userCreated: {
-      subscribe: () => pubsub.asyncIterator([eventName.USER_CREATED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.USER_CREATED])
     },
     userUpdated: {
-      subscribe: () => pubsub.asyncIterator([eventName.USER_UPDATED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.USER_UPDATED])
     },
     userDeleted: {
-      subscribe: () => pubsub.asyncIterator([eventName.USER_DELETED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.USER_DELETED])
     }
   },
   User: {
-    // course_roles: (parent, args, { models: { CourseRole } }, info) => {
-    //   return CourseRole.find({ _id: { $in: parent.course_roles } });
-    // },
     notifications: (parent, args, { models: { Notification } }, info) => {
       return Notification.find({ _id: { $in: parent.notifications } });
     },

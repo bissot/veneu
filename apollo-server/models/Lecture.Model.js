@@ -38,11 +38,11 @@ const Lecture = new mongoose.Schema(
     Promise.all([
       this.model("Auth").deleteMany({ shared_resource: this._id }),
       this.model("RegistrationSection").findByIdAndUpdate(
-        { id: this.parent_resource },
+        { _id: this.parent_resource },
         { $pull: { lectures: this._id } }
       ),
-      this.model("UserGroup").findByIdAndUpdate({ id: this.parent_resource }, { $pull: { lectures: this._id } }),
-      this.model("Course").findByIdAndUpdate({ id: this.parent_resource }, { $pull: { lectures: this._id } })
+      this.model("UserGroup").findByIdAndUpdate({ _id: this.parent_resource }, { $pull: { lectures: this._id } }),
+      this.model("Course").findByIdAndUpdate({ _id: this.parent_resource }, { $pull: { lectures: this._id } })
     ]).then(next);
   })
   .pre("save", function(next) {
@@ -51,7 +51,18 @@ const Lecture = new mongoose.Schema(
   })
   .post("save", function() {
     if (this.wasNew) {
-      this.model("Auth").create({ shared_resource: this._id, user: this.creator._id, role: "INSTRUCTOR" });
+      this.model("Auth")
+        .create({
+          shared_resource: this._id,
+          shared_resource_type: "Lecture",
+          user: this.creator._id,
+          role: "INSTRUCTOR"
+        })
+        .then(auth => {
+          global.pubsub.publish("AUTH_CREATED", {
+            authCreated: auth
+          });
+        });
     }
   });
 

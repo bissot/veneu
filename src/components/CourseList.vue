@@ -1,5 +1,10 @@
 <template>
   <ApolloQuery :query="require('../graphql/Courses.gql')">
+    <ApolloSubscribeToMore
+      :document="require('../graphql/AddedToCourse.gql')"
+      :variables="{ user: me._id }"
+      :update-query="onAuthCreated"
+    />
     <template slot-scope="{ result: { loading, error, data } }">
       <div v-if="loading">Loading...</div>
       <div v-if="error">Error...</div>
@@ -42,14 +47,14 @@
                   size="sm"
                   label="Section"
                   icon="add"
-                  :to="{ path: '/create-registration-section?course=' + (course.id ? course.id : '') }"
+                  :to="{ path: '/create-registration-section?course=' + (course._id ? course._id : '') }"
                 />
                 <q-btn
                   dense
                   size="sm"
                   label="Group"
                   icon="add"
-                  :to="{ path: '/create-user-group?parent_resource=' + (course.id ? course.id : '') }"
+                  :to="{ path: '/create-user-group?parent_resource=' + (course._id ? course._id : '') }"
                 />
               </q-btn-group>
             </div>
@@ -86,7 +91,7 @@
                     class="full-width q-my-sm"
                     label="Group"
                     icon="add"
-                    :to="{ path: '/create-user-group?parent_resource=' + (section.id ? section.id : '') }"
+                    :to="{ path: '/create-user-group?parent_resource=' + (section._id ? section._id : '') }"
                   />
                 </div>
                 <q-list class="rounded-borders">
@@ -141,11 +146,20 @@
 <script>
 export default {
   name: "CourseList",
+  props: {
+    me: Object
+  },
   data() {
     return {
-      courses: [],
       editing: false
     };
+  },
+  methods: {
+    onAuthCreated(previousResult, { subscriptionData }) {
+      return {
+        courses: [...previousResult.courses, subscriptionData.data.authCreated.shared_resource]
+      };
+    }
   }
 };
 </script>

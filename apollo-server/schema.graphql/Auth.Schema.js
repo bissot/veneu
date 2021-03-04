@@ -2,25 +2,26 @@ const { gql } = require("apollo-server-express");
 
 module.exports = gql`
   type Auth {
-    id: ID!
+    _id: ID!
     user: User
-    shared_resource: SharedResource
+    shared_resource: SharedResource!
+    shared_resource_type: String!
     role: Role
   }
 
   extend type Query {
-    auth(id: ID!): Auth!
+    auth(_id: ID!): Auth!
     auths: [Auth!]!
   }
 
   extend type Mutation {
     createAuth(user: ID, role: Role!): Auth!
-    updateAuth(id: ID!, role: Role, user: ID): Auth!
-    deleteAuth(id: ID!): Auth!
+    updateAuth(_id: ID!, role: Role, user: ID): Auth!
+    deleteAuth(_id: ID!): Auth!
   }
 
   extend type Subscription {
-    authCreated: Auth!
+    authCreated(user: ID!): Auth!
     authUpdated: Auth!
     authDeleted: Auth!
   }

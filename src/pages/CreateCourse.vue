@@ -21,7 +21,7 @@
               placeholder="e.g. Computer Science I"
             >
             </q-input>
-            <q-separator />
+            <q-separator class="q-my-lg" />
             <q-input
               type="text"
               standout="bg-primary text-white"
@@ -46,13 +46,13 @@
                 <q-icon name="pin" />
               </template>
             </q-input>
-            <q-separator />
+            <q-separator class="q-my-lg" />
             <q-input
               v-model="start"
               type="text"
               standout="bg-primary text-white"
               color="primary"
-              label="Starts"
+              label="Start Date"
               placeholder="e.g. 1970-01-01"
             >
               <template v-slot:prepend>
@@ -85,7 +85,7 @@
               type="text"
               standout="bg-primary text-white"
               color="primary"
-              label="End Time"
+              label="End Date"
               placeholder="e.g. 1970-01-01"
             >
               <template v-slot:prepend>
@@ -112,7 +112,7 @@
                 </q-icon>
               </template> -->
             </q-input>
-            <q-separator />
+            <q-separator class="q-my-lg" />
             <q-bar class="q-pa-none q-gutter-x-md">
               <q-btn flat color="primary" @click="handleBack" label="Back" />
               <q-btn
@@ -120,7 +120,7 @@
                 color="primary"
                 label="Finish"
                 class="q-ml-sm full-width"
-                :disabled="formValid() ? true : false"
+                :disabled="formValid() ? false : true"
               />
             </q-bar>
           </q-form>
@@ -165,7 +165,7 @@ export default {
   text-align: center;
 }
 h1 {
-  font-size: 3rem;
+  font-size: 2rem;
 }
 .form {
   margin: auto;
@@ -180,17 +180,4 @@ h1 {
 /* button {
   margin: 1rem 0rem 0rem 0rem;
 } */
-.spinner {
-  width: 14rem;
-  margin: auto;
-}
-#signup-stepper {
-  width: 100%;
-  margin: 2rem auto;
-  border-radius: 1rem !important;
-  background: unset;
-}
-.q-stepper__nav {
-  border-radius: 1rem;
-}
 </style>

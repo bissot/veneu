@@ -57,7 +57,7 @@
           <div v-if="data">
             <q-item clickable class="rounded-borders" id="me">
               <q-item-section avatar>
-                <q-avatar>
+                <q-avatar class="spinner">
                   <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
                 </q-avatar>
               </q-item-section>
@@ -101,13 +101,12 @@
                 </q-dialog>
               </q-item-section>
             </q-item>
+            <q-list class="text-primary neu-convex q-mx-md q-my-md q-mb-lg">
+              <course-list :me="data.me" />
+            </q-list>
           </div>
         </template>
       </ApolloQuery>
-
-      <q-list class="text-primary neu-convex q-mx-md q-my-md q-mb-lg">
-        <course-list />
-      </q-list>
 
       <q-list class="text-primary neu-convex q-mx-md q-my-md">
         <q-expansion-item

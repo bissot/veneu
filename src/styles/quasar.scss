@@ -59,7 +59,7 @@ body,
 .q-time__container-child,
 .q-dialog__inner > div,
 .q-menu,
-.q-avatar {
+#me .q-avatar {
   box-shadow: var(--button-shadow);
   animation: grow-in-button 1s !important;
 }

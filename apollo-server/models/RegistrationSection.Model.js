@@ -43,13 +43,13 @@ const RegistrationSection = new mongoose.Schema(
 )
   .pre("remove", function(next) {
     Promise.all([
-      this.model("Auth").deleteMany({ resource: this._id }),
+      this.model("Auth").deleteMany({ shared_resource: this._id }),
+      this.model("UserGroup").deleteMany({ parent_resource: this._id }),
+      this.model("Lecture").deleteMany({ parent_resource: this._id }),
       this.model("Course").findByIdAndUpdate(
         { _id: this.parent_resource },
         { $pull: { registration_sections: this._id } }
-      ),
-      this.model("UserGroup").deleteMany({ _id: { $in: this.user_groups } }),
-      this.model("Lecture").deleteMany({ parent_resource: this._id })
+      )
     ]).then(next);
   })
   .pre("save", function(next) {
@@ -59,7 +59,18 @@ const RegistrationSection = new mongoose.Schema(
   .post("save", function() {
     if (this.wasNew) {
       Promise.all([
-        this.model("Auth").create({ shared_resource: this._id, user: this.creator, role: "INSTRUCTOR" }),
+        this.model("Auth")
+          .create({
+            shared_resource: this._id,
+            shared_resource_type: "RegistrationSection",
+            user: this.creator._id,
+            role: "INSTRUCTOR"
+          })
+          .then(auth => {
+            global.pubsub.publish("AUTH_CREATED", {
+              authCreated: auth
+            });
+          }),
         this.model("Course").findByIdAndUpdate({ _id: this.course }, { $addToSet: { registration_sections: this._id } })
       ]);
     }

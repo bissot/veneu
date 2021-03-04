@@ -2,14 +2,14 @@ query registrationSections {
   registrationSections {
     name
     course {
-      id
+      _id
       name
     }
     auths {
-      id
+      _id
       role
       user {
-        id
+        _id
         first_name
         last_name
       }

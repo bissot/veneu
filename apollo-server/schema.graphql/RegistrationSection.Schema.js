@@ -2,7 +2,7 @@ const { gql } = require("apollo-server-express");
 
 module.exports = gql`
   type RegistrationSection implements SharedResource {
-    id: ID!
+    _id: ID!
     name: String!
     creator: User!
     type: String!
@@ -13,14 +13,14 @@ module.exports = gql`
   }
 
   extend type Query {
-    registrationSection(id: ID!): RegistrationSection!
+    registrationSection(_id: ID!): RegistrationSection!
     registrationSections: [RegistrationSection!]!
   }
 
   extend type Mutation {
     createRegistrationSection(name: String!, course: ID!): RegistrationSection!
-    updateRegistrationSection(id: ID!, name: String): RegistrationSection!
-    deleteRegistrationSection(id: ID!): RegistrationSection!
+    updateRegistrationSection(_id: ID!, name: String): RegistrationSection!
+    deleteRegistrationSection(_id: ID!): RegistrationSection!
   }
 
   extend type Subscription {

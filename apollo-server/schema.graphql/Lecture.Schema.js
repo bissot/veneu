@@ -2,7 +2,7 @@ const { gql } = require("apollo-server-express");
 
 module.exports = gql`
   type Lecture implements SharedResource & CalendarEvent {
-    id: ID!
+    _id: ID!
     name: String!
     creator: User!
     type: String!
@@ -13,14 +13,14 @@ module.exports = gql`
   }
 
   extend type Query {
-    lecture(id: ID!): Lecture!
+    lecture(_id: ID!): Lecture!
     lectures: [Lecture!]!
   }
 
   extend type Mutation {
     createLecture(name: String!, start: Date!, end: Date!): Lecture!
-    updateLecture(id: ID!, name: String, start: Date, end: Date): Lecture!
-    deleteLecture(id: ID!): Lecture!
+    updateLecture(_id: ID!, name: String, start: Date, end: Date): Lecture!
+    deleteLecture(_id: ID!): Lecture!
   }
 
   extend type Subscription {

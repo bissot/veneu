@@ -1,14 +1,14 @@
 query me {
   me {
-    id
+    _id
     first_name
     last_name
     email
     auths {
-      id
+      _id
       role
       shared_resource {
-        id
+        _id
         name
       }
     }

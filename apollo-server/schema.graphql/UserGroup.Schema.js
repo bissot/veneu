@@ -2,7 +2,7 @@ const { gql } = require("apollo-server-express");
 
 module.exports = gql`
   type UserGroup implements SharedResource {
-    id: ID!
+    _id: ID!
     name: String!
     creator: User!
     type: String!
@@ -13,14 +13,14 @@ module.exports = gql`
   }
 
   extend type Query {
-    userGroup(id: ID!): UserGroup!
+    userGroup(_id: ID!): UserGroup!
     userGroups: [UserGroup!]!
   }
 
   extend type Mutation {
     createUserGroup(name: String!, parent_resource: ID): UserGroup!
-    updateUserGroup(id: ID!, name: String): UserGroup!
-    deleteUserGroup(id: ID!): UserGroup!
+    updateUserGroup(_id: ID!, name: String): UserGroup!
+    deleteUserGroup(_id: ID!): UserGroup!
   }
 
   extend type Subscription {

@@ -26,7 +26,6 @@ class AuthDirective extends SchemaDirectiveVisitor {
     objectType._authFieldsWrapped = true;
 
     const fields = objectType.getFields();
-    console.log(fields);
 
     Object.keys(fields).forEach(fieldName => {
       const field = fields[fieldName];

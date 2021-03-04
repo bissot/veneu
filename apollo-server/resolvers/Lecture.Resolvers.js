@@ -1,5 +1,4 @@
 const { PubSub, AuthenticationError, ForbiddenError } = require("apollo-server-express");
-const pubsub = new PubSub();
 
 const eventName = {
   LECTURE_CREATED: "LECTURE_CREATED",
@@ -9,9 +8,9 @@ const eventName = {
 
 module.exports = {
   Query: {
-    lecture: (parent, { id }, { requester, models: { Lecture } }, info) => {
+    lecture: (parent, { _id }, { requester, models: { Lecture } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Lecture.findById({ _id: id });
+      return Lecture.findById({ _id });
     },
     lectures: (parent, args, { requester, models: { Lecture } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
@@ -28,23 +27,23 @@ module.exports = {
         parent_resource,
         creator: requester._id
       }).then(lecture => {
-        return pubsub.publish(eventName.LECTURE_CREATED, { lectureCreated: lecture }).then(done => {
+        return global.pubsub.publish(eventName.LECTURE_CREATED, { lectureCreated: lecture }).then(done => {
           return lecture;
         });
       });
     },
-    updateLecture(parent, { id, ...patch }, { requester, models: { Lecture } }, info) {
+    updateLecture(parent, { _id, ...patch }, { requester, models: { Lecture } }, info) {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Lecture.findOneAndUpdate({ _id: id }, patch, { new: true }).then(lecture => {
-        return pubsub.publish(eventName.LECTURE_UPDATED, { lectureUpdated: lecture }).then(done => {
+      return Lecture.findOneAndUpdate({ _id }, patch, { new: true }).then(lecture => {
+        return global.pubsub.publish(eventName.LECTURE_UPDATED, { lectureUpdated: lecture }).then(done => {
           return lecture;
         });
       });
     },
-    deleteLecture: (parent, { id }, { requester, models: { Lecture } }, info) => {
+    deleteLecture: (parent, { _id }, { requester, models: { Lecture } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Lecture.findOneAndDelete({ _id: id }).then(lecture => {
-        return pubsub.publish(eventName.LECTURE_DELETED, { lectureDeleted: lecture }).then(done => {
+      return Lecture.findOneAndDelete({ _id }).then(lecture => {
+        return global.pubsub.publish(eventName.LECTURE_DELETED, { lectureDeleted: lecture }).then(done => {
           return lecture;
         });
       });
@@ -52,13 +51,13 @@ module.exports = {
   },
   Subscription: {
     lectureCreated: {
-      subscribe: () => pubsub.asyncIterator([eventName.LECTURE_CREATED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.LECTURE_CREATED])
     },
     lectureUpdated: {
-      subscribe: () => pubsub.asyncIterator([eventName.LECTURE_UPDATED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.LECTURE_UPDATED])
     },
     lectureDeleted: {
-      subscribe: () => pubsub.asyncIterator([eventName.LECTURE_DELETED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.LECTURE_DELETED])
     }
   },
   Lecture: {

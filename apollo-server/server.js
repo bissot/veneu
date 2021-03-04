@@ -3,7 +3,8 @@ require("dotenv").config();
 const http = require("http");
 const express = require("express");
 
-const { ApolloServer, AuthenticationError, gql } = require("apollo-server-express");
+const { ApolloServer, AuthenticationError, gql, PubSub } = require("apollo-server-express");
+global.pubsub = new PubSub();
 
 const mongoose = require("mongoose");
 mongoose.connect(process.env.DB_URL, {

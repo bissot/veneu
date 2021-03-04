@@ -1,5 +1,4 @@
 const { PubSub, ForbiddenError } = require("apollo-server-express");
-const pubsub = new PubSub();
 
 const eventName = {
   COURSE_CREATED: "COURSE_CREATED",
@@ -9,9 +8,9 @@ const eventName = {
 
 module.exports = {
   Query: {
-    course: (parent, { id }, { requester, models: { Course } }, info) => {
+    course: (parent, { _id }, { requester, models: { Course } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Course.findById({ _id: id });
+      return Course.findById({ _id: _id });
     },
     courses: (parent, args, { requester, models: { Course, Auth } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
@@ -24,17 +23,17 @@ module.exports = {
     createCourse: (parent, args, { requester, models: { Course } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
       return Course.create({ creator: requester._id, ...args }).then(course => {
-        return pubsub.publish(eventName.COURSE_CREATED, { courseCreated: course }).then(done => {
+        return global.pubsub.publish(eventName.COURSE_CREATED, { courseCreated: course }).then(done => {
           return course;
         });
       });
     },
-    updateCourse(parent, { id, ...patch }, { requester, models: { Course } }, info) {
+    updateCourse(parent, { _id, ...patch }, { requester, models: { Course } }, info) {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Course.findOneAndUpdate({ _id: id }, patch, {
+      return Course.findOneAndUpdate({ _id: _id }, patch, {
         new: true
       }).then(course => {
-        return pubsub
+        return global.pubsub
           .publish(eventName.COURSE_UPDATED, {
             courseUpdated: course
           })
@@ -43,10 +42,10 @@ module.exports = {
           });
       });
     },
-    deleteCourse: (parent, { id }, { requester, models: { Course } }, info) => {
+    deleteCourse: (parent, { _id }, { requester, models: { Course } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Course.findOneAndDelete({ _id: id }).then(course => {
-        return pubsub
+      return Course.findOneAndDelete({ _id: _id }).then(course => {
+        return global.pubsub
           .publish(eventName.COURSE_DELETED, {
             courseDeleted: course
           })
@@ -58,27 +57,21 @@ module.exports = {
   },
   Subscription: {
     courseCreated: {
-      subscribe: () => pubsub.asyncIterator([eventName.COURSE_CREATED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.COURSE_CREATED])
     },
     courseUpdated: {
-      subscribe: () => pubsub.asyncIterator([eventName.COURSE_CREATED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.COURSE_CREATED])
     },
     courseDeleted: {
-      subscribe: () => pubsub.asyncIterator([eventName.COURSE_DELETED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.COURSE_DELETED])
     }
   },
   Course: {
-    auths: (parent, args, { models: { Auth } }, info) => {
-      return Auth.find({ _id: { $in: parent.auths } });
-    },
-    user_groups: (parent, args, { models: { UserGroup } }, info) => {
-      return UserGroup.find({ _id: { $in: parent.user_groups } });
-    },
-    registration_sections: (parent, args, { models: { RegistrationSection } }, info) => {
-      return RegistrationSection.find({ _id: { $in: parent.registration_sections } });
-    },
-    lectures: (parent, args, { models: { Lecture } }, info) => {
-      return Lecture.find({ _id: { $in: parent.lectures } });
-    }
+    auths: (parent, args, { models: { Auth } }, info) => Auth.find({ _id: { $in: parent.auths } }),
+    user_groups: (parent, args, { models: { UserGroup } }, info) =>
+      UserGroup.find({ _id: { $in: parent.user_groups } }),
+    registration_sections: (parent, args, { models: { RegistrationSection } }, info) =>
+      RegistrationSection.find({ _id: { $in: parent.registration_sections } }),
+    lectures: (parent, args, { models: { Lecture } }, info) => Lecture.find({ _id: { $in: parent.lectures } })
   }
 };

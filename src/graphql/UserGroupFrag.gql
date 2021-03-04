@@ -1,15 +1,15 @@
 fragment UserGroup on UserGroup {
-  id
+  _id
   name
   parent_resource {
-    id
+    _id
     name
   }
   auths {
-    id
+    _id
     role
     user {
-      id
+      _id
       first_name
       last_name
     }

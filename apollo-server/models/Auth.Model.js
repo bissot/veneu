@@ -8,6 +8,7 @@ const Auth = new mongoose.Schema(
       ref: "User"
     },
     shared_resource: mongoose.Schema.Types.ObjectId,
+    shared_resource_type: String,
     type: {
       type: String,
       default: "Auth"
@@ -19,10 +20,8 @@ const Auth = new mongoose.Schema(
 )
   .pre("remove", function(next) {
     Promise.all([
-      this.model("User").findOneAndUpdate({ _id: this._id }, { $pull: { auths: this._id } }),
-      this.model("Course").findOneAndUpdate({ _id: this._id }, { $pull: { auths: this._id } }),
-      this.model("UserGroup").findOneAndUpdate({ _id: this._id }, { $pull: { auths: this._id } }),
-      this.model("RegistrationSection").findOneAndUpdate({ _id: this._id }, { $pull: { auths: this._id } })
+      this.model("User").findByIdAndUpdate({ _id: this._id }, { $pull: { auths: this._id } }),
+      this.model(this.shared_resource_type).findByIdAndUpdate({ _id: this._id }, { $pull: { auths: this._id } })
     ]).then(next);
   })
   .pre("save", function(next) {
@@ -32,9 +31,11 @@ const Auth = new mongoose.Schema(
   .post("save", function() {
     if (this.wasNew) {
       Promise.all([
-        this.model("User").findOneAndUpdate({ _id: this.user }, { $addToSet: { auths: this._id } }),
-        this.model("Course").findOneAndUpdate({ _id: this.shared_resource }, { $addToSet: { auths: this._id } }),
-        this.model("UserGroup").findOneAndUpdate({ _id: this.shared_resource }, { $addToSet: { auths: this._id } })
+        this.model("User").findByIdAndUpdate({ _id: this.user }, { $addToSet: { auths: this._id } }),
+        this.model(this.shared_resource_type).findByIdAndUpdate(
+          { _id: this.shared_resource },
+          { $addToSet: { auths: this._id } }
+        )
       ]);
     }
   });

@@ -211,3 +211,11 @@ button {
   -webkit-animation-play-state: paused;
   animation-play-state: paused;
 } */
+
+::-webkit-scrollbar {
+  height: 0.8rem;
+  width: 0.8rem;
+  background: transparent;
+  z-index: 12;
+  overflow: visible;
+}

@@ -1,6 +1,6 @@
 query courses {
   courses {
-    id
+    _id
     name
     prefix
     suffix
@@ -10,25 +10,25 @@ query courses {
       role
     }
     user_groups {
-      id
+      _id
       name
       auths {
-        id
+        _id
         role
       }
     }
     registration_sections {
-      id
+      _id
       name
       auths {
-        id
+        _id
         role
       }
       user_groups {
-        id
+        _id
         name
         auths {
-          id
+          _id
           role
         }
       }

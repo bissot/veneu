@@ -73,11 +73,19 @@ const Course = new mongoose.Schema(
   })
   .post("save", function() {
     if (this.wasNew) {
-      this.model("Auth").create({ shared_resource: this._id, user: this.creator._id, role: "INSTRUCTOR" });
+      this.model("Auth")
+        .create({
+          shared_resource: this._id,
+          shared_resource_type: "Course",
+          user: this.creator._id,
+          role: "INSTRUCTOR"
+        })
+        .then(auth => {
+          global.pubsub.publish("AUTH_CREATED", {
+            authCreated: auth
+          });
+        });
     }
   });
-// .pre("remove", function(next) {
-//   this.model("CourseRole").deleteMany({ course: this._id }, next);
-// });
 
 module.exports = mongoose.model("Course", Course);

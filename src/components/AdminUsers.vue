@@ -63,7 +63,7 @@ export default {
       };
     },
     onUserUpdated(previousResult, { subscriptionData }) {
-      const index = previousResult.users.findIndex(x => x.id == subscriptionData.data.userUpdated.id);
+      const index = previousResult.users.findIndex(x => x._id == subscriptionData.data.userUpdated.id);
       previousResult.users[index] = subscriptionData.data.userUpdated;
       return {
         users: previousResult.users

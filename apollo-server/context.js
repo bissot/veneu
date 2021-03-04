@@ -14,7 +14,10 @@ const getUser = async token =>
 
 module.exports = async ({ req, connection }) => {
   if (connection) {
-    return connection.context;
+    return {
+      ...connection.context,
+      models
+    };
   } else {
     const auth = (req.headers && req.headers.authorization && req.headers.authorization.split(" ")) || [];
     if (auth.length == 2 && auth[0] == "Bearer") {

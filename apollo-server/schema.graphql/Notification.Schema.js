@@ -2,7 +2,7 @@ const { gql } = require("apollo-server-express");
 
 module.exports = gql`
   type Notification {
-    id: ID!
+    _id: ID!
     text: String!
     redirect: String!
     user: User!
@@ -10,14 +10,14 @@ module.exports = gql`
   }
 
   extend type Query {
-    notification(id: ID!): Notification!
+    notification(_id: ID!): Notification!
     notifications: [Notification!]!
   }
 
   extend type Mutation {
     createNotification(text: String!, redirect: String!, user: ID!): Notification!
-    updateNotification(id: ID!, seen: Boolean!): Notification!
-    deleteNotification(id: ID!): Notification!
+    updateNotification(_id: ID!, seen: Boolean!): Notification!
+    deleteNotification(_id: ID!): Notification!
   }
 
   extend type Subscription {
