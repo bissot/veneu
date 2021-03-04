@@ -29,7 +29,12 @@
           :content-inset-level="0.5"
           group="courseGroup"
         >
-          <q-item slot="header" class="col q-pl-md q-py-sm q-mr-sm q-pr-none" clickable>
+          <q-item
+            slot="header"
+            class="col q-pl-md q-py-sm q-mr-sm q-pr-none"
+            clickable
+            :to="{ name: 'Course', params: { _id: course._id } }"
+          >
             <q-item-section avatar>
               <q-icon name="school" />
             </q-item-section>

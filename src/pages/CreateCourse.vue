@@ -164,9 +164,6 @@ export default {
   overflow: auto;
   text-align: center;
 }
-h1 {
-  font-size: 2rem;
-}
 .form {
   margin: auto;
   max-width: 24rem;

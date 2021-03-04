@@ -46,14 +46,14 @@ export default {
   height: 100%;
   overflow: auto;
 }
-h1 {
-  font-family: "Exo 2";
-  /* font-size: calc(8vw + 3rem); */
-  padding: 0;
-  margin: 0;
-}
 .spinner {
   width: 14rem;
   margin: auto;
+}
+h1 {
+  font-size: 6rem !important;
+  line-height: 5rem !important;
+  margin-top: 0;
+  margin-bottom: 2rem;
 }
 </style>

@@ -1,0 +1,37 @@
+query course($_id: ID!) {
+  course(_id: $_id) {
+    _id
+    name
+    prefix
+    suffix
+    start
+    end
+    auths {
+      role
+    }
+    user_groups {
+      _id
+      name
+      auths {
+        _id
+        role
+      }
+    }
+    registration_sections {
+      _id
+      name
+      auths {
+        _id
+        role
+      }
+      user_groups {
+        _id
+        name
+        auths {
+          _id
+          role
+        }
+      }
+    }
+  }
+}

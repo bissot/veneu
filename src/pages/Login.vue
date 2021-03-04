@@ -88,8 +88,6 @@ export default {
   overflow: auto;
 }
 h1 {
-  font-family: "Exo 2";
-  /* font-size: calc(6vw + 1rem); */
   padding: 0;
   margin: 0;
 }

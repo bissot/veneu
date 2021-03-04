@@ -159,7 +159,7 @@
       </q-page>
     </q-page-container>
 
-    <q-footer reveal class="text-primary">
+    <q-footer class="text-primary">
       <q-toolbar class="justify-center">
         Venue | About |
         <q-avatar size="sm" class="q-mx-sm">
@@ -173,6 +173,7 @@
 <script>
 import VenueLogo from "./components/VenueLogo";
 import CourseList from "./components/CourseList";
+import "quasar/icon-set/fontawesome-v5";
 import "./assets/venue.css";
 export default {
   name: "App",
