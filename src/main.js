@@ -5,11 +5,6 @@ import { createProvider } from "./vue-apollo";
 import router from "./router";
 import "./quasar";
 
-import VueQr from "vue-qr";
-new Vue({
-  components: { VueQr }
-});
-
 Vue.config.productionTip = false;
 
 Vue.directive("click-off", {
