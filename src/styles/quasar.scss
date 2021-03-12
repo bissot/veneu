@@ -49,7 +49,8 @@ body,
   padding-top: 0rem !important;
 }
 
-.q-expansion-item__container .q-item .q-focus-helper,
+.q-focusable,
+.q-hoverable,
 #me {
   border-radius: 1rem !important;
 }
@@ -91,7 +92,9 @@ body,
 }
 
 .q-btn:focus:not(.bg-primary),
-.q-btn:hover:not(.bg-primary) {
+.q-btn:hover:not(.bg-primary),
+.q-focusable:active .q-focus-helper,
+.q-hoverable:active {
   box-shadow: var(--field-shadow) !important;
 }
 
