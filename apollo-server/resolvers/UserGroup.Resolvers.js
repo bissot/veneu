@@ -20,9 +20,9 @@ module.exports = {
     }
   },
   Mutation: {
-    createUserGroup: (parent, { name, parent_resource }, { requester, models: { UserGroup } }, info) => {
+    createUserGroup: (parent, { name, description, parent_resource }, { requester, models: { UserGroup } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return UserGroup.create({ name, creator: requester._id, parent_resource }).then(userGroup => {
+      return UserGroup.create({ name, creator: requester._id, description, parent_resource }).then(userGroup => {
         return global.pubsub.publish(eventName.COURSE_CREATED, { userGroupCreated: userGroup }).then(done => {
           return userGroup;
         });

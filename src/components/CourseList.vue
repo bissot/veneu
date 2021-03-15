@@ -5,6 +5,11 @@
       :variables="{ user: me._id }"
       :update-query="onAuthCreated"
     />
+    <!-- <ApolloSubscribeToMore
+      :document="require('../graphql/AddedToUseGroup.gql')"
+      :variables="{ user: me._id }"
+      :update-query="onAuthCreated"
+    /> -->
     <template slot-scope="{ result: { loading, error, data } }">
       <div v-if="loading">Loading...</div>
       <div v-if="error">Error...</div>
@@ -124,6 +129,7 @@
             <q-list class="rounded-borders">
               <q-item
                 clickable
+                :to="{ name: 'UserGroup', params: { _id: group._id } }"
                 class="cursor-pointer q-pr-sm"
                 v-for="group of course.user_groups"
                 :key="group.id"

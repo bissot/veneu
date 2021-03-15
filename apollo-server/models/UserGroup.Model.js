@@ -6,6 +6,10 @@ const UserGroup = new mongoose.Schema(
       type: String,
       required: true
     },
+    description: {
+      type: String,
+      required: true
+    },
     auths: [
       {
         type: mongoose.Schema.Types.ObjectId,

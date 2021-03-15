@@ -24,7 +24,7 @@
           color="primary"
         >
           <q-timeline-entry heading>
-            Assignments
+            Timeline heading
             <br />
           </q-timeline-entry>
 

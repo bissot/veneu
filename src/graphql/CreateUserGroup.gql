@@ -1,7 +1,7 @@
 #import "./UserGroupFrag.gql"
 
-mutation createUserGroup($name: String!, $parent_resource: ID) {
-  createUserGroup(name: $name, parent_resource: $parent_resource) {
+mutation createUserGroup($name: String!, $description: String!, $parent_resource: ID) {
+  createUserGroup(name: $name, description: $description, parent_resource: $parent_resource) {
     ...UserGroup
   }
 }

@@ -6,7 +6,7 @@
       </div>
       <ApolloMutation
         :mutation="require('../graphql/CreateUserGroup.gql')"
-        :variables="{ name, parent_resource }"
+        :variables="{ name, description, parent_resource }"
         class="form"
         @done="handleCreateUserGroup"
       >
@@ -19,6 +19,15 @@
               v-model="name"
               label="Group Name"
               placeholder="e.g. Team 2"
+            >
+            </q-input>
+            <q-input
+              color="primary"
+              class="text-primary q-mt-none"
+              v-model="description"
+              filled
+              placeholder="Description"
+              type="textarea"
             >
             </q-input>
             <q-bar class="q-pa-none q-gutter-x-md">
@@ -38,6 +47,7 @@ export default {
     return {
       step: 1,
       name: "",
+      description: "",
       parent_resource: null
     };
   },
