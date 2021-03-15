@@ -1,11 +1,12 @@
 <template>
   <div>
     <div id="seats">
-      <q-icon size="xl" color="primary" name="event_seat" v-for="claim in claimed" :key="claim.code"></q-icon>
+      <!-- <q-icon size="xl" color="primary" name="event_seat" v-for="claim in current" :key="claim.code"></q-icon> -->
     </div>
     <vue-qr
-      v-if="current"
-      :text="getBaseUrl() + '/checkin/' + current.code + '/scan'"
+      v-for="(ticket, i) in tickets"
+      :key="ticket.code"
+      :text="getBaseUrl() + '/checkin/' + ticket.code + '/scan'"
       :size="1024"
       backgroundColor="#dfdfdf"
       colorLight="#dfdfdf"
@@ -14,34 +15,23 @@
       width="200"
       height="200"
       class="q-ma-md"
-    ></vue-qr>
-    <ApolloMutation
-      :mutation="
-        gql => gql`
-          mutation approveTicket($code: String!) {
-            approveTicket(code: $code)
-          }
-        `
+      :style="{ display: i != current ? 'none' : 'block' }"
+    />
+    {{ current }}
+    <q-btn @click="current++">+1</q-btn>
+    looking for {{ tickets[current].code }}
+    <ApolloSubscribeToMore
+      :document="
+        gql =>
+          gql`
+            subscription claimedTicket($code: String!) {
+              claimedTicket(code: $code)
+            }
+          `
       "
-      :variables="{ code: current.code }"
-    >
-      <template v-slot="{ mutate, loading, error }">
-        looking for {{ code }}
-        <ApolloSubscribeToMore
-          :document="
-            gql =>
-              gql`
-                subscription claimedTicket($code: String!) {
-                  claimedTicket(code: $code)
-                }
-              `
-          "
-          :variables="{ code }"
-          :updateQuery="onClaimed"
-        />
-        <p v-if="error">An error occurred: {{ error }}</p>
-      </template>
-    </ApolloMutation>
+      :variables="{ code: tickets[current].code }"
+      :updateQuery="onClaimed"
+    />
   </div>
 </template>
 
@@ -51,16 +41,15 @@ export default {
   components: { VueQr },
   data() {
     return {
-      claimed: [],
-      current: {},
-      next: {},
-      code: ""
+      current: -1,
+      tickets: []
     };
   },
   created() {
-    this.current = this.generateTicket();
-    this.next = this.generateTicket();
-    this.code = this.current.code;
+    for (let i = 0; i < 50; i++) {
+      this.tickets.push(this.generateTicket());
+    }
+    this.current = 0;
   },
   methods: {
     getBaseUrl() {
@@ -69,11 +58,9 @@ export default {
     },
     onClaimed(previousResult, { subscriptionData }) {
       console.log("received", subscriptionData.data.claimedTicket);
-      if (subscriptionData.data.claimedTicket == this.current.code) {
-        this.claimed.push(this.current);
-        this.code = this.next.code;
-        this.current = this.next;
-        this.next = this.generateTicket();
+      if (subscriptionData.data.claimedTicket == this.tickets[this.current].code) {
+        this.current++;
+        if (this.current >= 50) location.reload();
       }
     },
     generateTicket() {

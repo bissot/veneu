@@ -52,15 +52,14 @@ export default {
                     const { height, width } = videoTrack.getSettings();
                     self.canvas.width = width;
                     self.canvas.height = height;
-                    self.canvas.getContext("2d").drawImage(video, 0, 0, width, height);
+                    self.canvas.getContext("2d", { alpha: false }).drawImage(video, 0, 0, width, height);
                     const data = jsQR(
-                      self.canvas.getContext("2d").getImageData(0, 0, width, height).data,
+                      self.canvas.getContext("2d", { alpha: false }).getImageData(0, 0, width, height).data,
                       width,
                       height
                     );
                     if (data) {
                       let found = data.data.split("/")[4];
-                      console.log(data.data, found);
                       self.$apollo
                         .mutate({
                           mutation: gql`
