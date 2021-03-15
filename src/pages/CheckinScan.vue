@@ -76,7 +76,7 @@ export default {
                   } else {
                     self.handleStopScreenScan();
                   }
-                }, 100);
+                }, 50);
               });
             }
           })

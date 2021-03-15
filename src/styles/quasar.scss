@@ -64,7 +64,8 @@ body,
   box-shadow: var(--button-shadow);
   animation: grow-in-button 1s !important;
 }
-.q-date__content .q-btn {
+.q-date__content .q-btn,
+.q-btn__wrapper::before {
   box-shadow: unset !important;
 }
 

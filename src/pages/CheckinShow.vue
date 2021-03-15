@@ -42,7 +42,8 @@ export default {
   data() {
     return {
       current: -1,
-      tickets: []
+      tickets: [],
+      compareTo: ""
     };
   },
   created() {
@@ -50,18 +51,28 @@ export default {
       this.tickets.push(this.generateTicket());
     }
     this.current = 0;
+    this.compareTo = this.tickets[this.current].code;
   },
   methods: {
     getBaseUrl() {
       var getUrl = window.location;
       return getUrl.protocol + "//" + getUrl.host;
     },
-    onClaimed(previousResult, { subscriptionData }) {
-      console.log("received", subscriptionData.data.claimedTicket);
-      if (subscriptionData.data.claimedTicket == this.tickets[this.current].code) {
-        this.current++;
-        if (this.current >= 50) location.reload();
+    onClaimed(
+      previousResult,
+      {
+        subscriptionData: {
+          data: { claimedTicket }
+        }
       }
+    ) {
+      const received = claimedTicket;
+      this.current++; // iteration logic
+      this.compareTo = this.tickets[this.current].code; // iteration logic
+      if (this.current >= 49) location.reload(); // iteration logic
+      // if (received == this.compareTo) {
+      //   // if iteration goes here it's slower
+      // }
     },
     generateTicket() {
       var result = "";

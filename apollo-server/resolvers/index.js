@@ -43,7 +43,7 @@ module.exports = [
       claimedTicket: {
         subscribe: withFilter(
           () => global.pubsub.asyncIterator(["CLAIMED_TICKED"]),
-          (payload, variables) => true //payload.claimedTicket.code == variables.code
+          (payload, variables) => payload.claimedTicket.code == variables.code
         ),
         resolve(payload) {
           return payload.claimedTicket.code;
