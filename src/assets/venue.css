@@ -116,45 +116,6 @@ button {
   animation: grow-in 1s;
 }
 
-.btn:last-of-type {
-  margin: 1rem 0rem 0rem 0rem;
-}
-
-.btn:hover,
-.btn:target,
-.btn:focus,
-.btn:active {
-  background: var(--venue-dark) !important;
-  color: none;
-  border-radius: 0.25rem;
-  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-  outline: none;
-}
-
-.btn-primary {
-  color: var(--venue-blue);
-  border: 0.2rem solid var(--venue-blue);
-}
-
-.btn-primary:hover,
-.btn-primary:target,
-.btn-primary:focus,
-.btn-primary:active {
-  background: var(--venue-blue) !important;
-}
-
-.btn-secondary {
-  color: var(--venue-red);
-  border: 0.2rem solid var(--venue-red);
-}
-
-.btn-secondary:hover,
-.btn-secondary:target,
-.btn-secondary:focus,
-.btn-secondary:active {
-  background: var(--venue-red) !important;
-}
-
 /* WebKit and Opera browsers */
 @-webkit-keyframes spinner {
   from {

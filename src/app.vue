@@ -1,60 +1,62 @@
 <template>
   <q-layout id="app" view="lhr Lpr lfr">
-    <q-header class="text-primary">
-      <q-toolbar v-if="getAuth()">
-        <q-btn flat round size="sm" icon="menu" class="q-mx-sm" title="Menu" aria-label="Menu" @click="left = !left" />
+    <ApolloQuery :query="require('./graphql/Me.gql')">
+      <template slot-scope="{ result: { loading, error, data } }">
+        <div v-if="loading">Loading...</div>
+        <div v-if="error">Error...</div>
+        <div v-if="data">
+          <q-header class="text-primary">
+            <q-toolbar v-if="data.me">
+              <q-btn
+                flat
+                round
+                size="sm"
+                icon="menu"
+                class="q-mx-sm"
+                title="Menu"
+                aria-label="Menu"
+                @click="left = !left"
+              />
 
-        <!-- <q-icon size="sm" flat round name="menu" @click="left = !left" /> -->
-        <!-- <q-input borderless v-model="searchString" class="q-ml-md">
-          <template v-slot:append>
-            <q-icon v-if="searchString === ''" name="search" />
-            <q-icon v-else name="clear" class="cursor-pointer" @click="searchString = ''" />
-          </template>
-        </q-input> -->
-        <q-toolbar-title>
-          <q-avatar @click="$router.push({ name: 'Dashboard' })">
-            <VenueLogo id="nav-logo" />
-          </q-avatar>
-        </q-toolbar-title>
+              <q-toolbar-title>
+                <q-avatar @click="$router.push({ name: 'Dashboard' })">
+                  <VenueLogo id="nav-logo" />
+                </q-avatar>
+              </q-toolbar-title>
 
-        <q-btn
-          flat
-          round
-          size="sm"
-          icon="insights"
-          class="q-mx-sm"
-          title="Voyager"
-          aria-label="Voyager"
-          @click="$router.push({ name: 'Voyager' })"
-        />
-        <q-btn
-          flat
-          size="sm"
-          round
-          icon="volunteer_activism"
-          class="q-mx-sm"
-          title="Donate"
-          aria-label="Donate"
-          @click="handleDonate"
-        />
-        <q-btn flat size="sm" round icon="api" class="q-mx-sm" title="API" aria-label="API" @click="handleAPI" />
-      </q-toolbar>
-    </q-header>
+              <q-btn
+                flat
+                round
+                size="sm"
+                icon="insights"
+                class="q-mx-sm"
+                title="Voyager"
+                aria-label="Voyager"
+                @click="$router.push({ name: 'Voyager' })"
+              />
+              <q-btn
+                flat
+                size="sm"
+                round
+                icon="volunteer_activism"
+                class="q-mx-sm"
+                title="Donate"
+                aria-label="Donate"
+                @click="handleDonate"
+              />
+              <q-btn flat size="sm" round icon="api" class="q-mx-sm" title="API" aria-label="API" @click="handleAPI" />
+            </q-toolbar>
+          </q-header>
 
-    <q-drawer v-if="getAuth()" show-if-above v-model="left" side="left">
-      <q-input borderless v-model="searchString" label="Search..." class="q-ml-md q-mr-md">
-        <template v-slot:prepend>
-          <q-icon name="search" />
-        </template>
-        <template v-slot:append v-if="searchString">
-          <q-icon name="close" @click="searchString = ''" class="cursor-pointer" />
-        </template>
-      </q-input>
-      <ApolloQuery :query="require('./graphql/Me.gql')">
-        <template slot-scope="{ result: { loading, error, data } }">
-          <div v-if="loading">Loading...</div>
-          <div v-if="error">Error...</div>
-          <div v-if="data">
+          <q-drawer v-if="data.me" show-if-above v-model="left" side="left">
+            <q-input borderless v-model="searchString" label="Search..." class="q-ml-md q-mr-md">
+              <template v-slot:prepend>
+                <q-icon name="search" />
+              </template>
+              <template v-slot:append v-if="searchString">
+                <q-icon name="close" @click="searchString = ''" class="cursor-pointer" />
+              </template>
+            </q-input>
             <q-item clickable class="rounded-borders" id="me">
               <q-item-section avatar>
                 <q-avatar class="spinner">
@@ -147,25 +149,25 @@
                 </q-list>
               </q-expansion-item>
             </q-list>
-          </div>
-        </template>
-      </ApolloQuery>
-    </q-drawer>
+          </q-drawer>
 
-    <q-page-container>
-      <q-page>
-        <router-view />
-      </q-page>
-    </q-page-container>
+          <q-page-container>
+            <q-page>
+              <router-view />
+            </q-page>
+          </q-page-container>
 
-    <q-footer class="text-primary">
-      <q-toolbar class="justify-center">
-        Venue | About |
-        <q-avatar size="sm" class="q-mx-sm">
-          <img src="./assets/github.svg" />
-        </q-avatar>
-      </q-toolbar>
-    </q-footer>
+          <q-footer class="text-primary">
+            <q-toolbar class="justify-center">
+              Venue | About |
+              <q-avatar size="sm" class="q-mx-sm">
+                <img src="./assets/github.svg" />
+              </q-avatar>
+            </q-toolbar>
+          </q-footer>
+        </div>
+      </template>
+    </ApolloQuery>
   </q-layout>
 </template>
 
@@ -191,9 +193,6 @@ export default {
     handleLogout() {
       localStorage.removeItem("token");
       location.reload();
-    },
-    getAuth() {
-      return localStorage.getItem("token");
     },
     handleDonate() {
       var win = window.open(

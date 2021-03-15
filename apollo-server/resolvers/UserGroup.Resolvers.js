@@ -29,16 +29,16 @@ module.exports = {
       });
     },
     updateUserGroup(parent, { _id, ...patch }, { requester, models: { UserGroup } }, info) {
-      if (!requester || requester._id != id) throw new ForbiddenError("Not allowed");
-      return UserGroup.findOneAndUpdate({ _id: _id }, patch, { new: true }).then(userGroup => {
+      if (!requester || requester._id != _id) throw new ForbiddenError("Not allowed");
+      return UserGroup.findOneAndUpdate({ _id }, patch, { new: true }).then(userGroup => {
         return global.pubsub.publish(eventName.USERGROUP_UPDATED, { userGroupUpdated: userGroup }).then(done => {
           return userGroup;
         });
       });
     },
     deleteUserGroup: (parent, { _id }, { requester, models: { UserGroup } }, info) => {
-      if (!requester || requester._id != id) throw new ForbiddenError("Not allowed");
-      return UserGroup.findOneAndDelete({ _id: _id }).then(userGroup => {
+      if (!requester || requester._id != _id) throw new ForbiddenError("Not allowed");
+      return UserGroup.findOneAndDelete({ _id }).then(userGroup => {
         return global.pubsub.publish(eventName.USERGROUP_DELETED, { userGroupDeleted: userGroup }).then(done => {
           return userGroup;
         });
