@@ -3,7 +3,7 @@
     <div class="vertical-center">
       <ApolloMutation
         :mutation="require('../graphql/CreateCourse.gql')"
-        :variables="{ name, prefix, suffix, start, end }"
+        :variables="{ name, prefix, suffix, start, end, description }"
         class="form"
         @done="handleCreateCourse"
       >
@@ -21,6 +21,17 @@
               placeholder="e.g. Computer Science I"
             >
             </q-input>
+
+            <q-input
+              color="primary"
+              class="text-primary q-mt-none"
+              v-model="description"
+              filled
+              placeholder="Description"
+              type="textarea"
+            >
+            </q-input>
+
             <q-separator class="q-my-lg" />
             <q-input
               type="text"
@@ -139,7 +150,8 @@ export default {
       prefix: "",
       suffix: null,
       start: "",
-      end: ""
+      end: "",
+      description: ""
     };
   },
   methods: {
@@ -147,7 +159,7 @@ export default {
       this.$router.go(-1);
     },
     formValid() {
-      return this.name.length && this.prefix.length && this.suffix && this.start.length && this.end.length;
+      return this.name.length && this.prefix.length && this.suffix && this.start.length && this.end.length && this.description.length;
     },
     handleCreateCourse() {
       this.$router.push({ name: "Dashboard" });
