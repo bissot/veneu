@@ -1,5 +1,6 @@
 <template>
   <q-layout id="app" view="lhr Lpr lfr" class="text-primary">
+    <q-ajax-bar position="top" color="primary" size="0.25rem" />
     <ApolloQuery :query="require('./graphql/Me.gql')">
       <template slot-scope="{ result: { loading, error, data } }">
         <div v-if="loading">Loading...</div>
@@ -7,16 +8,7 @@
         <div v-if="data">
           <q-header class="text-primary">
             <q-toolbar v-if="data.me">
-              <q-btn
-                flat
-                round
-                size="sm"
-                icon="menu"
-                class="q-mx-sm"
-                title="Menu"
-                aria-label="Menu"
-                @click="left = !left"
-              />
+              <q-btn round size="sm" icon="menu" class="q-mx-sm" title="Menu" aria-label="Menu" @click="left = !left" />
 
               <q-toolbar-title>
                 <q-avatar @click="$router.push({ name: 'Dashboard' })">
@@ -25,7 +17,6 @@
               </q-toolbar-title>
 
               <q-btn
-                flat
                 round
                 size="sm"
                 icon="insights"
@@ -34,8 +25,7 @@
                 aria-label="Voyager"
                 @click="$router.push({ name: 'Voyager' })"
               />
-              <q-btn
-                flat
+              <!-- <q-btn
                 size="sm"
                 round
                 icon="volunteer_activism"
@@ -43,8 +33,11 @@
                 title="Donate"
                 aria-label="Donate"
                 @click="handleDonate"
-              />
-              <q-btn flat size="sm" round icon="api" class="q-mx-sm" title="API" aria-label="API" @click="handleAPI" />
+              /> -->
+              <q-btn size="sm" round icon="api" class="q-mx-sm" title="API" aria-label="API" @click="handleAPI" />
+              <q-btn size="sm" round icon="notifications" class="q-mx-sm" title="API" aria-label="API">
+                <q-badge rounded color="red" floating label="1+" />
+              </q-btn>
             </q-toolbar>
           </q-header>
 
