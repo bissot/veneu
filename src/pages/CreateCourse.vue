@@ -159,7 +159,14 @@ export default {
       this.$router.go(-1);
     },
     formValid() {
-      return this.name.length && this.prefix.length && this.suffix && this.start.length && this.end.length && this.description.length;
+      return (
+        this.name.length &&
+        this.prefix.length &&
+        this.suffix &&
+        this.start.length &&
+        this.end.length &&
+        this.description.length
+      );
     },
     handleCreateCourse() {
       this.$router.push({ name: "Dashboard" });

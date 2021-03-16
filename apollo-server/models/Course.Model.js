@@ -36,9 +36,9 @@ const Course = new mongoose.Schema(
       type: Date,
       required: true
     },
-    description:{
+    description: {
       type: String,
-      required: true
+      required: false
     },
     user_groups: [
       {
