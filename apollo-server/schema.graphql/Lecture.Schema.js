@@ -18,7 +18,7 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createLecture(name: String!, start: Date!, end: Date!): Lecture!
+    createLecture(name: String!, start: Date!, end: Date!, parent_resource: ID!): Lecture!
     updateLecture(_id: ID!, name: String, start: Date, end: Date): Lecture!
     deleteLecture(_id: ID!): Lecture!
   }

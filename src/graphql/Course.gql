@@ -6,8 +6,15 @@ query course($_id: ID!) {
     suffix
     start
     end
+    description
     auths {
+      _id
       role
+      user{
+        first_name
+        last_name
+        email
+      }
     }
     user_groups {
       _id

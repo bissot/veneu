@@ -6,7 +6,12 @@
       <div v-if="data" class="row q-px-md" id="courseloaded">
         <div class="col-12 col-md-6 q-px-sm">
           <h1>{{ data.course.name }}</h1>
-          More info about the course
+          {{ data.course.description }}
+          Instructors
+          <div v-for="auth in data.course.auths.filter(a => a.role == 'INSTRUCTOR')" :key="auth._id">
+            {{ auth.user.first_name }} {{ auth.user.last_name }}
+          </div>
+
           <h2>Resources</h2>
           <q-tree class="text-primary" :nodes="simple" accordion node-key="label" :expanded.sync="expanded" />
         </div>
