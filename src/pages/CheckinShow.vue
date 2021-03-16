@@ -1,25 +1,27 @@
 <template>
-  <div>
-    <div id="seats">
-      <!-- <q-icon size="xl" color="primary" name="event_seat" v-for="claim in current" :key="claim.code"></q-icon> -->
+  <div class="row full-height justify-center q-px-xl q-pt-xl text-primary">
+    <q-responsive :ratio="1" class="neu-convex" style="width: 50vh; max-width: 100%;">
+      <vue-qr
+        :key="current.code"
+        :text="getBaseUrl() + '/checkin/' + current.code + '/scan'"
+        :size="512"
+        backgroundColor="#dfdfdf"
+        colorLight="#dfdfdf"
+        colorDark="#1a4974"
+        :margin="0"
+        :style="{ height: '100%', width: '100%' }"
+        class="q-pa-md"
+      />
+    </q-responsive>
+    <div v-if="$q.platform.is.mobile" id="seats" class="row full-width justify-center q-mt-lg">
+      <q-icon size="sm" color="primary" name="event_seat" /> x{{ claimed.length }}
     </div>
-    <vue-qr
-      v-for="(ticket, i) in tickets"
-      :key="ticket.code"
-      :text="getBaseUrl() + '/checkin/' + ticket.code + '/scan'"
-      :size="1024"
-      backgroundColor="#dfdfdf"
-      colorLight="#dfdfdf"
-      colorDark="#1a4974"
-      :margin="0"
-      width="200"
-      height="200"
-      class="q-ma-md"
-      :style="{ display: i != current ? 'none' : 'block' }"
-    />
-    {{ current }}
-    <q-btn @click="current++">+1</q-btn>
-    looking for {{ tickets[current].code }}
+    <div v-else id="seats" class="row full-width justify-center">
+      <div class="row full-width justify-center q-mt-lg">
+        <p>{{ claimed.length }} seats claimed</p>
+      </div>
+      <q-icon size="lg" color="primary" name="event_seat" v-for="claim in claimed" :key="claim.code" />
+    </div>
     <ApolloSubscribeToMore
       :document="
         gql =>
@@ -29,7 +31,7 @@
             }
           `
       "
-      :variables="{ code: tickets[current].code }"
+      :variables="{ code: current.code }"
       :updateQuery="onClaimed"
     />
   </div>
@@ -41,17 +43,16 @@ export default {
   components: { VueQr },
   data() {
     return {
-      current: -1,
-      tickets: [],
-      compareTo: ""
+      claimed: [],
+      current: this.generateTicket(),
+      next: this.generateTicket()
     };
   },
   created() {
-    for (let i = 0; i < 50; i++) {
-      this.tickets.push(this.generateTicket());
-    }
-    this.current = 0;
-    this.compareTo = this.tickets[this.current].code;
+    // for (let i = 0; i < 50; i++) {
+    //   this.tickets.push(this.generateTicket());
+    // }
+    // this.current = 0;
   },
   methods: {
     getBaseUrl() {
@@ -66,10 +67,10 @@ export default {
         }
       }
     ) {
-      const received = claimedTicket;
-      this.current++; // iteration logic
-      this.compareTo = this.tickets[this.current].code; // iteration logic
-      if (this.current >= 49) location.reload(); // iteration logic
+      this.claimed.push(this.current);
+      this.current = this.next; // iteration logic
+      this.next = this.generateTicket();
+      if (this.claimed.length >= 50) location.reload(); // iteration logic
       // if (received == this.compareTo) {
       //   // if iteration goes here it's slower
       // }

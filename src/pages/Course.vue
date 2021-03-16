@@ -8,7 +8,7 @@
           <h1>{{ data.course.name }}</h1>
           More info about the course
           <h2>Resources</h2>
-          <q-tree :nodes="simple" accordion node-key="label" :expanded.sync="expanded" />
+          <q-tree class="text-primary" :nodes="simple" accordion node-key="label" :expanded.sync="expanded" />
         </div>
         <!-- <q-separator v-if="!($q.screen.lt.sm || $q.screen.lt.md)" vertical spaced="-1px" inset /> -->
         <q-timeline

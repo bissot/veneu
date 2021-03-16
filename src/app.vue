@@ -1,5 +1,5 @@
 <template>
-  <q-layout id="app" view="lhr Lpr lfr">
+  <q-layout id="app" view="lhr Lpr lfr" class="text-primary">
     <ApolloQuery :query="require('./graphql/Me.gql')">
       <template slot-scope="{ result: { loading, error, data } }">
         <div v-if="loading">Loading...</div>
@@ -152,7 +152,7 @@
           </q-drawer>
 
           <q-page-container>
-            <q-page>
+            <q-page class="text-primary">
               <router-view />
             </q-page>
           </q-page-container>

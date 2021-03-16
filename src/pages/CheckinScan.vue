@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-primary justify-center full-width row">
     <ApolloSubscribeToMore
       :document="
         gql =>
@@ -11,8 +11,14 @@
       "
       :variables="{ code }"
     />
-    <q-input v-model="code" />
-    <q-btn v-if="!screen_scanning" class="q-ma-md" @click="handleStartScreenScan()">Scan</q-btn>
+    <q-btn
+      v-if="!screen_scanning"
+      class="q-ma-md"
+      @click="handleStartScreenScan()"
+      icon-right="qr_code_scanner"
+      size="xl"
+      label="Scan"
+    />
     <q-btn v-else class="q-ma-md" @click="handleStopScreenScan()">Stop</q-btn>
     <video v-if="screen_stream" id="captured-screen" autoplay :style="{ display: 'none' }"></video>
   </div>
@@ -28,7 +34,8 @@ export default {
       screen_scanning: false,
       screen_stream: null,
       screen_scanner: null,
-      canvas: null
+      canvas: null,
+      last: ""
     };
   },
   methods: {
@@ -76,7 +83,7 @@ export default {
                   } else {
                     self.handleStopScreenScan();
                   }
-                }, 50);
+                }, 200);
               });
             }
           })
