@@ -31,7 +31,7 @@ module.exports = {
       });
     },
     updateRegistrationSection(parent, { _id, ...patch }, { requester, models: { RegistrationSection } }, info) {
-      if (!requester || requester._id != id) throw new ForbiddenError("Not allowed");
+      if (!requester) throw new ForbiddenError("Not allowed");
       return RegistrationSection.findOneAndUpdate({ _id: _id }, patch, { new: true }).then(registrationSection => {
         return global.pubsub
           .publish(eventName.REGISTRATIONSECTION_UPDATED, { registrationSectionUpdated: registrationSection })
@@ -41,7 +41,7 @@ module.exports = {
       });
     },
     deleteRegistrationSection: (parent, { _id }, { requester, models: { RegistrationSection } }, info) => {
-      if (!requester || requester._id != id) throw new ForbiddenError("Not allowed");
+      if (!requester) throw new ForbiddenError("Not allowed");
       return RegistrationSection.findOneAndDelete({ _id: _id }).then(registrationSection => {
         return global.pubsub
           .publish(eventName.REGISTRATIONSECTION_DELETED, { registrationSectionDeleted: registrationSection })

@@ -9,14 +9,15 @@
       <div v-if="loading">Loading...</div>
       <div v-if="error">Error...</div>
       <div v-if="data">
-        <q-item-label header class="text-primary q-pb-md">Courses </q-item-label>
-        <div class="q-pb-md">
+        <q-item-label header class="text-primary q-pb-md">Courses</q-item-label>
+        <div class="">
           <q-btn-group spread flat class="q-mx-md q-mb-none">
             <q-btn dense size="sm" label="New" icon="add" :to="{ name: 'CreateCourse' }" />
             <q-btn disabled dense size="sm" label="Join" icon="group_add" />
             <q-btn dense size="sm" label="Edit" icon="edit" disabled />
           </q-btn-group>
         </div>
+        <q-item-label header class="text-primary q-pb-md">Instructor for...</q-item-label>
         <q-expansion-item
           v-for="course of data.courses"
           :key="course.id"

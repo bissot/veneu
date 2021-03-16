@@ -43,16 +43,16 @@ module.exports = {
         });
     },
     updateUser(parent, { _id, ...patch }, { requester, models: { User } }, info) {
-      if (!requester || requester._id != id) throw new ForbiddenError("Not allowed");
-      return User.findOneAndUpdate({ _id: _id }, patch, { new: true }).then(user => {
+      if (!requester || requester._id != _id) throw new ForbiddenError("Not allowed");
+      return User.findOneAndUpdate({ _id }, patch, { new: true }).then(user => {
         return global.pubsub.publish(eventName.USER_UPDATED, { userUpdated: user }).then(done => {
           return user;
         });
       });
     },
     deleteUser: (parent, { _id }, { requester, models: { User } }, info) => {
-      if (!requester || requester._id != id) throw new ForbiddenError("Not allowed");
-      return User.findOneAndDelete({ _id: _id }).then(user => {
+      if (!requester || requester._id != _id) throw new ForbiddenError("Not allowed");
+      return User.findOneAndDelete({ _id }).then(user => {
         return global.pubsub.publish(eventName.USER_DELETED, { userDeleted: user }).then(done => {
           return user;
         });

@@ -1,5 +1,5 @@
 import Vue from "vue";
-import App from "./App.vue";
+import app from "./app.vue";
 import "./registerServiceWorker";
 import { createProvider } from "./vue-apollo";
 import router from "./router";
@@ -26,5 +26,5 @@ Vue.directive("click-off", {
 new Vue({
   apolloProvider: createProvider(),
   router,
-  render: h => h(App)
+  render: h => h(app)
 }).$mount("#app");
