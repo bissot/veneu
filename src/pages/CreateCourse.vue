@@ -23,11 +23,12 @@
             </q-input>
 
             <q-input
+              standout="bg-primary text-white q-ma-none"
               color="primary"
-              class="text-primary q-mt-none"
+              class="text-primary"
               v-model="description"
-              filled
-              placeholder="Description"
+              label="Description"
+              placeholder="e.g. Learning about x, y, and z."
               type="textarea"
             >
             </q-input>

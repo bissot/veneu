@@ -1,9 +1,18 @@
 import Vue from "vue";
+
 import app from "./app.vue";
 import "./registerServiceWorker";
 import { createProvider } from "./vue-apollo";
 import router from "./router";
-import "./quasar";
+
+import "./styles/quasar.scss";
+import "quasar/dist/quasar.ie.polyfills";
+import Quasar from "quasar";
+
+Vue.use(Quasar, {
+  config: {},
+  plugins: {}
+});
 
 Vue.config.productionTip = false;
 
