@@ -3,102 +3,41 @@
     <template slot-scope="{ result: { loading, error, data } }">
       <div v-if="loading">Loading...</div>
       <div v-if="error">Error...</div>
-      <div v-if="data" class="row q-px-md" id="courseloaded">
-        <div class="col-12 col-md-6 q-px-sm">
-          <h1>{{ data.course.name }}</h1>
-          {{ data.course.description }}
-          Instructors
-          <div v-for="auth in data.course.auths.filter(a => a.role == 'INSTRUCTOR')" :key="auth._id">
-            {{ auth.user.first_name }} {{ auth.user.last_name }}
+      <div v-if="data && data.course" class="q-px-md" id="courseloaded">
+        <h1>{{ data.course.name }}</h1>
+        {{ data.course.description }}
+        <div>
+          Instructors:
+          <div
+            v-for="(auth, i) in data.course.auths.filter(a => a.role == 'INSTRUCTOR')"
+            :key="auth._id"
+            style="display: inline-block;"
+          >
+            {{ i > 0 ? "," : "" }}{{ auth.user.first_name }} {{ auth.user.last_name }}
           </div>
-
-          <h2>Resources</h2>
-          <q-tree class="text-primary" :nodes="simple" accordion node-key="label" :expanded.sync="expanded" />
         </div>
-        <!-- <q-separator v-if="!($q.screen.lt.sm || $q.screen.lt.md)" vertical spaced="-1px" inset /> -->
-        <q-timeline
-          id="timeline"
-          class="col-12 col-md-6 q-px-sm"
-          :layout="$q.screen.lt.sm ? 'dense' : $q.screen.lt.md ? 'comfortable' : 'comfortable'"
-          color="primary"
-        >
-          <q-timeline-entry heading>
-            Timeline heading
-            <br />
-          </q-timeline-entry>
-
-          <q-timeline-entry title="Event Title" subtitle="February 22, 1986" side="left">
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-              ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-              mollit anim id est laborum.
-            </div>
-          </q-timeline-entry>
-
-          <q-timeline-entry title="Event Title" subtitle="February 21, 1986" side="right" icon="delete">
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-              ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-              mollit anim id est laborum.
-            </div>
-          </q-timeline-entry>
-
-          <q-timeline-entry heading>November, 2017</q-timeline-entry>
-
-          <q-timeline-entry title="Event Title" subtitle="February 22, 1986" side="left">
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-              ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-              mollit anim id est laborum.
-            </div>
-          </q-timeline-entry>
-
-          <q-timeline-entry title="Event Title" subtitle="February 22, 1986" side="right">
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-              ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-              mollit anim id est laborum.
-            </div>
-          </q-timeline-entry>
-
-          <q-timeline-entry title="Event Title" subtitle="February 22, 1986" side="left" color="orange" icon="done_all">
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-              ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-              mollit anim id est laborum.
-            </div>
-          </q-timeline-entry>
-
-          <q-timeline-entry title="Event Title" subtitle="February 22, 1986" side="right">
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-              ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-              mollit anim id est laborum.
-            </div>
-          </q-timeline-entry>
-
-          <q-timeline-entry title="Event Title" subtitle="February 22, 1986" side="left">
-            <div>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-              dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-              ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-              fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-              mollit anim id est laborum.
-            </div>
-          </q-timeline-entry>
-        </q-timeline>
+        <div>
+          Teaching Assistants:
+          <div
+            v-for="(auth, i) in data.course.auths.filter(a => a.role == 'TEACHING_ASSISTANT')"
+            :key="auth._id"
+            style="display: inline-block;"
+          >
+            {{ i > 0 ? "," : "" }}{{ auth.user.first_name }} {{ auth.user.last_name }}
+          </div>
+        </div>
+        <div>
+          Students:
+          <div
+            v-for="(auth, i) in data.course.auths.filter(a => a.role == 'STUDENT')"
+            :key="auth._id"
+            style="display: inline-block;"
+          >
+            {{ i > 0 ? ", " : "" }}{{ auth.user.first_name }} {{ auth.user.last_name }}
+          </div>
+        </div>
+        <h2>Resources</h2>
+        <q-tree class="text-primary" :nodes="simple" accordion node-key="label" :expanded.sync="expanded" />
       </div>
     </template>
   </ApolloQuery>

@@ -1,4 +1,4 @@
-query course($_id: ID!) {
+query($_id: ID!) {
   course(_id: $_id) {
     _id
     name
@@ -10,7 +10,7 @@ query course($_id: ID!) {
     auths {
       _id
       role
-      user{
+      user {
         first_name
         last_name
         email

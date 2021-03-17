@@ -19,7 +19,7 @@
       size="xl"
       label="Scan"
     />
-    <q-btn v-else class="q-ma-md" @click="handleStopScreenScan()">Stop</q-btn>
+    <q-btn v-else class="q-ma-md" @click="handleStopScreenScan()" icon-right="stop" size="xl" label="Stop" />
     <video v-if="screen_stream" id="captured-screen" autoplay :style="{ display: 'none' }"></video>
   </div>
 </template>

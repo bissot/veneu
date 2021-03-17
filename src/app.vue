@@ -2,9 +2,7 @@
   <q-layout id="app" view="lhr Lpr lfr" class="text-primary">
     <q-ajax-bar position="top" color="primary" size="0.25rem" />
     <ApolloQuery :query="require('./graphql/Me.gql')">
-      <template slot-scope="{ result: { loading, error, data } }">
-        <div v-if="loading">Loading...</div>
-        <div v-if="error">Error...</div>
+      <template slot-scope="{ result: { data } }">
         <div v-if="data">
           <q-header class="text-primary">
             <q-toolbar v-if="data.me">

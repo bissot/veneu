@@ -7,7 +7,7 @@
         <div v-if="loading">Loading...</div>
         <div v-if="error">Error...</div>
         <div v-if="data">
-          <div v-for="user of data.users" :key="user.id" class="user">{{ user.first_name }} {{ user.last_name }}</div>
+          <div v-for="user of data.users" :key="user._id" class="user">{{ user.first_name }} {{ user.last_name }}</div>
         </div>
       </template>
     </ApolloQuery>
@@ -63,7 +63,7 @@ export default {
       };
     },
     onUserUpdated(previousResult, { subscriptionData }) {
-      const index = previousResult.users.findIndex(x => x._id == subscriptionData.data.userUpdated.id);
+      const index = previousResult.users.findIndex(x => x._id == subscriptionData.data.userUpdated._id);
       previousResult.users[index] = subscriptionData.data.userUpdated;
       return {
         users: previousResult.users
