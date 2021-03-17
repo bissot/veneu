@@ -40,6 +40,17 @@
         </div>
         <h2 class="q-py-none q-px-sm">Resources</h2>
         <q-tree class="text-primary" :nodes="simple" accordion node-key="label" :expanded.sync="expanded" />
+        <ApolloMutation
+          :mutation="require('../graphql/DeleteCourse.gql')"
+          :variables="{ _id: data.course._id }"
+          @done="console.log('hi')"
+        >
+          <template slot-scope="{ mutate }">
+            <q-form class="row full-width justify-center" @submit.prevent="mutate()">
+              <q-btn class="bg-red text-white" label="Delete" icon-right="delete" type="submit" />
+            </q-form>
+          </template>
+        </ApolloMutation>
       </div>
     </template>
   </ApolloQuery>

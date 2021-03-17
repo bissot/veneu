@@ -18,7 +18,12 @@ module.exports = {
     }
   },
   Mutation: {
-    createAuth: (parent, { role, user, shared_resource, shared_resource_type }, { requester, models: { Auth } }, info) => {
+    createAuth: (
+      parent,
+      { role, user, shared_resource, shared_resource_type },
+      { requester, models: { Auth } },
+      info
+    ) => {
       if (!requester) throw new ForbiddenError("Not allowed");
       return Auth.create({ role, user, shared_resource, shared_resource_type }).then(auth => {
         return global.pubsub
