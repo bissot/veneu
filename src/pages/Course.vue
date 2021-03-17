@@ -43,7 +43,7 @@
         <ApolloMutation
           :mutation="require('../graphql/DeleteCourse.gql')"
           :variables="{ _id: data.course._id }"
-          @done="console.log('hi')"
+          @done="onDelete"
         >
           <template slot-scope="{ mutate }">
             <q-form class="row full-width justify-center" @submit.prevent="mutate()">
@@ -92,6 +92,11 @@ export default {
       ],
       expanded: ["Satisfied customers (with avatar)", "Good food (with icon)"]
     };
+  },
+  methods: {
+    onDelete() {
+      location.href = "/dashboard";
+    }
   }
 };
 </script>

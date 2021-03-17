@@ -169,8 +169,8 @@ export default {
         this.description.length
       );
     },
-    handleCreateCourse() {
-      this.$router.push({ name: "Dashboard" });
+    handleCreateCourse({ data }) {
+      this.$router.push({ name: "Course", params: { _id: data.createCourse._id } });
     }
   }
 };
