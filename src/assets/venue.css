@@ -118,7 +118,7 @@ label {
   border-radius: 1rem !important;
   background: none;
   box-shadow: var(--elevated-shadow);
-  animation: grow-in 1s;
+  animation: grow-in 1s forwards;
 }
 
 /* WebKit and Opera browsers */
