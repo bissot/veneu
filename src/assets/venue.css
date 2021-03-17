@@ -5,11 +5,11 @@
   --venue-red: #8a2b36;
   --venue-light: #dfdfdf;
   --venue-light-backdrop: #dfdfdfaa;
-  --elevated-shadow: 0.5rem 0.5rem 0.5rem #bebebe, -0.5rem -0.5rem 0.5rem #f8f8f888,
+  --elevated-shadow: 0.5rem 0.5rem 0.5rem #bebebe, -0.5rem -0.5rem 0.5rem #f8f8f866,
     inset 0.05rem 0.05rem 0.05rem #bebebe44, inset -0.05rem -0.05rem 0.05rem #f8f8f888;
-  --button-shadow: 0.25rem 0.25rem 0.25rem #bebebe, -0.25rem -0.25rem 0.25rem #f8f8f888,
+  --button-shadow: 0.25rem 0.25rem 0.25rem #bebebe, -0.25rem -0.25rem 0.25rem #f8f8f866,
     inset 0.05rem 0.05rem 0.05rem #bebebe44, inset -0.05rem -0.05rem 0.05rem #f8f8f888;
-  --field-shadow: 0.05rem 0.05rem 0.05rem #bebebe44, -0.05rem -0.05rem 0.05rem #f8f8f888,
+  --field-shadow: 0.05rem 0.05rem 0.05rem #bebebe44, -0.05rem -0.05rem 0.05rem #f8f8f866,
     inset 0.25rem 0.25rem 0.25rem #bebebe, inset -0.25rem -0.25rem 0.25rem #f8f8f888;
 }
 
@@ -50,18 +50,23 @@ label {
   display: block;
 }
 
-button {
+.form {
+  margin: auto;
+  max-width: 40rem;
+}
+
+/* button {
   display: inline-block;
   left: 0;
   background: none;
-  border-radius: 0.25rem;
+  border-radius: 1rem;
   font-size: 1rem;
   margin: 0.5rem;
   outline: none;
   border: none;
   padding: 0.5rem 0.75rem;
   color: var(--venue-dark);
-}
+} */
 
 .vertical-center {
   width: 100%;

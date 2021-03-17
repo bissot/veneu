@@ -14,7 +14,7 @@
                 </q-avatar>
               </q-toolbar-title>
 
-              <q-btn
+              <!-- <q-btn
                 round
                 size="sm"
                 icon="insights"
@@ -23,7 +23,7 @@
                 aria-label="Voyager"
                 @click="$router.push({ name: 'Voyager' })"
               />
-              <!-- <q-btn
+              <q-btn
                 size="sm"
                 round
                 icon="volunteer_activism"
@@ -31,8 +31,8 @@
                 title="Donate"
                 aria-label="Donate"
                 @click="handleDonate"
-              /> -->
-              <q-btn size="sm" round icon="api" class="q-mx-sm" title="API" aria-label="API" @click="handleAPI" />
+              />
+              <q-btn size="sm" round icon="api" class="q-mx-sm" title="API" aria-label="API" @click="handleAPI" /> -->
               <q-btn size="sm" round icon="notifications" class="q-mx-sm" title="API" aria-label="API">
                 <q-badge rounded color="red" floating label="1+" />
               </q-btn>

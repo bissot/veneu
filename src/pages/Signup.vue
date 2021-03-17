@@ -154,11 +154,6 @@ h1 {
   padding: 0;
   margin: 0;
 }
-
-.form {
-  margin: auto;
-  max-width: 24rem;
-}
 #actions {
   position: relative;
   display: block;

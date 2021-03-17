@@ -4,39 +4,41 @@
       <div v-if="loading">Loading...</div>
       <div v-if="error">Error...</div>
       <div v-if="data && data.course" class="q-px-md" id="courseloaded">
-        <h1>{{ data.course.name }}</h1>
-        {{ data.course.description }}
         <div>
-          Instructors:
-          <div
-            v-for="(auth, i) in data.course.auths.filter(a => a.role == 'INSTRUCTOR')"
-            :key="auth._id"
-            style="display: inline-block;"
-          >
-            {{ i > 0 ? "," : "" }}{{ auth.user.first_name }} {{ auth.user.last_name }}
+          <h1 class="q-pa-sm">{{ data.course.name }}</h1>
+          {{ data.course.description }}
+          <div>
+            Instructors:
+            <div
+              v-for="(auth, i) in data.course.auths.filter(a => a.role == 'INSTRUCTOR')"
+              :key="auth._id"
+              style="display: inline-block;"
+            >
+              {{ i > 0 ? "," : "" }}{{ auth.user.first_name }} {{ auth.user.last_name }}
+            </div>
+          </div>
+          <div>
+            Teaching Assistants:
+            <div
+              v-for="(auth, i) in data.course.auths.filter(a => a.role == 'TEACHING_ASSISTANT')"
+              :key="auth._id"
+              style="display: inline-block;"
+            >
+              {{ i > 0 ? "," : "" }}{{ auth.user.first_name }} {{ auth.user.last_name }}
+            </div>
+          </div>
+          <div>
+            Students:
+            <div
+              v-for="(auth, i) in data.course.auths.filter(a => a.role == 'STUDENT')"
+              :key="auth._id"
+              style="display: inline-block;"
+            >
+              {{ i > 0 ? ", " : "" }}{{ auth.user.first_name }} {{ auth.user.last_name }}
+            </div>
           </div>
         </div>
-        <div>
-          Teaching Assistants:
-          <div
-            v-for="(auth, i) in data.course.auths.filter(a => a.role == 'TEACHING_ASSISTANT')"
-            :key="auth._id"
-            style="display: inline-block;"
-          >
-            {{ i > 0 ? "," : "" }}{{ auth.user.first_name }} {{ auth.user.last_name }}
-          </div>
-        </div>
-        <div>
-          Students:
-          <div
-            v-for="(auth, i) in data.course.auths.filter(a => a.role == 'STUDENT')"
-            :key="auth._id"
-            style="display: inline-block;"
-          >
-            {{ i > 0 ? ", " : "" }}{{ auth.user.first_name }} {{ auth.user.last_name }}
-          </div>
-        </div>
-        <h2>Resources</h2>
+        <h2 class="q-py-none q-px-sm">Resources</h2>
         <q-tree class="text-primary" :nodes="simple" accordion node-key="label" :expanded.sync="expanded" />
       </div>
     </template>

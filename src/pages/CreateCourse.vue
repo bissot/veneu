@@ -184,10 +184,6 @@ export default {
   overflow: auto;
   text-align: center;
 }
-.form {
-  margin: auto;
-  max-width: 24rem;
-}
 #actions {
   position: relative;
   display: block;
