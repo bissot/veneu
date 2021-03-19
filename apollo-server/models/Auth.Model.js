@@ -20,12 +20,13 @@ const Auth = new mongoose.Schema(
 )
   .pre("deleteOne", { document: true }, function(next) {
     Promise.all([
-      this.model("User").findByIdAndUpdate({ _id: this._id }, { $pull: { auths: this._id } }),
-      this.model(this.shared_resource_type).findByIdAndUpdate({ _id: this._id }, { $pull: { auths: this._id } })
-    ]).then(next);
+      mongoose.model("User").updateOne({ _id: this._id }, { $pull: { auths: this._id } }),
+      mongoose.model(this.shared_resource_type).updateOne({ _id: this._id }, { $pull: { auths: this._id } })
+    ]).then(resolved => {
+      next();
+    });
   })
   .pre("deleteMany", function(next) {
-    // console.log(this);
     this.model.find(this.getFilter()).then(auths => {
       if (auths.length) {
         const authids = auths.map(a => a._id);
@@ -49,11 +50,10 @@ const Auth = new mongoose.Schema(
   .post("save", function() {
     if (this.wasNew) {
       Promise.all([
-        this.model("User").findByIdAndUpdate({ _id: this.user }, { $addToSet: { auths: this._id } }),
-        this.model(this.shared_resource_type).findByIdAndUpdate(
-          { _id: this.shared_resource },
-          { $addToSet: { auths: this._id } }
-        )
+        mongoose.model("User").updateOne({ _id: this.user }, { $addToSet: { auths: this._id } }),
+        mongoose
+          .model(this.shared_resource_type)
+          .updateOne({ _id: this.shared_resource }, { $addToSet: { auths: this._id } })
       ]);
     }
   });

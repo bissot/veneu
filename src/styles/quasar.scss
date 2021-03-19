@@ -72,7 +72,8 @@ body,
 }
 
 .q-btn--rectangle,
-.q-field__control {
+.q-field__control,
+.q-dialog__inner > div {
   border-radius: 1rem !important;
   &.bg-primary {
     box-shadow: var(--button-shadow) !important;
