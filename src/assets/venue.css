@@ -5,12 +5,10 @@
   --venue-red: #8a2b36;
   --venue-light: #dfdfdf;
   --venue-light-backdrop: #dfdfdfaa;
-  --elevated-shadow: 0.5rem 0.5rem 0.5rem #bebebe, -0.5rem -0.5rem 0.5rem #f8f8f866,
-    inset 0.05rem 0.05rem 0.05rem #bebebe44, inset -0.05rem -0.05rem 0.05rem #f8f8f888;
-  --button-shadow: 0.25rem 0.25rem 0.25rem #bebebe, -0.25rem -0.25rem 0.25rem #f8f8f866,
-    inset 0.05rem 0.05rem 0.05rem #bebebe44, inset -0.05rem -0.05rem 0.05rem #f8f8f888;
-  --field-shadow: 0.05rem 0.05rem 0.05rem #bebebe44, -0.05rem -0.05rem 0.05rem #f8f8f866,
-    inset 0.25rem 0.25rem 0.25rem #bebebe, inset -0.25rem -0.25rem 0.25rem #f8f8f888;
+  --elevated-shadow: 0.5rem 0.5rem 0.5rem #bebebe, -0.5rem -0.5rem 0.5rem #f8f8f866;
+  --button-shadow: 0.25rem 0.25rem 0.25rem #bebebe, -0.25rem -0.25rem 0.25rem #f8f8f866;
+  --field-shadow: inset 0.25rem 0.25rem 0.25rem #bebebe, inset -0.25rem -0.25rem 0.25rem #f8f8f888;
+  --red-field-shadow: inset 0.25rem 0.25rem 0.25rem #75252e, inset -0.25rem -0.25rem 0.25rem #9f313e;
 }
 
 * {

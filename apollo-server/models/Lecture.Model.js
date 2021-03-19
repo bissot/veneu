@@ -34,7 +34,7 @@ const Lecture = new mongoose.Schema(
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
   }
 )
-  .pre("remove", function(next) {
+  .pre("deleteOne", { document: true }, function(next) {
     Promise.all([
       this.model("Auth").deleteMany({ shared_resource: this._id }),
       this.model("RegistrationSection").findByIdAndUpdate(

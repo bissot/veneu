@@ -42,13 +42,15 @@ module.exports = {
     },
     deleteRegistrationSection: (parent, { _id }, { requester, models: { RegistrationSection } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return RegistrationSection.findOneAndDelete({ _id: _id }).then(registrationSection => {
-        return global.pubsub
-          .publish(eventName.REGISTRATIONSECTION_DELETED, { registrationSectionDeleted: registrationSection })
-          .then(done => {
-            return registrationSection;
-          });
-      });
+      return RegistrationSection.findOne({ _id })
+        .then(registrationSection => registrationSection.deleteOne())
+        .then(registrationSection => {
+          return global.pubsub
+            .publish(eventName.REGISTRATIONSECTION_DELETED, { registrationSectionDeleted: registrationSection })
+            .then(done => {
+              return registrationSection;
+            });
+        });
     }
   },
   Subscription: {

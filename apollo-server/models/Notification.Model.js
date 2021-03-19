@@ -28,7 +28,7 @@ const Notification = new mongoose.Schema(
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
   }
 )
-  .pre("remove", function(next) {
+  .pre("deleteOne", { document: true }, function(next) {
     this.model("User").findByIdAndUpdate({ _id: this.user }, { $pull: { notifications: this._id } }, next);
   })
   .pre("save", function(next) {

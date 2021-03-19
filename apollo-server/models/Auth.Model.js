@@ -18,11 +18,29 @@ const Auth = new mongoose.Schema(
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
   }
 )
-  .pre("remove", function(next) {
+  .pre("deleteOne", { document: true }, function(next) {
     Promise.all([
       this.model("User").findByIdAndUpdate({ _id: this._id }, { $pull: { auths: this._id } }),
       this.model(this.shared_resource_type).findByIdAndUpdate({ _id: this._id }, { $pull: { auths: this._id } })
     ]).then(next);
+  })
+  .pre("deleteMany", function(next) {
+    // console.log(this);
+    this.model.find(this.getFilter()).then(auths => {
+      if (auths.length) {
+        const authids = auths.map(a => a._id);
+        const authusers = auths.map(a => a.user);
+        const authresources = auths.map(a => a.shared_resource);
+        Promise.all([
+          mongoose.model("User").updateMany({ _id: { $in: authusers } }, { $pullAll: { auths: authids } }),
+          mongoose
+            .model(auths[0].shared_resource_type)
+            .updateMany({ _id: { $in: authresources } }, { $pullAll: { auths: authids } })
+        ]).then(resolved => {
+          next();
+        });
+      } else next();
+    });
   })
   .pre("save", function(next) {
     this.wasNew = this.isNew;

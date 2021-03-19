@@ -51,15 +51,17 @@ module.exports = {
     },
     deleteAuth: (parent, { _id }, { requester, models: { Auth } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Auth.findOneAndDelete({ _id: _id }).then(auth => {
-        return global.pubsub
-          .publish(eventName.AUTH_DELETED, {
-            authDeleted: auth
-          })
-          .then(done => {
-            return auth;
-          });
-      });
+      return Auth.findOne({ _id })
+        .then(auth => auth.deleteOne())
+        .then(auth => {
+          return global.pubsub
+            .publish(eventName.AUTH_DELETED, {
+              authDeleted: auth
+            })
+            .then(done => {
+              return auth;
+            });
+        });
     }
   },
   Subscription: {

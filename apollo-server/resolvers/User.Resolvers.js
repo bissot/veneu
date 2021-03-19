@@ -52,11 +52,13 @@ module.exports = {
     },
     deleteUser: (parent, { _id }, { requester, models: { User } }, info) => {
       if (!requester || requester._id != _id) throw new ForbiddenError("Not allowed");
-      return User.findOneAndDelete({ _id }).then(user => {
-        return global.pubsub.publish(eventName.USER_DELETED, { userDeleted: user }).then(done => {
-          return user;
+      return User.findOne({ _id })
+        .then(user => user.deleteOne())
+        .then(user => {
+          return global.pubsub.publish(eventName.USER_DELETED, { userDeleted: user }).then(done => {
+            return user;
+          });
         });
-      });
     },
     login(parent, { email, password }, { models: { User } }, info) {
       return User.findOne({ email }).then(user => {

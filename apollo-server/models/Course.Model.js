@@ -63,13 +63,15 @@ const Course = new mongoose.Schema(
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
   }
 )
-  .pre("remove", function(next) {
+  .pre("deleteOne", { document: true }, function(next) {
     Promise.all([
-      this.model("Auth").deleteMany({ shared_resource: this._id }),
+      this.model("Auth").deleteMany({ shared_resource: this._id, shared_resource_type: "Course" }),
       this.model("UserGroup").deleteMany({ parent_resource: this._id }),
       this.model("RegistrationSection").deleteMany({ parent_resource: this._id }),
       this.model("Lecture").deleteMany({ parent_resource: this._id })
-    ]).then(next);
+    ]).then(resolved => {
+      next();
+    });
   })
   .pre("save", function(next) {
     this.wasNew = this.isNew;

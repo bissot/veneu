@@ -44,13 +44,15 @@ module.exports = {
     },
     deleteNotification: (parent, { _id }, { requester, models: { Notification } }, info) => {
       if (!requester || requester._id != _id) throw new ForbiddenError("Not allowed");
-      return Notification.findOneAndDelete({ _id: _id }).then(notification => {
-        return global.pubsub
-          .publish(eventName.NOTIFICATION_DELETED, { notificationDeleted: notification })
-          .then(done => {
-            return notification;
-          });
-      });
+      return Notification.findOne({ _id })
+        .then(notification => notification.deleteOne())
+        .then(notification => {
+          return global.pubsub
+            .publish(eventName.NOTIFICATION_DELETED, { notificationDeleted: notification })
+            .then(done => {
+              return notification;
+            });
+        });
     }
   },
   Subscription: {

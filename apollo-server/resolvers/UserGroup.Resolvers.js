@@ -38,11 +38,13 @@ module.exports = {
     },
     deleteUserGroup: (parent, { _id }, { requester, models: { UserGroup } }, info) => {
       if (!requester || requester._id != _id) throw new ForbiddenError("Not allowed");
-      return UserGroup.findOneAndDelete({ _id }).then(userGroup => {
-        return global.pubsub.publish(eventName.USERGROUP_DELETED, { userGroupDeleted: userGroup }).then(done => {
-          return userGroup;
+      return UserGroup.findOne({ _id })
+        .then(userGroup => userGroup.deleteOne())
+        .then(userGroup => {
+          return global.pubsub.publish(eventName.USERGROUP_DELETED, { userGroupDeleted: userGroup }).then(done => {
+            return userGroup;
+          });
         });
-      });
     }
   },
   Subscription: {
