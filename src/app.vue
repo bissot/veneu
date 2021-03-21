@@ -6,7 +6,15 @@
         <div v-if="data">
           <q-header class="text-primary">
             <q-toolbar v-if="data.me">
-              <q-btn round size="sm" icon="menu" class="q-mx-sm" title="Menu" aria-label="Menu" @click="left = !left" />
+              <q-btn
+                round
+                size="sm"
+                icon="menu"
+                class="q-mx-sm"
+                title="Menu"
+                aria-label="Menu"
+                @click="left = !left"
+              />
 
               <q-toolbar-title>
                 <q-avatar @click="$router.push({ name: 'Dashboard' })">
@@ -32,8 +40,15 @@
                 aria-label="Donate"
                 @click="handleDonate"
               />
-              <q-btn size="sm" round icon="api" class="q-mx-sm" title="API" aria-label="API" @click="handleAPI" /> -->
-              <q-btn size="sm" round icon="notifications" class="q-mx-sm" title="API" aria-label="API">
+              <q-btn size="sm" round icon="api" class="q-mx-sm" title="API" aria-label="API" @click="handleAPI" />-->
+              <q-btn
+                size="sm"
+                round
+                icon="notifications"
+                class="q-mx-sm"
+                title="API"
+                aria-label="API"
+              >
                 <q-badge rounded color="red" floating label="1+" />
               </q-btn>
             </q-toolbar>
@@ -57,9 +72,7 @@
 
               <q-item-section>
                 <q-item-label>{{ data.me.first_name }} {{ data.me.last_name }}</q-item-label>
-                <q-item-label caption>
-                  {{ data.me.email }}
-                </q-item-label>
+                <q-item-label caption>{{ data.me.email }}</q-item-label>
               </q-item-section>
 
               <q-item-section side>
@@ -193,7 +206,7 @@ export default {
       win.focus();
     },
     handleAPI() {
-      var win = window.open("http://localhost:4000/graphql", "_blank");
+      var win = window.open(process.env.BASE_URL + "/graphql", "_blank");
       win.focus();
     }
   }
