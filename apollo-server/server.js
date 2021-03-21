@@ -2,6 +2,7 @@ require("dotenv").config({ path: __dirname + "/../variables.env" });
 
 const http = require("http");
 const express = require("express");
+const path = require("path");
 
 const { ApolloServer, AuthenticationError, gql, PubSub } = require("apollo-server-express");
 global.pubsub = new PubSub();
@@ -36,9 +37,9 @@ server.applyMiddleware({ app });
 server.installSubscriptionHandlers(httpServer);
 
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static("build"));
+  app.use(express.static(path.join(__dirname, "..", "dist")));
   app.get("*", (req, res) => {
-    res.sendFile(require('path').resolve(__dirname, "build", "index.html"));
+    res.sendFile(path.resolve(__dirname, "..", "dist", "index.html"));
   });
 }
 
