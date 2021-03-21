@@ -6,7 +6,7 @@
     "serve": "vue-cli-service apollo:schema:generate && vue-cli-service serve --prefix .",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "postinstall": "npm install --prefix ./apollo-server",
+    "postinstall": "npm install --prefix ./apollo-server && vue-cli-service apollo:schema:generate",
     "apollo": "node apollo-server/server.js",
     "apollo:dev": "vue-cli-service apollo:schema:generate && nodemon ./apollo-server/server.js",
     "apollo:schema:generate": "vue-cli-service apollo:schema:generate",
