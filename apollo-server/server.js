@@ -35,7 +35,7 @@ const httpServer = http.createServer(app);
 server.applyMiddleware({ app });
 server.installSubscriptionHandlers(httpServer);
 
-httpServer.listen({ port: 4000 }, () => {
+httpServer.listen(process.env.PORT || 4000, () => {
   console.log("🚝 Express ready at http://localhost:4000");
   console.log("📈 GraphQL ready at http://localhost:4000" + `${server.graphqlPath}`);
 });
