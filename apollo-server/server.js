@@ -1,6 +1,6 @@
 require("dotenv").config({ path: __dirname + "/../variables.env" });
 
-const http = require("http");
+const https = require("https");
 const express = require("express");
 const path = require("path");
 
@@ -31,10 +31,10 @@ const server = new ApolloServer({
 });
 
 const app = express();
-const httpServer = http.createServer(app);
+const httpsServer = https.createServer(app);
 
 server.applyMiddleware({ app });
-server.installSubscriptionHandlers(httpServer);
+server.installSubscriptionHandlers(httpsServer);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "..", "dist")));
@@ -43,7 +43,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-httpServer.listen(process.env.PORT || 4000, () => {
+httpsServer.listen(process.env.PORT || 4000, () => {
   console.log("🚝 Express ready at http://localhost:4000");
   console.log("📈 GraphQL ready at http://localhost:4000" + `${server.graphqlPath}`);
 });
