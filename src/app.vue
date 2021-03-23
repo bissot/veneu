@@ -85,7 +85,7 @@
                         label="Logout"
                         class="bg-primary text-white"
                         v-close-popup
-                        @click="handleLogout"
+                        @click="tryLogout"
                         icon-right="meeting_room"
                       />
                     </q-card-actions>
@@ -180,10 +180,6 @@ export default {
     };
   },
   methods: {
-    handleLogout() {
-      localStorage.removeItem("token");
-      location.reload();
-    },
     handleDonate() {
       var win = window.open(
         "https://www.paypal.com/donate/?cmd=_donations&business=ejwhitton43%40gmail.com&currency_code=USD",
@@ -198,6 +194,7 @@ export default {
     tryLogout() {
       if (localStorage.getItem("token")) {
         localStorage.removeItem("token");
+        location.reload();
       }
     }
   }
