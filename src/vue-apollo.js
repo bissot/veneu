@@ -9,7 +9,7 @@ Vue.use(VueApollo);
 const AUTH_TOKEN = "token";
 
 // Http endpoint
-const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP;
+const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || "http://localhost:4000/graphql";
 // Files URL root
 export const filesRoot = process.env.VUE_APP_FILES_ROOT || httpEndpoint.substr(0, httpEndpoint.indexOf("/graphql"));
 
@@ -49,7 +49,7 @@ const defaultOptions = {
   // Client local data (see apollo-link-state)
   // clientState: { resolvers: { ... }, defaults: { ... } }
 };
-
+console.log(defaultOptions);
 // Call this in the Vue app file
 export function createProvider(options = {}) {
   // Create apollo client

@@ -2,19 +2,12 @@
   <q-layout id="app" view="lhr Lpr lfr" class="text-primary">
     <q-ajax-bar position="top" color="primary" size="0.25rem" />
     <ApolloQuery :query="require('./graphql/Me.gql')">
-      <template slot-scope="{ result: { data } }">
+      <template slot-scope="{ result: { data, error } }">
+        <div v-if="error">{{ tryLogout() }}</div>
         <div v-if="data">
           <q-header class="text-primary">
             <q-toolbar v-if="data.me">
-              <q-btn
-                round
-                size="sm"
-                icon="menu"
-                class="q-mx-sm"
-                title="Menu"
-                aria-label="Menu"
-                @click="left = !left"
-              />
+              <q-btn round size="sm" icon="menu" class="q-mx-sm" title="Menu" aria-label="Menu" @click="left = !left" />
 
               <q-toolbar-title>
                 <q-avatar @click="$router.push({ name: 'Dashboard' })">
@@ -41,14 +34,7 @@
                 @click="handleDonate"
               />
               <q-btn size="sm" round icon="api" class="q-mx-sm" title="API" aria-label="API" @click="handleAPI" />-->
-              <q-btn
-                size="sm"
-                round
-                icon="notifications"
-                class="q-mx-sm"
-                title="API"
-                aria-label="API"
-              >
+              <q-btn size="sm" round icon="notifications" class="q-mx-sm" title="API" aria-label="API">
                 <q-badge rounded color="red" floating label="1+" />
               </q-btn>
             </q-toolbar>
@@ -208,6 +194,11 @@ export default {
     handleAPI() {
       var win = window.open(process.env.BASE_URL + "/graphql", "_blank");
       win.focus();
+    },
+    tryLogout() {
+      if (localStorage.getItem("token")) {
+        localStorage.removeItem("token");
+      }
     }
   }
 };
