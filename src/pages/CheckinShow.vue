@@ -48,12 +48,6 @@ export default {
       next: this.generateTicket()
     };
   },
-  created() {
-    // for (let i = 0; i < 50; i++) {
-    //   this.tickets.push(this.generateTicket());
-    // }
-    // this.current = 0;
-  },
   methods: {
     getBaseUrl() {
       var getUrl = window.location;
@@ -67,13 +61,10 @@ export default {
         }
       }
     ) {
+      console.log("received", claimedTicket);
       this.claimed.push(this.current);
       this.current = this.next; // iteration logic
       this.next = this.generateTicket();
-      if (this.claimed.length >= 50) location.reload(); // iteration logic
-      // if (received == this.compareTo) {
-      //   // if iteration goes here it's slower
-      // }
     },
     generateTicket() {
       var result = "";

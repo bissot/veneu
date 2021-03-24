@@ -29,7 +29,7 @@ module.exports = [
     Mutation: {
       claimTicket: (parent, { code }, { requester }, info) => {
         return global.pubsub.publish("CLAIMED_TICKED", { claimedTicket: { code } }).then(done => {
-          console.log("claimed");
+          console.log("sent claim", code);
           return code;
         });
       },
@@ -43,10 +43,11 @@ module.exports = [
       claimedTicket: {
         subscribe: withFilter(
           () => global.pubsub.asyncIterator(["CLAIMED_TICKED"]),
-          (payload, variables) => payload.claimedTicket.code == variables.code
+          ({ claimedTicket: { code } }, variables) => code == variables.code
         ),
-        resolve(payload) {
-          return payload.claimedTicket.code;
+        resolve({ claimedTicket: { code } }) {
+          console.log("recd claim", code);
+          return code;
         }
       },
       approvedTicket: {
