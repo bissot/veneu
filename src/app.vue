@@ -34,6 +34,15 @@
                 @click="handleDonate"
               />
               <q-btn size="sm" round icon="api" class="q-mx-sm" title="API" aria-label="API" @click="handleAPI" />-->
+              <q-btn
+                size="sm"
+                round
+                icon="qr_code_2"
+                class="q-mx-sm"
+                title="Scan"
+                aria-label="Scan"
+                @click="handleScan"
+              />
               <q-btn size="sm" round icon="notifications" class="q-mx-sm" title="API" aria-label="API">
                 <q-badge rounded color="red" floating label="1+" />
               </q-btn>
@@ -190,6 +199,9 @@ export default {
     handleAPI() {
       var win = window.open(process.env.BASE_URL + "/graphql", "_blank");
       win.focus();
+    },
+    handleScan() {
+      this.$router.push({ name: "CheckinScan" });
     },
     tryLogout() {
       if (localStorage.getItem("token")) {
