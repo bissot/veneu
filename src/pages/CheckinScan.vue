@@ -1,5 +1,5 @@
 <template>
-  <div class="text-primary justify-center full-width row">
+  <div class="vertical-center text-center">
     <ApolloSubscribeToMore
       :document="
         gql =>
@@ -12,20 +12,28 @@
       :variables="{ code }"
     />
     <q-btn
-      v-if="!screen_scanning"
+      v-if="$q.platform.is.desktop && !screen_scanning"
       class="q-ma-md"
       @click="handleStartScreenScan()"
       icon-right="qr_code_scanner"
       size="xl"
-      label="Scan"
+      label="Screen Scan"
     />
-    <q-btn v-else class="q-ma-md" @click="handleStopScreenScan()" icon-right="stop" size="xl" label="Stop" />
+    <q-btn
+      v-else-if="$q.platform.is.desktop"
+      class="q-ma-md"
+      @click="handleStopScreenScan()"
+      icon-right="stop"
+      size="xl"
+      label="Stop"
+    />
     <video v-if="screen_stream" id="captured-screen" autoplay :style="{ display: 'none' }"></video>
   </div>
 </template>
 
 <script>
-import jsQR from "jsqr";
+import QrScanner from "qr-scanner";
+QrScanner.WORKER_PATH = "../../qr-scanner-worker.min.js";
 import gql from "graphql-tag";
 export default {
   data() {
@@ -35,8 +43,16 @@ export default {
       screen_stream: null,
       screen_scanner: null,
       canvas: null,
-      last: ""
+      last: "",
+      has_camera: false,
+      camera_scanning: false
     };
+  },
+  created() {
+    var self = this;
+    QrScanner.hasCamera().then(res => {
+      self.has_camera = true;
+    });
   },
   methods: {
     handleStartScreenScan() {
@@ -50,36 +66,33 @@ export default {
               self.screen_stream = res;
               self.canvas = document.createElement("canvas");
               self.$nextTick(function() {
-                let video = document.getElementById("captured-screen");
+                var video = document.getElementById("captured-screen");
                 video.srcObject = self.screen_stream;
-                const videoTrack = video.srcObject.getVideoTracks()[0];
                 self.screen_scanner = setInterval(function() {
                   //check for qrcode ...
                   if (self.screen_stream) {
+                    const videoTrack = video.srcObject.getVideoTracks()[0];
                     const { height, width } = videoTrack.getSettings();
                     self.canvas.width = width;
                     self.canvas.height = height;
                     self.canvas.getContext("2d", { alpha: false }).drawImage(video, 0, 0, width, height);
-                    const data = jsQR(
-                      self.canvas.getContext("2d", { alpha: false }).getImageData(0, 0, width, height).data,
-                      width,
-                      height
-                    );
-                    if (data) {
-                      let found = data.data.split("/")[4];
-                      self.$apollo
-                        .mutate({
-                          mutation: gql`
-                            mutation claimTicket($code: String!) {
-                              claimTicket(code: $code)
+                    QrScanner.scanImage(self.canvas)
+                      .then(res => {
+                        let found = res.split("/")[4];
+                        self.$apollo
+                          .mutate({
+                            mutation: gql`
+                              mutation claimTicket($code: String!) {
+                                claimTicket(code: $code)
+                              }
+                            `,
+                            variables: {
+                              code: found
                             }
-                          `,
-                          variables: {
-                            code: found
-                          }
-                        })
-                        .then(data => {});
-                    }
+                          })
+                          .then(data => {});
+                      })
+                      .catch(error => {});
                   } else {
                     self.handleStopScreenScan();
                   }
@@ -103,3 +116,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.justify-center {
+  position: absolute;
+  height: 100%;
+}
+</style>
