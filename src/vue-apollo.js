@@ -49,7 +49,7 @@ const defaultOptions = {
   // Client local data (see apollo-link-state)
   // clientState: { resolvers: { ... }, defaults: { ... } }
 };
-console.log(defaultOptions);
+
 // Call this in the Vue app file
 export function createProvider(options = {}) {
   // Create apollo client
