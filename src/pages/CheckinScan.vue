@@ -1,5 +1,5 @@
 <template>
-  <div class="vertical-center text-center">
+  <div class="vertical-center text-center q-pa-md">
     <ApolloSubscribeToMore
       :document="
         gql =>
@@ -12,22 +12,47 @@
       :variables="{ code }"
     />
     <q-btn
-      v-if="$q.platform.is.desktop && !screen_scanning"
+      v-if="$q.platform.is.desktop && !screen_scanning && !camera_scanning"
       class="q-ma-md"
       @click="handleStartScreenScan()"
+      icon="monitor"
       icon-right="qr_code_scanner"
       size="xl"
       label="Screen Scan"
     />
     <q-btn
-      v-else-if="$q.platform.is.desktop"
+      v-else-if="screen_scanning"
       class="q-ma-md"
       @click="handleStopScreenScan()"
       icon-right="stop"
       size="xl"
       label="Stop"
     />
+    <q-btn
+      v-if="has_camera && !screen_scanning && !camera_scanning"
+      class="q-ma-md"
+      @click="handleStartCamScan()"
+      icon="photo_camera"
+      icon-right="qr_code_scanner"
+      size="xl"
+      label="Camera Scan"
+    />
+    <q-btn
+      v-else-if="camera_scanning"
+      class="q-ma-md"
+      @click="handleStopCamScan()"
+      icon-right="stop"
+      size="xl"
+      label="Stop"
+    />
     <video v-if="screen_stream" id="captured-screen" autoplay :style="{ display: 'none' }"></video>
+    <video
+      v-if="camera_scanning"
+      id="camera-video"
+      autoplay
+      :style="{ display: 'inline-block', maxWidth: '100%' }"
+      class="q-pa-md neu-convex"
+    ></video>
   </div>
 </template>
 
@@ -45,7 +70,8 @@ export default {
       canvas: null,
       last: "",
       has_camera: false,
-      camera_scanning: false
+      camera_scanning: false,
+      camera_scanner: null
     };
   },
   created() {
@@ -55,6 +81,25 @@ export default {
     });
   },
   methods: {
+    handleDecodeQR(result) {
+      let found = result.split("/")[4];
+      this.sendClaim(found);
+    },
+    handleStartCamScan() {
+      this.camera_scanning = true;
+      let self = this;
+      this.$nextTick(() => {
+        var video = document.getElementById("camera-video");
+        self.camera_scanner = new QrScanner(video, result => this.handleDecodeQR(result));
+        self.camera_scanner.start();
+      });
+    },
+    handleStopCamScan() {
+      this.camera_scanning = false;
+      this.camera_scanner.stop();
+      this.camera_scanner.destroy();
+      this.camera_scanner = null;
+    },
     handleStartScreenScan() {
       let self = this;
       if (navigator && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
@@ -77,21 +122,7 @@ export default {
                     self.canvas.height = height;
                     self.canvas.getContext("2d", { alpha: false }).drawImage(video, 0, 0, width, height);
                     QrScanner.scanImage(self.canvas)
-                      .then(res => {
-                        let found = res.split("/")[4];
-                        self.$apollo
-                          .mutate({
-                            mutation: gql`
-                              mutation claimTicket($code: String!) {
-                                claimTicket(code: $code)
-                              }
-                            `,
-                            variables: {
-                              code: found
-                            }
-                          })
-                          .then(data => {});
-                      })
+                      .then(result => self.handleDecodeQR(result))
                       .catch(error => {});
                   } else {
                     self.handleStopScreenScan();
@@ -112,6 +143,18 @@ export default {
       this.screen_stream = null;
       this.screen_scanner = null;
       this.canvas = null;
+    },
+    async sendClaim(code) {
+      this.$apollo.mutate({
+        mutation: gql`
+          mutation claimTicket($code: String!) {
+            claimTicket(code: $code)
+          }
+        `,
+        variables: {
+          code
+        }
+      });
     }
   }
 };
