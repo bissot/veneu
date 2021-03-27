@@ -27,15 +27,14 @@ const SearchResultResolvers = {
 module.exports = [
   {
     Mutation: {
-      claimTicket: (parent, { code }, { requester }, info) => {
-        return global.pubsub.publish("CLAIMED_TICKED", { claimedTicket: { code } }).then(done => {
-          console.log("sent claim", code);
-          return code;
+      claimTicket: (parent, ticket, { requester }, info) => {
+        return global.pubsub.publish("CLAIMED_TICKED", { claimedTicket: { ticket } }).then(done => {
+          return ticket;
         });
       },
-      approveTicket: (parent, { code }, { requester }, info) => {
-        return global.pubsub.publish("APPROVED_TICKED", { approvedTicket: { code } }).then(done => {
-          return code;
+      approveTicket: (parent, ticket, { requester }, info) => {
+        return global.pubsub.publish("APPROVED_TICKED", { approvedTicket: { ticket } }).then(done => {
+          return ticket;
         });
       }
     },
@@ -43,18 +42,34 @@ module.exports = [
       claimedTicket: {
         subscribe: withFilter(
           () => global.pubsub.asyncIterator(["CLAIMED_TICKED"]),
-          ({ claimedTicket: { code } }, variables) => code == variables.code
+          (
+            {
+              claimedTicket: {
+                ticket: { code }
+              }
+            },
+            variables
+          ) => code == variables.code
         ),
-        resolve({ claimedTicket: { code } }) {
-          console.log("recd claim", code);
-          return code;
+        resolve({ claimedTicket: { ticket } }) {
+          return ticket;
         }
       },
       approvedTicket: {
         subscribe: withFilter(
           () => global.pubsub.asyncIterator(["APPROVED_TICKED"]),
-          (payload, variables) => payload.approvedTicket.code == variables.code
-        )
+          (
+            {
+              approvedTicket: {
+                ticket: { user }
+              }
+            },
+            variables
+          ) => user == variables.user
+        ),
+        resolve({ approvedTicket: { ticket } }) {
+          return ticket;
+        }
       }
     }
   },

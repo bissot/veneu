@@ -46,14 +46,19 @@ const linkSchema = gql`
 
   scalar Date
 
+  type Ticket {
+    code: String!
+    user: ID!
+  }
+
   extend type Mutation {
-    claimTicket(code: String!): String
-    approveTicket(code: String!): String
+    claimTicket(code: String!, user: ID!): Ticket!
+    approveTicket(code: String!, user: ID!): Ticket!
   }
 
   extend type Subscription {
-    claimedTicket(code: String!): String
-    approvedTicket(code: String!): String
+    claimedTicket(code: String!): Ticket!
+    approvedTicket(user: ID!): Ticket!
   }
 `;
 

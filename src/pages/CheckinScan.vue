@@ -1,16 +1,5 @@
 <template>
   <div class="vertical-center text-center q-pa-md">
-    <ApolloSubscribeToMore
-      :document="
-        gql =>
-          gql`
-            subscription approvedTicket($code: String!) {
-              approvedTicket(code: $code)
-            }
-          `
-      "
-      :variables="{ code }"
-    />
     <q-btn
       v-if="$q.platform.is.desktop && !screen_scanning && !camera_scanning"
       class="q-ma-md"
@@ -53,6 +42,22 @@
       :style="{ display: 'inline-block', maxWidth: '100%' }"
       class="q-pa-md neu-convex"
     ></video>
+    <ApolloSubscribeToMore
+      v-if="user"
+      :document="
+        gql =>
+          gql`
+            subscription approvedTicket($user: ID!) {
+              approvedTicket(user: $user) {
+                code
+                user
+              }
+            }
+          `
+      "
+      :variables="{ user }"
+      :updateQuery="onApproved"
+    />
   </div>
 </template>
 
@@ -61,6 +66,9 @@ import QrScanner from "qr-scanner";
 QrScanner.WORKER_PATH = "../../qr-scanner-worker.min.js";
 import gql from "graphql-tag";
 export default {
+  props: {
+    me: Object
+  },
   data() {
     return {
       code: "",
@@ -71,16 +79,31 @@ export default {
       last: "",
       has_camera: false,
       camera_scanning: false,
-      camera_scanner: null
+      camera_scanner: null,
+      user: null
     };
   },
   created() {
+    if (this.me) {
+      this.user = this.me._id;
+    } else {
+      this.user = this.generateID();
+    }
     var self = this;
     QrScanner.hasCamera().then(res => {
       self.has_camera = true;
     });
   },
   methods: {
+    generateID() {
+      var result = "";
+      var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      var charactersLength = characters.length;
+      for (var i = 0; i < 32; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      return result;
+    },
     handleDecodeQR(result) {
       let found = result.split("/")[4];
       this.sendClaim(found);
@@ -147,14 +170,32 @@ export default {
     async sendClaim(code) {
       this.$apollo.mutate({
         mutation: gql`
-          mutation claimTicket($code: String!) {
-            claimTicket(code: $code)
+          mutation claimTicket($code: String!, $user: ID!) {
+            claimTicket(code: $code, user: $user) {
+              code
+              user
+            }
           }
         `,
         variables: {
-          code
+          code,
+          user: this.user
         }
       });
+    },
+    onApproved(
+      previousResult,
+      {
+        subscriptionData: {
+          data: { approvedTicket }
+        }
+      }
+    ) {
+      if (this.screen_scanning) {
+        this.handleStopScreenScan();
+      } else if (this.camera_scanning) {
+        this.handleStopCamScan();
+      }
     }
   }
 };

@@ -27,7 +27,10 @@
         gql =>
           gql`
             subscription claimedTicket($code: String!) {
-              claimedTicket(code: $code)
+              claimedTicket(code: $code) {
+                code
+                user
+              }
             }
           `
       "
@@ -39,6 +42,7 @@
 
 <script>
 import VueQr from "vue-qr";
+import gql from "graphql-tag";
 export default {
   components: { VueQr },
   data() {
@@ -62,9 +66,10 @@ export default {
       }
     ) {
       console.log("received", claimedTicket);
-      this.claimed.push(this.current);
       this.current = this.next; // iteration logic
       this.next = this.generateTicket();
+      this.sendApprove(claimedTicket);
+      this.claimed.push(claimedTicket);
     },
     generateTicket() {
       var result = "";
@@ -76,6 +81,19 @@ export default {
       return {
         code: result
       };
+    },
+    async sendApprove(ticket) {
+      this.$apollo.mutate({
+        mutation: gql`
+          mutation approveTicket($code: String!, $user: ID!) {
+            approveTicket(code: $code, user: $user) {
+              code
+              user
+            }
+          }
+        `,
+        variables: ticket
+      });
     }
   }
 };

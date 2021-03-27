@@ -152,7 +152,7 @@
 
           <q-page-container>
             <q-page class="text-primary">
-              <router-view />
+              <router-view :me="data.me" />
             </q-page>
           </q-page-container>
 
