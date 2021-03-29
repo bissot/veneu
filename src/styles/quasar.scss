@@ -20,7 +20,8 @@ aside.q-drawer--mobile {
 }
 
 .q-bar,
-.q-footer__content,
+.q-footer,
+.q-toolbar,
 .q-header__content,
 .q-bar__content,
 .q-card__section,
@@ -31,10 +32,14 @@ aside.q-drawer--mobile {
   // background-color: var(--venue-light) !important;
 }
 
+.q-footer {
+  max-height: 5rem;
+}
+
 html,
 #app,
 .q-drawer__content,
-.q-toolbar,
+.q-header,
 .q-card,
 .q-time,
 .q-time__container-child,

@@ -167,15 +167,6 @@
               <router-view :me="data.me" />
             </q-page>
           </q-page-container>
-
-          <q-footer reveal class="text-primary">
-            <q-toolbar class="justify-center">
-              Venue | About |
-              <q-avatar size="sm" class="q-mx-sm">
-                <img src="./assets/github.svg" />
-              </q-avatar>
-            </q-toolbar>
-          </q-footer>
         </div>
       </template>
     </ApolloQuery>
