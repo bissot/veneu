@@ -6,26 +6,27 @@
         <div v-if="error">{{ tryLogout() }}</div>
         <div v-if="data">
           <q-header class="text-primary">
-            <q-toolbar>
-              <q-btn
-                v-if="data.me"
-                round
-                size="sm"
-                icon="menu"
-                class="q-mx-sm"
-                title="Menu"
-                aria-label="Menu"
-                @click="left = !left"
-              />
-              <q-toolbar-title v-if="!['Landing', 'Login'].includes($route.name)">
-                <q-avatar @click="$router.push({ name: 'Dashboard' })">
-                  <VenueLogo id="nav-logo" />
-                </q-avatar>
-              </q-toolbar-title>
+            <q-pull-to-refresh @refresh="refresh" color="white" bg-color="primary">
+              <q-toolbar>
+                <q-btn
+                  v-if="data.me"
+                  round
+                  size="sm"
+                  icon="menu"
+                  class="q-mx-sm"
+                  title="Menu"
+                  aria-label="Menu"
+                  @click="left = !left"
+                />
+                <q-toolbar-title v-if="!['Landing', 'Login', 'Signup'].includes($route.name)">
+                  <q-avatar @click="$router.push({ name: 'Dashboard' })">
+                    <VenueLogo id="nav-logo" />
+                  </q-avatar>
+                </q-toolbar-title>
 
-              <q-space />
+                <q-space />
 
-              <!-- <q-btn
+                <!-- <q-btn
                 round
                 size="sm"
                 icon="insights"
@@ -44,19 +45,20 @@
                 @click="handleDonate"
               />
               <q-btn size="sm" round icon="api" class="q-mx-sm" title="API" aria-label="API" @click="handleAPI" />-->
-              <q-btn
-                size="sm"
-                round
-                icon="qr_code_2"
-                class="q-mx-sm"
-                title="Scan"
-                aria-label="Scan"
-                @click="handleScan"
-              />
-              <q-btn v-if="data.me" size="sm" round icon="notifications" class="q-mx-sm" title="API" aria-label="API">
-                <q-badge rounded color="red" floating label="1+" />
-              </q-btn>
-            </q-toolbar>
+                <q-btn
+                  size="sm"
+                  round
+                  icon="qr_code_2"
+                  class="q-mx-sm"
+                  title="Scan"
+                  aria-label="Scan"
+                  @click="handleScan"
+                />
+                <q-btn v-if="data.me" size="sm" round icon="notifications" class="q-mx-sm" title="API" aria-label="API">
+                  <q-badge rounded color="red" floating label="1+" />
+                </q-btn>
+              </q-toolbar>
+            </q-pull-to-refresh>
           </q-header>
 
           <q-drawer v-if="data.me" show-if-above v-model="left" side="left">
@@ -218,6 +220,9 @@ export default {
         localStorage.removeItem("token");
         location.reload();
       }
+    },
+    refresh(on) {
+      location.reload();
     }
   }
 };

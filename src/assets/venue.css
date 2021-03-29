@@ -24,6 +24,7 @@
 h1 {
   font-family: "Exo 2";
   font-weight: 900;
+  font-style: italic;
   color: #2c3e50;
   font-size: 3rem !important;
   line-height: initial !important;
