@@ -1,5 +1,35 @@
 <template>
   <div class="vertical-center text-center q-pa-md">
+    <q-dialog v-model="needsName" persistent transition-show="scale" transition-hide="scale">
+      <q-card class="bg-teal text-primary" style="width: 300px">
+        <q-card-section>
+          <div class="text-h6">A name is required</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input type="text" standout="bg-primary text-white" color="primary" v-model="first_name" label="First" />
+          <q-input
+            type="text"
+            standout="bg-primary text-white"
+            color="primary"
+            v-model="last_name"
+            label="Last"
+            class="q-pt-md"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="OK"
+            v-close-popup
+            :disabled="!first_name || !last_name"
+            class="q-mb-md q-mr-sm"
+            @click="needsName = false"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <q-btn
       v-if="$q.platform.is.desktop && !screen_scanning && !camera_scanning"
       class="q-ma-md"
@@ -51,6 +81,8 @@
               approvedTicket(user: $user) {
                 code
                 user
+                first_name
+                last_name
               }
             }
           `
@@ -80,11 +112,17 @@ export default {
       has_camera: false,
       camera_scanning: false,
       camera_scanner: null,
-      user: null
+      user: null,
+      needsName: true,
+      first_name: "",
+      last_name: ""
     };
   },
   created() {
     if (this.me) {
+      this.needsName = false;
+      this.first_name = this.me.first_name;
+      this.last_name = this.me.last_name;
       this.user = this.me._id;
     } else {
       this.user = this.generateID();
@@ -170,16 +208,20 @@ export default {
     async sendClaim(code) {
       this.$apollo.mutate({
         mutation: gql`
-          mutation claimTicket($code: String!, $user: ID!) {
-            claimTicket(code: $code, user: $user) {
+          mutation claimTicket($code: String!, $user: ID!, $first_name: String!, $last_name: String!) {
+            claimTicket(code: $code, user: $user, first_name: $first_name, last_name: $last_name) {
               code
               user
+              first_name
+              last_name
             }
           }
         `,
         variables: {
           code,
-          user: this.user
+          user: this.user,
+          first_name: this.first_name,
+          last_name: this.last_name
         }
       });
     },

@@ -8,7 +8,7 @@
         backgroundColor="#dfdfdf"
         colorLight="#dfdfdf"
         colorDark="#1a4974"
-        :margin="0"
+        :margin="8"
         :style="{ height: '100%', width: '100%' }"
         class="q-pa-md"
       />
@@ -30,6 +30,8 @@
               claimedTicket(code: $code) {
                 code
                 user
+                first_name
+                last_name
               }
             }
           `
@@ -65,10 +67,15 @@ export default {
         }
       }
     ) {
-      console.log("received", claimedTicket);
       this.current = this.next; // iteration logic
       this.next = this.generateTicket();
       this.sendApprove(claimedTicket);
+      this.$q.notify({
+        progress: true,
+        message: claimedTicket.first_name + " " + claimedTicket.last_name + " checked in",
+        icon: "event_seat",
+        color: "primary"
+      });
       this.claimed.push(claimedTicket);
     },
     generateTicket() {
@@ -85,10 +92,12 @@ export default {
     async sendApprove(ticket) {
       this.$apollo.mutate({
         mutation: gql`
-          mutation approveTicket($code: String!, $user: ID!) {
-            approveTicket(code: $code, user: $user) {
+          mutation approveTicket($code: String!, $user: ID!, $first_name: String!, $last_name: String!) {
+            approveTicket(code: $code, user: $user, first_name: $first_name, last_name: $last_name) {
               code
               user
+              first_name
+              last_name
             }
           }
         `,

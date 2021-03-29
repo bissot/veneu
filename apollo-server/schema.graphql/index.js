@@ -49,11 +49,13 @@ const linkSchema = gql`
   type Ticket {
     code: String!
     user: ID!
+    first_name: String!
+    last_name: String!
   }
 
   extend type Mutation {
-    claimTicket(code: String!, user: ID!): Ticket!
-    approveTicket(code: String!, user: ID!): Ticket!
+    claimTicket(code: String!, user: ID!, first_name: String!, last_name: String!): Ticket!
+    approveTicket(code: String!, user: ID!, first_name: String!, last_name: String!): Ticket!
   }
 
   extend type Subscription {
