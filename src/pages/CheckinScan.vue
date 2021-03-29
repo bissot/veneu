@@ -191,6 +191,13 @@ export default {
         }
       }
     ) {
+      this.$q.notify({
+        progress: true,
+        message: "Your attendance has been recorded",
+        icon: "event_seat",
+        color: "primary"
+      });
+      window.focus();
       if (this.screen_scanning) {
         this.handleStopScreenScan();
       } else if (this.camera_scanning) {

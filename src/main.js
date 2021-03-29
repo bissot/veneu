@@ -7,11 +7,11 @@ import router from "./router";
 
 import "./styles/quasar.scss";
 import "quasar/dist/quasar.ie.polyfills";
-import Quasar from "quasar";
+import { Quasar, Notify } from "quasar";
 
 Vue.use(Quasar, {
   config: {},
-  plugins: {}
+  plugins: { Notify }
 });
 
 Vue.config.productionTip = false;
