@@ -11,7 +11,7 @@
       <div v-if="data">
         <q-item-label header class="text-primary q-pb-md">Courses</q-item-label>
         <div class="">
-          <q-btn-group spread flat class="q-mx-md q-mb-none">
+          <q-btn-group spread flat class="q-mx-md q-mb-none q-gutter-x-sm">
             <q-btn dense size="sm" label="New" icon="add" :to="{ name: 'CreateCourse' }" />
             <q-btn disabled dense size="sm" label="Join" icon="group_add" />
             <q-btn dense size="sm" label="Edit" icon="edit" disabled />
@@ -49,7 +49,7 @@
           </q-item>
           <q-list class="rounded-borders">
             <div class="q-pb-sm">
-              <q-btn-group spread flat class="q-mx-md q-mt-sm">
+              <q-btn-group spread flat class="q-mx-md q-mt-sm q-gutter-x-sm">
                 <q-btn
                   dense
                   size="sm"
