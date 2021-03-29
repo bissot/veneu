@@ -155,6 +155,15 @@ export default {
       description: ""
     };
   },
+  mounted() {
+    var inputs = document.getElementsByTagName("input");
+    for (var i = 0; i < inputs.length; i++) {
+      inputs[i].onfocus = function() {
+        window.scrollTo(0, 0);
+        document.body.scrollTop = 0;
+      };
+    }
+  },
   methods: {
     handleBack() {
       this.$router.go(-1);
