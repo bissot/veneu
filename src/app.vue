@@ -6,14 +6,24 @@
         <div v-if="error">{{ tryLogout() }}</div>
         <div v-if="data">
           <q-header class="text-primary">
-            <q-toolbar v-if="data.me">
-              <q-btn round size="sm" icon="menu" class="q-mx-sm" title="Menu" aria-label="Menu" @click="left = !left" />
-
-              <q-toolbar-title>
+            <q-toolbar>
+              <q-btn
+                v-if="data.me"
+                round
+                size="sm"
+                icon="menu"
+                class="q-mx-sm"
+                title="Menu"
+                aria-label="Menu"
+                @click="left = !left"
+              />
+              <q-toolbar-title v-if="!['Landing', 'Login'].includes($route.name)">
                 <q-avatar @click="$router.push({ name: 'Dashboard' })">
                   <VenueLogo id="nav-logo" />
                 </q-avatar>
               </q-toolbar-title>
+
+              <q-space />
 
               <!-- <q-btn
                 round
@@ -43,7 +53,7 @@
                 aria-label="Scan"
                 @click="handleScan"
               />
-              <q-btn size="sm" round icon="notifications" class="q-mx-sm" title="API" aria-label="API">
+              <q-btn v-if="data.me" size="sm" round icon="notifications" class="q-mx-sm" title="API" aria-label="API">
                 <q-badge rounded color="red" floating label="1+" />
               </q-btn>
             </q-toolbar>
@@ -156,7 +166,7 @@
             </q-page>
           </q-page-container>
 
-          <q-footer class="text-primary">
+          <q-footer reveal class="text-primary">
             <q-toolbar class="justify-center">
               Venue | About |
               <q-avatar size="sm" class="q-mx-sm">
