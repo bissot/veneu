@@ -1,5 +1,5 @@
 <template>
-  <q-layout id="app" view="lHr Lpr lfr" class="text-primary">
+  <q-layout id="app" view="lhr Lpr lfr" class="text-primary">
     <q-ajax-bar position="top" color="primary" size="0.25rem" />
     <ApolloQuery :query="require('./graphql/Me.gql')">
       <template slot-scope="{ result: { data, error } }">
@@ -7,7 +7,7 @@
         <div v-if="data">
           <q-header class="text-primary">
             <q-pull-to-refresh @refresh="refresh" color="white" bg-color="primary">
-              <q-toolbar>
+              <q-toolbar class="q-pt-md">
                 <q-btn
                   v-if="data.me"
                   round
