@@ -45,13 +45,6 @@ export default {
     if (this.$route.query.parent_resource) {
       this.parent_resource = this.$route.query.parent_resource;
     }
-    var inputs = document.getElementsByTagName("input");
-    for (var i = 0; i < inputs.length; i++) {
-      inputs[i].onfocus = function() {
-        window.scrollTo(0, 0);
-        document.body.scrollTop = 0;
-      };
-    }
   },
   methods: {
     handleBack() {

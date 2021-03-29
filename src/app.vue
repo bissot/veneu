@@ -191,11 +191,6 @@ export default {
       confirmLogout: false
     };
   },
-  created() {
-    document.ontouchmove = function(e) {
-      e.preventDefault();
-    };
-  },
   methods: {
     handleDonate() {
       var win = window.open(
