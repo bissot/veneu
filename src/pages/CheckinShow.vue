@@ -20,7 +20,14 @@
       <div class="row full-width justify-center q-mt-lg">
         <p>{{ claimed.length }} seats claimed</p>
       </div>
-      <q-icon size="lg" color="primary" name="event_seat" v-for="claim in claimed" :key="claim.code" />
+      <q-icon
+        size="lg"
+        color="primary"
+        name="event_seat"
+        v-for="claim in claimed"
+        :key="claim.code"
+        :title="claim.first_name + ' ' + claim.last_name"
+      />
     </div>
     <ApolloSubscribeToMore
       :document="
