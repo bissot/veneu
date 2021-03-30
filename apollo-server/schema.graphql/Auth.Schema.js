@@ -15,7 +15,7 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createAuth(user: ID, role: Role!, shared_resource: ID!, shared_resource_type: String!): Auth!
+    createAuth(user: String, role: Role!, shared_resource: ID!, shared_resource_type: String!): Auth!
     updateAuth(_id: ID!, role: Role, user: ID): Auth!
     deleteAuth(_id: ID!): Auth!
   }

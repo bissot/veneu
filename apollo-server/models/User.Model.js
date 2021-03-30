@@ -39,7 +39,7 @@ const User = new mongoose.Schema(
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
   }
-).pre("deleteOne", { document: true }, function(next) {
+).pre("remove", function(next) {
   Promise.all([
     this.model("Auth").deleteMany({ user: this._id }),
     this.model("Notification").deleteMany({ user: this._id })
