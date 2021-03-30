@@ -67,8 +67,8 @@
               <q-card>
                 <q-card-section class="row">
                   <div class="text-h6">Share Course</div>
-                  <q-space />
-                  <q-btn @click="clearForm" icon="close" flat round dense v-close-popup />
+                  <!-- <q-space />
+                  <q-btn @click="clearForm" icon="close" flat round dense v-close-popup /> -->
                 </q-card-section>
 
                 <q-separator inset />
@@ -122,7 +122,9 @@
                   }"
                 >
                   <template v-slot="{ mutate, loading }">
-                    <q-card-section align="right">
+                    <q-card-section class="row">
+                      <q-btn label="Cancel" v-close-popup @click="clearForm" />
+                      <q-space />
                       <q-btn
                         v-close-popup
                         color="primary"

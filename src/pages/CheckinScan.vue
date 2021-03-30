@@ -18,15 +18,10 @@
           />
         </q-card-section>
 
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="OK"
-            v-close-popup
-            :disabled="!first_name || !last_name"
-            class="q-mb-md q-mr-sm"
-            @click="needsName = false"
-          />
+        <q-card-actions class="q-mb-md q-mx-sm">
+          <q-btn label="Cancel" v-close-popup :to="{ path: '/' }" />
+          <q-space />
+          <q-btn label="OK" v-close-popup :disabled="!first_name || !last_name" @click="needsName = false" />
         </q-card-actions>
       </q-card>
     </q-dialog>
