@@ -1,7 +1,9 @@
-require("dotenv").config({ path: "../variables.env" });
+require("dotenv").config({ path: __dirname + "/../variables.env" });
 
 const http = require("http");
 const express = require("express");
+const path = require("path");
+const cors = require("cors");
 
 const { ApolloServer, AuthenticationError, gql, PubSub } = require("apollo-server-express");
 global.pubsub = new PubSub();
@@ -30,12 +32,21 @@ const server = new ApolloServer({
 });
 
 const app = express();
+app.use(cors());
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "..", "dist")));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "..", "dist", "index.html"));
+  });
+}
+
 const httpServer = http.createServer(app);
 
 server.applyMiddleware({ app });
 server.installSubscriptionHandlers(httpServer);
 
-httpServer.listen({ port: 4000 }, () => {
+httpServer.listen(process.env.PORT || 4000, () => {
   console.log("🚝 Express ready at http://localhost:4000");
   console.log("📈 GraphQL ready at http://localhost:4000" + `${server.graphqlPath}`);
 });

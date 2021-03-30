@@ -13,6 +13,9 @@ import CreateCourse from "./pages/CreateCourse.vue";
 import CreateUserGroup from "./pages/CreateUserGroup.vue";
 import CreateRegistrationSection from "./pages/CreateRegistrationSection.vue";
 
+import CheckinShow from "./pages/CheckinShow.vue";
+import CheckinScan from "./pages/CheckinScan.vue";
+
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -104,6 +107,19 @@ const router = new VueRouter({
       meta: {
         auth: true
       }
+    },
+    {
+      path: "/checkin/:_id/show",
+      name: "CheckinShow",
+      component: CheckinShow,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/checkin/scan",
+      name: "CheckinScan",
+      component: CheckinScan
     }
   ],
   mode: "history"

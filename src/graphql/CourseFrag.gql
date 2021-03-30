@@ -6,7 +6,13 @@ fragment Course on Course {
   start
   end
   auths {
+    _id
     role
+    user {
+      first_name
+      last_name
+      email
+    }
   }
   user_groups {
     _id
@@ -14,6 +20,11 @@ fragment Course on Course {
     auths {
       _id
       role
+      user {
+        first_name
+        last_name
+        email
+      }
     }
   }
   registration_sections {
@@ -22,6 +33,11 @@ fragment Course on Course {
     auths {
       _id
       role
+      user {
+        first_name
+        last_name
+        email
+      }
     }
     user_groups {
       _id
@@ -29,6 +45,11 @@ fragment Course on Course {
       auths {
         _id
         role
+        user {
+          first_name
+          last_name
+          email
+        }
       }
     }
   }

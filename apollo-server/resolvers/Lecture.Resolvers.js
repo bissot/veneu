@@ -42,11 +42,13 @@ module.exports = {
     },
     deleteLecture: (parent, { _id }, { requester, models: { Lecture } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Lecture.findOneAndDelete({ _id }).then(lecture => {
-        return global.pubsub.publish(eventName.LECTURE_DELETED, { lectureDeleted: lecture }).then(done => {
-          return lecture;
+      return Lecture.findOne({ _id })
+        .then(lecture => lecture.deleteOne())
+        .then(lecture => {
+          return global.pubsub.publish(eventName.LECTURE_DELETED, { lectureDeleted: lecture }).then(done => {
+            return lecture;
+          });
         });
-      });
     }
   },
   Subscription: {

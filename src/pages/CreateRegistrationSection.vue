@@ -45,7 +45,6 @@ export default {
     if (this.$route.query.course) {
       this.course = this.$route.query.course;
     }
-    console.log("PARENTRESOURCE", this.course);
   },
   methods: {
     handleBack() {
@@ -70,10 +69,6 @@ export default {
   position: absolute;
   overflow: auto;
   text-align: center;
-}
-.form {
-  margin: auto;
-  max-width: 24rem;
 }
 #actions {
   position: relative;

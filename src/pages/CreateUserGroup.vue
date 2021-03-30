@@ -45,7 +45,6 @@ export default {
     if (this.$route.query.parent_resource) {
       this.parent_resource = this.$route.query.parent_resource;
     }
-    console.log("PARENTRESOURCE", this.parent_resource);
   },
   methods: {
     handleBack() {
@@ -70,10 +69,6 @@ export default {
   position: absolute;
   overflow: auto;
   text-align: center;
-}
-.form {
-  margin: auto;
-  max-width: 24rem;
 }
 #actions {
   position: relative;

@@ -34,8 +34,6 @@ module.exports = {
           // //send email
           let myhtml = ""
 
-          console.log("User: " + x);
-
           if (process.env.NODE_ENV === "production") {
             myhtml = ''
           } else {
@@ -57,7 +55,7 @@ module.exports = {
             }
           });
 
-          return Auth.create({ role, user: x._id, shared_resource, shared_resource_type }).then(auth => {
+          return Auth.create({ role, user: x[0]._id, shared_resource, shared_resource_type }).then(auth => {
             return global.pubsub
               .publish(eventName.AUTH_CREATED, {
                 authCreated: auth
@@ -65,7 +63,7 @@ module.exports = {
               .then(done => {
                 return auth;
               });
-        });
+          });
       });
     },
     updateAuth(parent, { _id, ...patch }, { requester, models: { Auth } }, info) {
@@ -84,15 +82,17 @@ module.exports = {
     },
     deleteAuth: (parent, { _id }, { requester, models: { Auth } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Auth.findOneAndDelete({ _id: _id }).then(auth => {
-        return global.pubsub
-          .publish(eventName.AUTH_DELETED, {
-            authDeleted: auth
-          })
-          .then(done => {
-            return auth;
-          });
-      });
+      return Auth.findOne({ _id })
+        .then(auth => auth.deleteOne())
+        .then(auth => {
+          return global.pubsub
+            .publish(eventName.AUTH_DELETED, {
+              authDeleted: auth
+            })
+            .then(done => {
+              return auth;
+            });
+        });
     }
   },
   Subscription: {

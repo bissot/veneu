@@ -23,11 +23,12 @@
             </q-input>
 
             <q-input
+              standout="bg-primary text-white q-ma-none"
               color="primary"
-              class="text-primary q-mt-none"
+              class="text-primary"
               v-model="description"
-              filled
-              placeholder="Description"
+              label="Description"
+              placeholder="e.g. Learning about x, y, and z."
               type="textarea"
             >
             </q-input>
@@ -159,10 +160,17 @@ export default {
       this.$router.go(-1);
     },
     formValid() {
-      return this.name.length && this.prefix.length && this.suffix && this.start.length && this.end.length && this.description.length;
+      return (
+        this.name.length &&
+        this.prefix.length &&
+        this.suffix &&
+        this.start.length &&
+        this.end.length &&
+        this.description.length
+      );
     },
-    handleCreateCourse() {
-      this.$router.push({ name: "Dashboard" });
+    handleCreateCourse({ data }) {
+      this.$router.push({ name: "Course", params: { _id: data.createCourse._id } });
     }
   }
 };
@@ -175,10 +183,6 @@ export default {
   position: absolute;
   overflow: auto;
   text-align: center;
-}
-.form {
-  margin: auto;
-  max-width: 24rem;
 }
 #actions {
   position: relative;

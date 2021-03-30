@@ -5,12 +5,10 @@
   --venue-red: #8a2b36;
   --venue-light: #dfdfdf;
   --venue-light-backdrop: #dfdfdfaa;
-  --elevated-shadow: 0.5rem 0.5rem 0.5rem #bebebe, -0.5rem -0.5rem 0.5rem #f8f8f8aa,
-    inset 0.05rem 0.05rem 0.05rem #bebebe44, inset -0.05rem -0.05rem 0.05rem #f8f8f844;
-  --button-shadow: 0.25rem 0.25rem 0.25rem #bebebe, -0.25rem -0.25rem 0.25rem #f8f8f888,
-    inset 0.05rem 0.05rem 0.05rem #bebebe44, inset -0.05rem -0.05rem 0.05rem #f8f8f844;
-  --field-shadow: inset 0.25rem 0.25rem 0.25rem #bebebe, inset -0.25rem -0.25rem 0.25rem #f8f8f8aa,
-    0.05rem 0.05rem 0.05rem #bebebe, -0.05rem -0.05rem 0.05rem #f8f8f8aa;
+  --elevated-shadow: 0.5rem 0.5rem 0.5rem #bebebe, -0.5rem -0.5rem 0.5rem #f8f8f866;
+  --button-shadow: 0.25rem 0.25rem 0.25rem #bebebe, -0.25rem -0.25rem 0.25rem #f8f8f866;
+  --field-shadow: inset 0.25rem 0.25rem 0.25rem #bebebe, inset -0.25rem -0.25rem 0.25rem #f8f8f888;
+  --red-field-shadow: inset 0.25rem 0.25rem 0.25rem #75252e, inset -0.25rem -0.25rem 0.25rem #9f313e;
 }
 
 * {
@@ -26,6 +24,7 @@
 h1 {
   font-family: "Exo 2";
   font-weight: 900;
+  font-style: italic;
   color: #2c3e50;
   font-size: 3rem !important;
   line-height: initial !important;
@@ -50,18 +49,23 @@ label {
   display: block;
 }
 
-button {
+.form {
+  margin: auto;
+  max-width: 40rem;
+}
+
+/* button {
   display: inline-block;
   left: 0;
   background: none;
-  border-radius: 0.25rem;
+  border-radius: 1rem;
   font-size: 1rem;
   margin: 0.5rem;
   outline: none;
   border: none;
   padding: 0.5rem 0.75rem;
   color: var(--venue-dark);
-}
+} */
 
 .vertical-center {
   width: 100%;
@@ -113,46 +117,7 @@ button {
   border-radius: 1rem !important;
   background: none;
   box-shadow: var(--elevated-shadow);
-  animation: grow-in 1s;
-}
-
-.btn:last-of-type {
-  margin: 1rem 0rem 0rem 0rem;
-}
-
-.btn:hover,
-.btn:target,
-.btn:focus,
-.btn:active {
-  background: var(--venue-dark) !important;
-  color: none;
-  border-radius: 0.25rem;
-  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-  outline: none;
-}
-
-.btn-primary {
-  color: var(--venue-blue);
-  border: 0.2rem solid var(--venue-blue);
-}
-
-.btn-primary:hover,
-.btn-primary:target,
-.btn-primary:focus,
-.btn-primary:active {
-  background: var(--venue-blue) !important;
-}
-
-.btn-secondary {
-  color: var(--venue-red);
-  border: 0.2rem solid var(--venue-red);
-}
-
-.btn-secondary:hover,
-.btn-secondary:target,
-.btn-secondary:focus,
-.btn-secondary:active {
-  background: var(--venue-red) !important;
+  animation: grow-in 1s forwards;
 }
 
 /* WebKit and Opera browsers */

@@ -11,7 +11,7 @@ module.exports = gql`
     auths: [Auth!]!
     start: Date!
     end: Date!
-    description: String!
+    description: String
     user_groups: [UserGroup!]!
     registration_sections: [RegistrationSection!]!
     lectures: [Lecture!]!
@@ -23,7 +23,7 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createCourse(name: String!, start: Date!, end: Date!, prefix: String, suffix: String, description: String!): Course!
+    createCourse(name: String!, start: Date!, end: Date!, prefix: String, suffix: String, description: String): Course!
     updateCourse(_id: ID!, name: String, prefix: String, suffix: Int): Course!
     deleteCourse(_id: ID!): Course!
   }

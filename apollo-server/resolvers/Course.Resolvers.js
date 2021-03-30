@@ -44,15 +44,17 @@ module.exports = {
     },
     deleteCourse: (parent, { _id }, { requester, models: { Course } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Course.findOneAndDelete({ _id: _id }).then(course => {
-        return global.pubsub
-          .publish(eventName.COURSE_DELETED, {
-            courseDeleted: course
-          })
-          .then(done => {
-            return course;
-          });
-      });
+      return Course.findOne({ _id })
+        .then(course => course.deleteOne())
+        .then(course => {
+          return global.pubsub
+            .publish(eventName.COURSE_DELETED, {
+              courseDeleted: course
+            })
+            .then(done => {
+              return course;
+            });
+        });
     }
   },
   Subscription: {

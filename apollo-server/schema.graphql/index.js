@@ -45,6 +45,23 @@ const linkSchema = gql`
   union SearchResult = User | Course | UserGroup
 
   scalar Date
+
+  type Ticket {
+    code: String!
+    user: ID!
+    first_name: String!
+    last_name: String!
+  }
+
+  extend type Mutation {
+    claimTicket(code: String!, user: ID!, first_name: String!, last_name: String!): Ticket!
+    approveTicket(code: String!, user: ID!, first_name: String!, last_name: String!): Ticket!
+  }
+
+  extend type Subscription {
+    claimedTicket(code: String!): Ticket!
+    approvedTicket(user: ID!): Ticket!
+  }
 `;
 
 module.exports = [

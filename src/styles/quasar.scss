@@ -2,6 +2,13 @@
 @import "quasar/dist/quasar.sass";
 // @import '~quasar-addon-styl';
 
+html,
+body {
+  -webkit-overflow-scrolling: touch !important;
+  overflow: auto !important;
+  height: 100% !important;
+}
+
 aside.q-drawer--mobile {
   width: 90% !important;
   max-width: 25rem !important;
@@ -9,9 +16,9 @@ aside.q-drawer--mobile {
 
 .q-field--standout .q-field__control {
   background: none;
-  box-shadow: var(--field-shadow);
+  // box-shadow: var(--field-shadow);
   transition: color 0.5s cubic-bezier(0.19, 1, 0.22, 1) !important;
-  animation: grow-in-input 1s;
+  animation: grow-in-input 1s forwards;
 }
 
 .q-gutter-x-md > *,
@@ -20,7 +27,8 @@ aside.q-drawer--mobile {
 }
 
 .q-bar,
-.q-footer__content,
+.q-footer,
+.q-toolbar,
 .q-header__content,
 .q-bar__content,
 .q-card__section,
@@ -31,9 +39,15 @@ aside.q-drawer--mobile {
   // background-color: var(--venue-light) !important;
 }
 
+.q-footer {
+  max-height: 5rem;
+}
+
+html,
 body,
+#app,
 .q-drawer__content,
-.q-toolbar,
+.q-header,
 .q-card,
 .q-time,
 .q-time__container-child,
@@ -49,36 +63,68 @@ body,
   padding-top: 0rem !important;
 }
 
-.q-expansion-item__container .q-item .q-focus-helper,
+.q-focusable,
+.q-hoverable,
 #me {
   border-radius: 1rem !important;
 }
 
 .q-btn,
-.q-btn-group,
 .q-time__container-child,
 .q-dialog__inner > div,
 .q-menu,
 #me .q-avatar {
   box-shadow: var(--button-shadow);
-  animation: grow-in-button 1s !important;
+  animation: grow-in-button 1s forwards !important;
 }
-.q-date__content .q-btn {
+.q-date__content .q-btn,
+.q-btn-group .q-btn:hover:not([disabled])::before,
+.q-btn-group .q-focus-helper,
+.q-btn__wrapper::before {
   box-shadow: unset !important;
+  animation: none;
 }
 
-.q-btn-group .q-btn {
-  border-radius: 0rem !important;
-  box-shadow: none !important;
-
-  &:first-child {
-    border-top-left-radius: 0.25rem !important;
-    border-bottom-left-radius: 0.25rem !important;
+.q-btn--rectangle,
+.q-field__control,
+.q-dialog__inner > div {
+  border-radius: 1rem !important;
+  &.bg-primary {
+    box-shadow: var(--button-shadow) !important;
   }
+}
 
-  &:last-child {
-    border-top-right-radius: 0.25rem !important;
-    border-bottom-right-radius: 0.25rem !important;
+.q-btn-group {
+  border-radius: 1rem !important;
+
+  .q-btn {
+    z-index: 10;
+    position: relative;
+    box-shadow: none !important;
+    border-radius: 0rem !important;
+    background: var(--venue-light);
+
+    &:first-child {
+      border-top-left-radius: 1rem !important;
+      border-bottom-left-radius: 1rem !important;
+    }
+
+    &:last-child {
+      border-top-right-radius: 1rem !important;
+      border-bottom-right-radius: 1rem !important;
+    }
+
+    &::before {
+      content: "";
+      border-radius: inherit;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 0;
+      animation: grow-in-button 1s forwards !important;
+    }
   }
 }
 
@@ -90,12 +136,55 @@ body,
   padding: 0px 16px 0px 0px !important;
 }
 
-.q-btn:focus:not(.bg-primary),
-.q-btn:hover:not(.bg-primary) {
+.q-btn:focus:not(.bg-primary):not(.bg-red):not([disabled]),
+.q-btn:hover:not(.bg-primary):not(.bg-red):not([disabled]),
+.q-focusable:active:not([disabled]) .q-focus-helper,
+.q-hoverable:active:not([disabled]) {
   box-shadow: var(--field-shadow) !important;
+}
+
+.q-focusable:active[disabled] .q-focus-helper,
+.q-hoverable:active[disabled] {
+  transition: none !important;
+  animation: none !important;
 }
 
 .q-timeline__heading-title {
   font-family: "Exo 2" !important;
   color: var(--venue-dark);
+}
+
+.q-badge[rounded] {
+  border-radius: 1rem;
+  margin-right: -0.5rem;
+}
+
+.q-page-container {
+  padding-bottom: 0 !important;
+}
+
+h1 {
+  text-align: center;
+  border-radius: 1rem;
+  animation: grow-in 1s forwards;
+}
+
+.form h1,
+.vertical-center h1 {
+  border-radius: unset;
+  animation: unset;
+}
+
+.bg-red {
+  background-color: var(--venue-red) !important;
+
+  &:hover:not([disabled]),
+  &:focus:not([disabled]) {
+    box-shadow: var(--red-field-shadow) !important;
+  }
+}
+
+.q-item__label--caption,
+.q-field__native:not(:focus) .q-field__label {
+  color: var(--venue-dark) !important;
 }

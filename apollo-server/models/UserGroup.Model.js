@@ -38,7 +38,7 @@ const UserGroup = new mongoose.Schema(
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
   }
 )
-  .pre("remove", function(next) {
+  .pre("deleteOne", { document: true }, function(next) {
     Promise.all([
       this.model("Auth").deleteMany({ resource: this._id }),
       this.model("Course").findByIdAndUpdate({ _id: this.parent_resource }, { $pull: { user_groups: this._id } }),

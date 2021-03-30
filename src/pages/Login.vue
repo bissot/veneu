@@ -70,7 +70,7 @@ export default {
         window.localStorage.setItem("token", res.data.login);
       }
       (this.email = ""), (this.password = "");
-      this.$router.push({ path: this.$router.history.current.query.redirect || "/dashboard" });
+      location.href = this.$router.history.current.query.redirect || "/dashboard";
     },
     handleBack() {
       this.$router.push({ name: "Landing" });

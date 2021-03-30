@@ -27,7 +27,7 @@ services:
     environment:
       - NODE_ENV=development
       - JWTAUTH_KEY=${JWTAUTH_KEY}
-      - DB_URL=mongodb://mongo:27017/venue-new
+      - DB_URL=${DB_URL}
     depends_on:
       - mongo
 
@@ -43,8 +43,9 @@ services:
       - 8080:8080
     environment:
       - NODE_ENV=development
-      - VUE_APP_GRAPHQL_HTTP=http://localhost:4000/graphql
-      - VUE_APP_GRAPHQL_WS=ws://localhost:4000/graphql
+      - BASE_URL=${BASE_URL}
+      - VUE_APP_GRAPHQL_HTTP=${VUE_APP_GRAPHQL_HTTP}
+      - VUE_APP_GRAPHQL_WS=${VUE_APP_GRAPHQL_WS}
     depends_on:
       - mongo
       - server

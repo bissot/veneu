@@ -3,97 +3,117 @@
     <template slot-scope="{ result: { loading, error, data } }">
       <div v-if="loading">Loading...</div>
       <div v-if="error">Error...</div>
-      <div v-if="data" class="row q-px-md" id="courseloaded">
-        <div class="col-12 col-md-6 q-px-sm">
-          <h1>{{ data.course.name }}</h1>
-
+      <div v-if="data && data.course" class="q-px-md" id="courseloaded">
+        <div>
+          <h1 class="q-pa-sm">{{ data.course.name }}</h1>
+          {{ data.course.description }}
           <div>
-            {{data.course.description}}
+            Instructors:
+            <div
+              v-for="(auth, i) in data.course.auths.filter(a => a.role == 'INSTRUCTOR')"
+              :key="auth._id"
+              style="display: inline-block;"
+            >
+              {{ i > 0 ? "," : "" }}{{ auth.user.first_name }} {{ auth.user.last_name }}
+            </div>
           </div>
-
           <div>
-             Instructors:
-            <span v-for="(auth, index) in data.course.auths.filter(a => a.role == 'INSTRUCTOR')"
-                 :key="auth._id">
-              {{auth.user.first_name}} {{auth.user.last_name}}
-              <span v-if="index != (data.course.auths.filter(a => a.role == 'INSTRUCTOR').length - 1)">,</span>
-            </span>
-
+            Teaching Assistants:
+            <div
+              v-for="(auth, i) in data.course.auths.filter(a => a.role == 'TEACHING_ASSISTANT')"
+              :key="auth._id"
+              style="display: inline-block;"
+            >
+              {{ i > 0 ? "," : "" }}{{ auth.user.first_name }} {{ auth.user.last_name }}
+            </div>
           </div>
-
           <div>
             Students:
-            <span v-for="(auth, index) in data.course.auths.filter(a => a.role == 'STUDENT')"
-                 :key="auth._id">
-              {{auth.user.first_name}} {{auth.user.last_name}}
-              <span v-if="index != (data.course.auths.filter(a => a.role == 'STUDENT').length - 1)">,</span>
-            </span>
-          </div>
-
-          <div>
-            <div>
-                <q-btn
-                  label="Share"
-                  title="Share"
-                  color="primary"
-                  @click="shareCourseDialog = true"
-                />
-
-                <q-dialog v-model="shareCourseDialog" noBackdropDismiss>
-                  <q-card>
-
-                    <q-card-section class="row">
-                      <div class="text-h6">Share Course</div>
-                      <q-space />
-                      <q-btn @click="clearForm" icon="close" flat round dense v-close-popup />
-                    </q-card-section>
-
-                    <q-separator/>
-
-                    <q-card-section style="max-height: 50vh" class="scroll">
-                      <q-input filled v-model="emailInput" label="Add people" placeholder="email@gmail.com" :rules="[val => !!val || 'Email is required.', isValidEmail]"/>
-                      <q-select filled v-model="roleSelection" :options="roleOptions" label="User Role" :rules="[val => !!val || 'Role is required.']"/>
-                    </q-card-section>
-
-                    <q-separator/>
-
-                    <ApolloMutation
-                     :mutation="gql => gql`
-                       mutation ($emailInput: String!, $roleSelection: Role!, $courseId: ID!, $sharedResourceType: String! ) {
-                         createAuth (user: $emailInput, role: $roleSelection, shared_resource: $courseId, shared_resource_type: $sharedResourceType) {
-                           _id
-                         }
-                       }
-                     `"
-                     :variables="{
-                       emailInput,
-                       roleSelection,
-                       courseId: data.course._id,
-                       sharedResourceType
-                     }"
-                   >
-
-                   <template v-slot="{ mutate, loading}">
-                     <q-card-section align="end">
-                       <q-btn color="primary" @click="shareCourse(mutate)" label="Done" :loading="loading" :disabled="isDisabled()">
-                         <template v-slot:loading>
-                             <q-spinner-dots/>
-                         </template>
-                       </q-btn>
-                     </q-card-section>
-                   </template>
-
-
-                  </ApolloMutation>
-
-                  </q-card>
-                </q-dialog>
-
+            <div
+              v-for="(auth, i) in data.course.auths.filter(a => a.role == 'STUDENT')"
+              :key="auth._id"
+              style="display: inline-block;"
+            >
+              {{ i > 0 ? ", " : "" }}{{ auth.user.first_name }} {{ auth.user.last_name }}
             </div>
+          </div>
+        </div>
+
+        <div>
+          <div>
+              <q-btn
+                label="Share"
+                title="Share"
+                color="primary"
+                @click="shareCourseDialog = true"
+              />
+
+              <q-dialog v-model="shareCourseDialog" noBackdropDismiss>
+                <q-card>
+
+                  <q-card-section class="row">
+                    <div class="text-h6">Share Course</div>
+                    <q-space />
+                    <q-btn @click="clearForm" icon="close" flat round dense v-close-popup />
+                  </q-card-section>
+
+                  <q-separator/>
+
+                  <q-card-section style="max-height: 50vh" class="scroll">
+                    <q-input filled v-model="emailInput" label="Add people" placeholder="email@gmail.com" :rules="[val => !!val || 'Email is required.', isValidEmail]"/>
+                    <q-select filled v-model="roleSelection" :options="roleOptions" label="User Role" :rules="[val => !!val || 'Role is required.']"/>
+                  </q-card-section>
+
+                  <q-separator/>
+
+                  <ApolloMutation
+                   :mutation="gql => gql`
+                     mutation ($emailInput: String!, $roleSelection: Role!, $courseId: ID!, $sharedResourceType: String! ) {
+                       createAuth (user: $emailInput, role: $roleSelection, shared_resource: $courseId, shared_resource_type: $sharedResourceType) {
+                         _id
+                       }
+                     }
+                   `"
+                   :variables="{
+                     emailInput,
+                     roleSelection,
+                     courseId: data.course._id,
+                     sharedResourceType
+                   }"
+                 >
+
+                 <template v-slot="{ mutate, loading}">
+                   <q-card-section align="end">
+                     <q-btn v-close-popup color="primary" @click="shareCourse(mutate)" label="Done" :loading="loading" :disabled="isDisabled()">
+                       <template v-slot:loading>
+                           <q-spinner-dots/>
+                       </template>
+                     </q-btn>
+                   </q-card-section>
+                 </template>
+
+
+                </ApolloMutation>
+
+                </q-card>
+              </q-dialog>
 
           </div>
         </div>
-        <!-- <q-separator v-if="!($q.screen.lt.sm || $q.screen.lt.md)" vertical spaced="-1px" inset /> -->
+
+        <h2 class="q-py-none q-px-sm">Resources</h2>
+        <q-tree class="text-primary" :nodes="simple" accordion node-key="label" :expanded.sync="expanded" />
+        <ApolloMutation
+          :mutation="require('../graphql/DeleteCourse.gql')"
+          :variables="{ _id: data.course._id }"
+          @done="onDelete"
+        >
+          <template slot-scope="{ mutate }">
+            <q-form class="row full-width justify-center" @submit.prevent="mutate()">
+              <q-btn class="bg-red text-white" label="Delete" icon-right="delete" type="submit" />
+            </q-form>
+          </template>
+        </ApolloMutation>
       </div>
     </template>
   </ApolloQuery>
@@ -143,6 +163,9 @@ export default {
     clearForm(){
       this.emailInput = "";
       this.roleSelection = "";
+    },
+    onDelete() {
+      location.href = "/dashboard";
     }
   },
 };

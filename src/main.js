@@ -1,9 +1,18 @@
 import Vue from "vue";
-import App from "./App.vue";
+
+import app from "./app.vue";
 import "./registerServiceWorker";
 import { createProvider } from "./vue-apollo";
 import router from "./router";
-import "./quasar";
+
+import "./styles/quasar.scss";
+import "quasar/dist/quasar.ie.polyfills";
+import { Quasar, Notify } from "quasar";
+
+Vue.use(Quasar, {
+  config: {},
+  plugins: { Notify }
+});
 
 Vue.config.productionTip = false;
 
@@ -26,5 +35,5 @@ Vue.directive("click-off", {
 new Vue({
   apolloProvider: createProvider(),
   router,
-  render: h => h(App)
+  render: h => h(app)
 }).$mount("#app");

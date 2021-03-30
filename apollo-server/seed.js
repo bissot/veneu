@@ -1,6 +1,6 @@
 const seeder = require("mongoose-seed");
 
-seeder.connect(process.env.DB_URL || "mongodb://localhost:27017/venue-new", { useUnifiedTopology: true }, function () {
+seeder.connect(process.env.DB_URL, { useUnifiedTopology: true }, function () {
   seeder.loadModels([
     "./apollo-server/models/Auth.Model",
     "./apollo-server/models/Course.Model",
