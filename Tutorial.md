@@ -1,6 +1,5 @@
 # Our Technology Stack
 
-<p align="center"><img src="https://github.com/TheStopsign/venue-new/blob/main/src/assets/mevn.svg" alt="alt text" width="300" height="96"></p>
 ```
 A quick page of links and resources to get up and running with Venue.
 ```
