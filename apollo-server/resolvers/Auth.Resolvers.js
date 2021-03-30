@@ -30,13 +30,11 @@ module.exports = {
     createAuth: (parent, { role, user, shared_resource, shared_resource_type }, { requester, models: { Auth, User } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
 
-      console.log(process.env.EMAIL_PASS);
-
-      User.find({email: user}).then(x => {
+      return User.find({email: user}).then(x => {
           // //send email
           let myhtml = ""
 
-          //console.log(process.env.EMAIL_PASS)
+          console.log("User: " + x);
 
           if (process.env.NODE_ENV === "production") {
             myhtml = ''
@@ -46,32 +44,29 @@ module.exports = {
 
           var mailOptions = {
             from: 'venue.do.not.reply@gmail.com',
-            to: 'khartabilt@gmail.com',
+            to: user,
             subject: 'PUMPKIN!!!!',
             html: myhtml
           };
 
-          console.log("About to send email with:", mailOptions)
           transporter.sendMail(mailOptions, function (error, info) {
             if (error || info == null) {
               console.log(error);
             } else {
-              console.log('Email sent to ' + 'daniel.dukeshire@gmail.com' + ': ' + info.response);
+              console.log('Email sent to ' + user + ': ' + info.response);
             }
           });
+
+          return Auth.create({ role, user: x._id, shared_resource, shared_resource_type }).then(auth => {
+            return global.pubsub
+              .publish(eventName.AUTH_CREATED, {
+                authCreated: auth
+              })
+              .then(done => {
+                return auth;
+              });
+        });
       });
-
-      return Auth.create({ role, user, shared_resource, shared_resource_type }).then(auth => {
-        return global.pubsub
-          .publish(eventName.AUTH_CREATED, {
-            authCreated: auth
-          })
-          .then(done => {
-            return auth;
-          });
-      });
-
-
     },
     updateAuth(parent, { _id, ...patch }, { requester, models: { Auth } }, info) {
       if (!requester) throw new ForbiddenError("Not allowed");
