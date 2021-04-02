@@ -23,7 +23,13 @@ module.exports = {
     },
     auths: (parent, args, { requester, models: { Auth } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return requester.auths;
+      if (args.shared_resource) {
+        return Auth.find({ shared_resource: args.shared_resource }).then(auths => {
+          return auths;
+        });
+      } else {
+        return requester.auths;
+      }
     }
   },
   Mutation: {

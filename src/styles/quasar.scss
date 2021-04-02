@@ -26,6 +26,10 @@ aside.q-drawer--mobile {
   margin-right: 16px;
 }
 
+.q-table__bottom .q-btn {
+  margin: 8px;
+}
+
 .q-bar,
 .q-footer,
 .q-toolbar,
@@ -53,7 +57,8 @@ body,
 .q-time__container-child,
 .q-date,
 .q-select__dialog,
-.q-menu {
+.q-menu,
+.q-table__card {
   background-color: var(--venue-light) !important;
 }
 

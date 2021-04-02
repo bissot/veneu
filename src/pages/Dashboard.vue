@@ -1,6 +1,6 @@
 <template>
   <q-page id="dashboard" class="q-pa-md">
-    <h1>dashboard</h1>
+    <h1 class="q-pa-sm">dashboard</h1>
   </q-page>
 </template>
 

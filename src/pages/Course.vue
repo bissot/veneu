@@ -8,7 +8,7 @@
           <div>
             <h1 class="q-pa-sm">{{ data.course.name }}</h1>
             <div class="row full-width q-mt-sm q-mb-md">
-              <ShareResourceModal :resourceid="data.course._id" resourcetype="Course" />
+              <ShareResourceModal :resourceid="data.course._id" resourcetype="Course" :me="me" />
               <q-space />
               <ApolloMutation
                 :mutation="require('../graphql/DeleteCourse.gql')"
@@ -41,6 +41,9 @@
 import ShareResourceModal from "../components/ShareResourceModal.vue";
 export default {
   components: { ShareResourceModal },
+  props: {
+    me: Object
+  },
   data() {
     return {};
   },
