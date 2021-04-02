@@ -1,5 +1,5 @@
 <template>
-  <div id="voyager-page"></div>
+  <q-page id="voyager-page" class="q-pa-none"></q-page>
 </template>
 
 <script>
@@ -18,11 +18,6 @@ export default {
 .field-name,
 .field-type {
   font-family: helvetica;
-}
-#voyager-page {
-  height: 100% !important;
-  width: 100% !important;
-  position: absolute !important;
 }
 
 #voyager {

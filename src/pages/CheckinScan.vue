@@ -1,5 +1,5 @@
 <template>
-  <div class="vertical-center text-center q-pa-md">
+  <q-page>
     <q-dialog v-model="needsName" persistent transition-show="scale" transition-hide="scale">
       <q-card class="bg-teal text-primary" style="width: 300px">
         <q-card-section>
@@ -25,48 +25,50 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-btn
-      v-if="$q.platform.is.desktop && !screen_scanning && !camera_scanning"
-      class="q-ma-md"
-      @click="handleStartScreenScan()"
-      icon="monitor"
-      icon-right="qr_code_scanner"
-      size="xl"
-      label="Screen Scan"
-    />
-    <q-btn
-      v-else-if="screen_scanning"
-      class="q-ma-md"
-      @click="handleStopScreenScan()"
-      icon-right="stop"
-      size="xl"
-      label="Stop"
-    />
-    <q-btn
-      v-if="has_camera && !screen_scanning && !camera_scanning"
-      class="q-ma-md"
-      @click="handleStartCamScan()"
-      icon="photo_camera"
-      icon-right="qr_code_scanner"
-      size="xl"
-      label="Camera Scan"
-    />
-    <q-btn
-      v-else-if="camera_scanning"
-      class="q-ma-md"
-      @click="handleStopCamScan()"
-      icon-right="stop"
-      size="xl"
-      label="Stop"
-    />
-    <video v-if="screen_stream" id="captured-screen" autoplay :style="{ display: 'none' }"></video>
-    <video
-      v-if="camera_scanning"
-      id="camera-video"
-      autoplay
-      :style="{ display: 'inline-block', maxWidth: '100%' }"
-      class="q-pa-md neu-convex"
-    ></video>
+    <div class="vertical-center text-center q-pa-md">
+      <q-btn
+        v-if="$q.platform.is.desktop && !screen_scanning && !camera_scanning"
+        class="q-ma-md"
+        @click="handleStartScreenScan()"
+        icon="monitor"
+        icon-right="qr_code_scanner"
+        size="xl"
+        label="Screen Scan"
+      />
+      <q-btn
+        v-else-if="screen_scanning"
+        class="q-ma-md"
+        @click="handleStopScreenScan()"
+        icon-right="stop"
+        size="xl"
+        label="Stop"
+      />
+      <q-btn
+        v-if="has_camera && !screen_scanning && !camera_scanning"
+        class="q-ma-md"
+        @click="handleStartCamScan()"
+        icon="photo_camera"
+        icon-right="qr_code_scanner"
+        size="xl"
+        label="Camera Scan"
+      />
+      <q-btn
+        v-else-if="camera_scanning"
+        class="q-ma-md"
+        @click="handleStopCamScan()"
+        icon-right="stop"
+        size="xl"
+        label="Stop"
+      />
+      <video v-if="screen_stream" id="captured-screen" autoplay :style="{ display: 'none' }"></video>
+      <video
+        v-if="camera_scanning"
+        id="camera-video"
+        autoplay
+        :style="{ display: 'inline-block', maxWidth: '100%' }"
+        class="q-pa-md neu-convex"
+      ></video>
+    </div>
     <ApolloSubscribeToMore
       v-if="user"
       :document="
@@ -85,7 +87,7 @@
       :variables="{ user }"
       :updateQuery="onApproved"
     />
-  </div>
+  </q-page>
 </template>
 
 <script>

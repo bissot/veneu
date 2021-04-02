@@ -51,7 +51,9 @@ body,
 .q-card,
 .q-time,
 .q-time__container-child,
-.q-date {
+.q-date,
+.q-select__dialog,
+.q-menu {
   background-color: var(--venue-light) !important;
 }
 
@@ -65,7 +67,8 @@ body,
 
 .q-focusable,
 .q-hoverable,
-#me {
+#me,
+.q-menu {
   border-radius: 1rem !important;
 }
 

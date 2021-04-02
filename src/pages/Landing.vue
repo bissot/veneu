@@ -1,5 +1,5 @@
 <template>
-  <div id="landing-page">
+  <q-page id="landing-page">
     <div class="vertical-center spinner-stage">
       <VenueLogo class="spinner" />
       <!-- <img alt="Venue Logo" src="../assets/venue-logo.svg" /> -->
@@ -17,7 +17,7 @@
         </q-btn>
       </q-bar>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>

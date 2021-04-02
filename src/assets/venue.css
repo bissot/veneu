@@ -28,6 +28,8 @@ h1 {
   color: #2c3e50;
   font-size: 3rem !important;
   line-height: initial !important;
+  margin-top: 0rem;
+  margin-bottom: 0rem;
 }
 h2 {
   font-size: 2.5rem !important;
@@ -101,6 +103,14 @@ label {
   to {
     box-shadow: var(--field-shadow);
   }
+}
+
+#app {
+  max-height: 100vh;
+}
+
+main {
+  max-height: calc(100vh - 16px - 4rem);
 }
 
 .neu-concave {

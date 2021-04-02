@@ -1,5 +1,5 @@
 <template>
-  <div id="create-course" class="container">
+  <q-page id="create-course" class="container">
     <div class="vertical-center">
       <div>
         <i><h1>Create a New Registration Section</h1></i>
@@ -28,7 +28,7 @@
         </template>
       </ApolloMutation>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>
@@ -63,13 +63,6 @@ export default {
 </script>
 
 <style scoped>
-#create-course {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  overflow: auto;
-  text-align: center;
-}
 #actions {
   position: relative;
   display: block;

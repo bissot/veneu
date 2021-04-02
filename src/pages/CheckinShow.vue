@@ -1,6 +1,6 @@
 <template>
-  <div class="row full-height justify-center q-px-xl q-pt-xl text-primary">
-    <q-responsive :ratio="1" class="neu-convex" style="width: 50vh; max-width: 100%;">
+  <q-page class="q-pa-md row justify-center">
+    <q-responsive class="neu-convex" style="width: 50vh; height: 50vh;" :ratio="1">
       <vue-qr
         :key="current.code"
         :text="getBaseUrl() + '/checkin/' + current.code + '/scan'"
@@ -13,11 +13,11 @@
         class="q-pa-md"
       />
     </q-responsive>
-    <div v-if="$q.platform.is.mobile" id="seats" class="row full-width justify-center q-mt-lg">
+    <div v-if="$q.platform.is.mobile" id="seats" class="row full-width justify-center q-mt-md">
       <q-icon size="sm" color="primary" name="event_seat" /> x{{ claimed.length }}
     </div>
     <div v-else id="seats" class="row full-width justify-center">
-      <div class="row full-width justify-center q-mt-lg">
+      <div class="row full-width justify-center q-mt-md">
         <p>{{ claimed.length }} seats claimed</p>
       </div>
       <q-icon
@@ -46,7 +46,7 @@
       :variables="{ code: current.code }"
       :updateQuery="onClaimed"
     />
-  </div>
+  </q-page>
 </template>
 
 <script>

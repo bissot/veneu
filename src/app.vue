@@ -162,10 +162,8 @@
             </q-list>
           </q-drawer>
 
-          <q-page-container>
-            <q-page class="text-primary">
-              <router-view :me="data.me" />
-            </q-page>
+          <q-page-container class="text-primary">
+            <router-view :me="data.me" />
           </q-page-container>
         </div>
       </template>

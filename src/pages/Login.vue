@@ -1,5 +1,5 @@
 <template>
-  <div id="login-page" class="container">
+  <q-page id="login-page" class="container">
     <div class="vertical-center">
       <VenueLogo class="spinner" />
       <div class="q-mb-xl">
@@ -41,7 +41,7 @@
         </template>
       </ApolloMutation>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>
