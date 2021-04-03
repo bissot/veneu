@@ -75,7 +75,7 @@
                 </ApolloMutation>
               </q-card-section>
 
-              <q-card-section class="scroll row q-ma-none q-pr-md q-pl-none q-py-none">
+              <q-card-section class="scroll row q-ma-none q-px-none q-py-none">
                 <q-table
                   flat
                   :data="data.auths"
