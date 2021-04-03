@@ -120,13 +120,15 @@ export default {
   },
   methods: {
     formValid() {
-      return (
-        this.email.length &&
-        this.password.length &&
-        this.first_name.length &&
-        this.last_name.length &&
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.email)
-      );
+      return this.isValidEmail(this.email) && this.password.length && this.first_name.length && this.last_name.length;
+    },
+    isValidEmail(val) {
+      const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
+      if (emailPattern.test(val)) {
+        return true;
+      } else {
+        return false;
+      }
     },
     handleSignup(res) {
       if (res && res.data && res.data.login) {
