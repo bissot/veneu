@@ -40,16 +40,38 @@ const UserGroup = new mongoose.Schema(
 )
   .pre("deleteOne", { document: true }, function(next) {
     Promise.all([
-      this.model("Auth").deleteMany({ resource: this._id }),
-      this.model("Course").findByIdAndUpdate({ _id: this.parent_resource }, { $pull: { user_groups: this._id } }),
-      this.model("UserGroup").findByIdAndUpdate({ _id: this.parent_resource }, { $pull: { user_groups: this._id } }),
-      this.model("RegistrationSection").findByIdAndUpdate(
-        { _id: this.parent_resource },
-        { $pull: { user_groups: this._id } }
-      ),
-      this.model("UserGroup").deleteMany({ _id: { $in: this.user_groups } }),
-      this.model("Lecture").deleteMany({ parent_resource: this._id })
+      mongoose.model("Auth").deleteMany({ shared_resource: this._id }),
+      mongoose.model("Course").updateOne({ _id: this.parent_resource }, { $pull: { user_groups: this._id } }),
+      mongoose.model("UserGroup").updateOne({ _id: this.parent_resource }, { $pull: { user_groups: this._id } }),
+      mongoose
+        .model("RegistrationSection")
+        .updateOne({ _id: this.parent_resource }, { $pull: { user_groups: this._id } }),
+      mongoose.model("UserGroup").deleteMany({ _id: { $in: this.user_groups } }),
+      mongoose.model("Lecture").deleteMany({ parent_resource: this._id })
     ]).then(next);
+  })
+  .pre("deleteMany", function(next) {
+    this.model.find(this.getFilter()).then(userGroups => {
+      if (userGroups.length) {
+        const groupsids = userGroups.map(a => a._id);
+        const groupsparents = userGroups.map(a => a.parent_resource);
+        const groupsgroups = userGroups.map(a => a.user_groups).flat();
+        const groupslectures = userGroups.map(a => a.lectures).flat();
+        Promise.all([
+          mongoose.model("Auth").deleteMany({ shared_resource: { $in: groupsids } }),
+          mongoose
+            .model("Course")
+            .updateMany({ _id: { $in: groupsparents } }, { $pullAll: { user_groups: groupsids } }),
+          mongoose
+            .model("RegistrationSection")
+            .updateMany({ _id: { $in: groupsparents } }, { $pullAll: { user_groups: groupsids } }),
+          mongoose.model("UserGroup").deleteMany({ _id: { $in: groupsgroups } }),
+          mongoose.model("Lecture").deleteMany({ _id: { $in: groupslectures } })
+        ]).then(resolved => {
+          next();
+        });
+      } else next();
+    });
   })
   .pre("save", function(next) {
     this.wasNew = this.isNew;
@@ -58,7 +80,8 @@ const UserGroup = new mongoose.Schema(
   .post("save", function() {
     if (this.wasNew) {
       Promise.all([
-        this.model("Auth")
+        mongoose
+          .model("Auth")
           .create({
             shared_resource: this._id,
             shared_resource_type: "UserGroup",
@@ -70,15 +93,15 @@ const UserGroup = new mongoose.Schema(
               authCreated: auth
             });
           }),
-        this.model("Course").findByIdAndUpdate({ _id: this.parent_resource }, { $addToSet: { user_groups: this._id } }),
-        this.model("UserGroup").findByIdAndUpdate(
-          { _id: this.parent_resource },
-          { $addToSet: { user_groups: this._id } }
-        ),
-        this.model("RegistrationSection").findByIdAndUpdate(
-          { _id: this.parent_resource },
-          { $addToSet: { user_groups: this._id } }
-        )
+        mongoose
+          .model("Course")
+          .findByIdAndUpdate({ _id: this.parent_resource }, { $addToSet: { user_groups: this._id } }),
+        mongoose
+          .model("UserGroup")
+          .findByIdAndUpdate({ _id: this.parent_resource }, { $addToSet: { user_groups: this._id } }),
+        mongoose
+          .model("RegistrationSection")
+          .findByIdAndUpdate({ _id: this.parent_resource }, { $addToSet: { user_groups: this._id } })
       ]);
     }
   });

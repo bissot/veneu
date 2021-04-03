@@ -98,7 +98,6 @@
 </template>
 
 <script>
-import gql from "graphql-tag";
 export default {
   props: {
     resourceid: String,
