@@ -60,6 +60,7 @@
         size="xl"
         label="Stop"
       />
+      <q-icon v-if="screen_scanning || camera_scanning" size="xl" :name="!last ? 'search' : 'qr_code'" />
       <video v-if="screen_stream" id="captured-screen" autoplay :style="{ display: 'none' }"></video>
       <video
         v-if="camera_scanning"
@@ -140,15 +141,33 @@ export default {
       return result;
     },
     handleDecodeQR(result) {
-      let found = result.split("/")[4];
-      this.sendClaim(found);
+      try {
+        let found = result.split("/")[4];
+        if (found) {
+          if (this.last != found) {
+            this.sendClaim(found);
+          }
+          this.last = found;
+        } else {
+          this.last = "";
+        }
+      } catch (error) {
+        this.last = "";
+      }
+    },
+    handleDecodeError() {
+      this.last = "";
     },
     handleStartCamScan() {
       this.camera_scanning = true;
       let self = this;
       this.$nextTick(() => {
         var video = document.getElementById("camera-video");
-        self.camera_scanner = new QrScanner(video, result => this.handleDecodeQR(result));
+        self.camera_scanner = new QrScanner(
+          video,
+          result => this.handleDecodeQR(result),
+          error => this.handleDecodeError()
+        );
         self.camera_scanner.start();
       });
     },
@@ -251,5 +270,12 @@ export default {
 .justify-center {
   position: absolute;
   height: 100%;
+}
+
+.scanning.found-qr {
+  background: var(--venue-green) !important;
+}
+.scanning.no-qr {
+  background: var(--venue-red) !important;
 }
 </style>
