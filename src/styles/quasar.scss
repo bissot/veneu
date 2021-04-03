@@ -73,7 +73,8 @@ body,
 .q-focusable,
 .q-hoverable,
 #me,
-.q-menu {
+.q-menu,
+.q-item__section--side > .q-icon {
   border-radius: 1rem !important;
 }
 

@@ -9,7 +9,7 @@
           <q-btn-group spread flat class="q-mx-md q-mb-none q-gutter-x-sm">
             <q-btn dense size="sm" label="New" icon="add" :to="{ name: 'CreateCourse' }" />
             <q-btn disabled dense size="sm" label="Join" icon="group_add" />
-            <q-btn dense size="sm" label="Edit" icon="edit" disabled />
+            <!-- <q-btn dense size="sm" label="Edit" icon="edit" disabled /> -->
           </q-btn-group>
         </div>
         <q-item-label header class="text-primary q-pb-md">Instructor for...</q-item-label>

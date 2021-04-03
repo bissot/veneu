@@ -60,10 +60,11 @@
                     <q-btn
                       v-close-popup
                       color="primary"
-                      class="q-py-sm q-ml-md q-mb-md"
+                      class="q-ml-md q-my-sm"
                       @click="mutate()"
                       label="Share"
                       icon-right="send"
+                      size="md"
                       :loading="loading"
                       :disabled="isDisabled()"
                     >
@@ -86,7 +87,7 @@
               </q-card-section>
 
               <q-card-section class="row text-primary q-pt-none">
-                <q-btn label="Back" v-close-popup @click="clearForm" />
+                <q-btn label="Back" icon="undo" size="md" v-close-popup @click="clearForm" />
                 <q-space />
               </q-card-section>
             </q-card>
