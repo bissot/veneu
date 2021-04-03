@@ -1,4 +1,4 @@
-const { PubSub, AuthenticationError, ForbiddenError } = require("apollo-server-express");
+const { AuthenticationError, ForbiddenError } = require("apollo-server-express");
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;

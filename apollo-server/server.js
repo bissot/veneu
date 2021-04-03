@@ -5,7 +5,7 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 
-const { ApolloServer, AuthenticationError, gql, PubSub } = require("apollo-server-express");
+const { ApolloServer, PubSub } = require("apollo-server-express");
 global.pubsub = new PubSub();
 
 const mongoose = require("mongoose");

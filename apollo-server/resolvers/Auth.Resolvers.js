@@ -1,4 +1,4 @@
-const { PubSub, ForbiddenError, withFilter } = require("apollo-server-express");
+const { ForbiddenError, withFilter } = require("apollo-server-express");
 // const nodemailer = require("nodemailer");
 
 const eventName = {

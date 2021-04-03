@@ -1,4 +1,4 @@
-const { PubSub, ForbiddenError } = require("apollo-server-express");
+const { ForbiddenError } = require("apollo-server-express");
 
 const eventName = {
   COURSE_CREATED: "COURSE_CREATED",
