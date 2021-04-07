@@ -12,6 +12,7 @@ import Course from "./pages/Course.vue";
 import CreateCourse from "./pages/CreateCourse.vue";
 import CreateUserGroup from "./pages/CreateUserGroup.vue";
 import CreateRegistrationSection from "./pages/CreateRegistrationSection.vue";
+import FirstTimeLogin from "./pages/FirstTimeLogin.vue";
 
 import CheckinShow from "./pages/CheckinShow.vue";
 import CheckinScan from "./pages/CheckinScan.vue";
@@ -120,6 +121,11 @@ const router = new VueRouter({
       path: "/checkin/scan",
       name: "CheckinScan",
       component: CheckinScan
+    },
+    {
+      path: "/firstlogin/:access_code",
+      name: "FirstTimeLogin",
+      component: FirstTimeLogin
     }
   ],
   mode: "history"
