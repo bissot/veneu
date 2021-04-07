@@ -11,8 +11,8 @@ var transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: "venue.do.not.reply@gmail.com",
-    pass: process.env.EMAIL_PASS,
-  },
+    pass: process.env.EMAIL_PASS
+  }
 });
 
 module.exports = {
@@ -36,12 +36,8 @@ module.exports = {
       if (!requester) throw new ForbiddenError("Not allowed");
 
       return User.find({ email: user }).then(x => {
-
-
-        if(x.length == 0){
-          console.log("IN IF");
-          User.create({email : user}).then(y => {
-
+        if (x.length == 0) {
+          User.create({ email: user }).then(y => {
             var url = "";
             if (process.env.NODE_ENV === "production") {
               url = "https://venue-testing.herokuapp.com/firstlogin/" + y.access_code;
@@ -49,7 +45,6 @@ module.exports = {
               url = "http://localhost:8080/firstlogin/" + y.access_code;
             }
 
-            console.log(url);
             //send email
             let myhtml = "";
 
@@ -66,7 +61,6 @@ module.exports = {
               html: myhtml
             };
 
-            console.log("SENDING MAIL");
             transporter.sendMail(mailOptions, function(error, info) {
               if (error || info == null) {
                 console.log(error);
@@ -74,7 +68,6 @@ module.exports = {
                 console.log("Email sent to " + user + ": " + info.response);
               }
             });
-
 
             return Auth.create({ role, user: y._id, shared_resource, shared_resource_type }).then(auth => {
               return global.pubsub
@@ -85,11 +78,8 @@ module.exports = {
                   return auth;
                 });
             });
-
           });
-        }
-        else{
-          console.log("IN ELSE");
+        } else {
           // // //send email
           // let myhtml = "";
 
