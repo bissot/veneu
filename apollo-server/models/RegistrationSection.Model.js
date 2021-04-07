@@ -52,6 +52,27 @@ const RegistrationSection = new mongoose.Schema(
       )
     ]).then(next);
   })
+  .pre("deleteMany", function(next) {
+    this.model.find(this.getFilter()).then(registrationSections => {
+      if (registrationSections.length) {
+        const sectionsids = registrationSections.map(a => a._id);
+        const sectionsauths = registrationSections.map(a => a.auths).flat();
+        const sectionscourses = registrationSections.map(a => a.parent_resource);
+        const sectionsgroups = registrationSections.map(a => a.user_groups).flat();
+        const sectionslectures = registrationSections.map(a => a.lectures).flat();
+        Promise.all([
+          mongoose.model("Auth").deleteMany({ _id: { $in: sectionsauths } }),
+          mongoose
+            .model("Course")
+            .updateMany({ _id: { $in: sectionscourses } }, { $pullAll: { registration_sections: sectionsids } }),
+          mongoose.model("UserGroup").deleteMany({ _id: { $in: sectionsgroups } }),
+          mongoose.model("Lecture").deleteMany({ _id: { $in: sectionslectures } })
+        ]).then(resolved => {
+          next();
+        });
+      } else next();
+    });
+  })
   .pre("save", function(next) {
     this.wasNew = this.isNew;
     next();

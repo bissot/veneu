@@ -1,5 +1,5 @@
 <template>
-  <div id="create-course" class="container">
+  <q-page id="create-course" class="container">
     <div class="vertical-center">
       <ApolloMutation
         :mutation="require('../graphql/CreateCourse.gql')"
@@ -15,7 +15,7 @@
             <q-input
               standout="bg-primary text-white q-ma-none"
               color="primary"
-              class="text-primary q-mt-none"
+              class="text-primary"
               v-model="name"
               label="Name"
               placeholder="e.g. Computer Science I"
@@ -124,8 +124,8 @@
                 </q-icon>
               </template> -->
             </q-input>
-            <q-separator class="q-my-lg" />
-            <q-bar class="q-pa-none q-gutter-x-md">
+            <!-- <q-separator class="q-my-lg" /> -->
+            <q-bar class="q-pa-none q-gutter-x-md q-mt-lg">
               <q-btn flat color="primary" @click="handleBack" label="Back" />
               <q-btn
                 type="submit"
@@ -139,7 +139,7 @@
         </template>
       </ApolloMutation>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>
@@ -177,13 +177,6 @@ export default {
 </script>
 
 <style scoped>
-#create-course {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  overflow: auto;
-  text-align: center;
-}
 #actions {
   position: relative;
   display: block;

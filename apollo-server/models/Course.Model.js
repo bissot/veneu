@@ -65,10 +65,10 @@ const Course = new mongoose.Schema(
 )
   .pre("deleteOne", { document: true }, function(next) {
     Promise.all([
-      this.model("Auth").deleteMany({ shared_resource: this._id, shared_resource_type: "Course" }),
-      this.model("UserGroup").deleteMany({ parent_resource: this._id }),
-      this.model("RegistrationSection").deleteMany({ parent_resource: this._id }),
-      this.model("Lecture").deleteMany({ parent_resource: this._id })
+      mongoose.model("Auth").deleteMany({ shared_resource: this._id, shared_resource_type: "Course" }),
+      mongoose.model("UserGroup").deleteMany({ _id: { $in: this.user_groups } }),
+      mongoose.model("RegistrationSection").deleteMany({ _id: { $in: this.registration_sections } }),
+      mongoose.model("Lecture").deleteMany({ _id: { $in: this.lectures } })
     ]).then(resolved => {
       next();
     });
@@ -79,7 +79,8 @@ const Course = new mongoose.Schema(
   })
   .post("save", function() {
     if (this.wasNew) {
-      this.model("Auth")
+      mongoose
+        .model("Auth")
         .create({
           shared_resource: this._id,
           shared_resource_type: "Course",

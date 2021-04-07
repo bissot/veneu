@@ -1,4 +1,4 @@
-const { PubSub, AuthenticationError, ForbiddenError } = require("apollo-server-express");
+const { AuthenticationError, ForbiddenError } = require("apollo-server-express");
 
 const eventName = {
   REGISTRATIONSECTION_CREATED: "REGISTRATIONSECTION_CREATED",

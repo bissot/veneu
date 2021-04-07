@@ -1,4 +1,4 @@
-const { PubSub, AuthenticationError, ForbiddenError } = require("apollo-server-express");
+const { AuthenticationError, ForbiddenError } = require("apollo-server-express");
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
@@ -130,6 +130,9 @@ module.exports = {
     },
     auths: (parent, args, { models: { Auth } }, info) => {
       return Auth.find({ _id: { $in: parent.auths } });
+    },
+    name: (parent, args, context, info) => {
+      return parent.first_name + " " + parent.last_name;
     }
   }
 };

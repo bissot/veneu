@@ -1,5 +1,5 @@
 <template>
-  <div class="vertical-center text-center q-pa-md">
+  <q-page>
     <q-dialog v-model="needsName" persistent transition-show="scale" transition-hide="scale">
       <q-card class="bg-teal text-primary" style="width: 300px">
         <q-card-section>
@@ -25,48 +25,51 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-btn
-      v-if="$q.platform.is.desktop && !screen_scanning && !camera_scanning"
-      class="q-ma-md"
-      @click="handleStartScreenScan()"
-      icon="monitor"
-      icon-right="qr_code_scanner"
-      size="xl"
-      label="Screen Scan"
-    />
-    <q-btn
-      v-else-if="screen_scanning"
-      class="q-ma-md"
-      @click="handleStopScreenScan()"
-      icon-right="stop"
-      size="xl"
-      label="Stop"
-    />
-    <q-btn
-      v-if="has_camera && !screen_scanning && !camera_scanning"
-      class="q-ma-md"
-      @click="handleStartCamScan()"
-      icon="photo_camera"
-      icon-right="qr_code_scanner"
-      size="xl"
-      label="Camera Scan"
-    />
-    <q-btn
-      v-else-if="camera_scanning"
-      class="q-ma-md"
-      @click="handleStopCamScan()"
-      icon-right="stop"
-      size="xl"
-      label="Stop"
-    />
-    <video v-if="screen_stream" id="captured-screen" autoplay :style="{ display: 'none' }"></video>
-    <video
-      v-if="camera_scanning"
-      id="camera-video"
-      autoplay
-      :style="{ display: 'inline-block', maxWidth: '100%' }"
-      class="q-pa-md neu-convex"
-    ></video>
+    <div class="vertical-center text-center q-pa-md">
+      <q-btn
+        v-if="$q.platform.is.desktop && !screen_scanning && !camera_scanning"
+        class="q-ma-md"
+        @click="handleStartScreenScan()"
+        icon="monitor"
+        icon-right="qr_code_scanner"
+        size="xl"
+        label="Screen Scan"
+      />
+      <q-btn
+        v-else-if="screen_scanning"
+        class="q-ma-md"
+        @click="handleStopScreenScan()"
+        icon-right="stop"
+        size="xl"
+        label="Stop"
+      />
+      <q-btn
+        v-if="has_camera && !screen_scanning && !camera_scanning"
+        class="q-ma-md"
+        @click="handleStartCamScan()"
+        icon="photo_camera"
+        icon-right="qr_code_scanner"
+        size="xl"
+        label="Camera Scan"
+      />
+      <q-btn
+        v-else-if="camera_scanning"
+        class="q-ma-md"
+        @click="handleStopCamScan()"
+        icon-right="stop"
+        size="xl"
+        label="Stop"
+      />
+      <q-icon v-if="screen_scanning || camera_scanning" size="xl" :name="!last ? 'search' : 'qr_code'" />
+      <video v-if="screen_stream" id="captured-screen" autoplay :style="{ display: 'none' }"></video>
+      <video
+        v-if="camera_scanning"
+        id="camera-video"
+        autoplay
+        :style="{ display: 'inline-block', maxWidth: '100%' }"
+        class="q-pa-md neu-convex"
+      ></video>
+    </div>
     <ApolloSubscribeToMore
       v-if="user"
       :document="
@@ -85,7 +88,7 @@
       :variables="{ user }"
       :updateQuery="onApproved"
     />
-  </div>
+  </q-page>
 </template>
 
 <script>
@@ -138,15 +141,33 @@ export default {
       return result;
     },
     handleDecodeQR(result) {
-      let found = result.split("/")[4];
-      this.sendClaim(found);
+      try {
+        let found = result.split("/")[4];
+        if (found) {
+          if (this.last != found) {
+            this.sendClaim(found);
+          }
+          this.last = found;
+        } else {
+          this.last = "";
+        }
+      } catch (error) {
+        this.last = "";
+      }
+    },
+    handleDecodeError() {
+      this.last = "";
     },
     handleStartCamScan() {
       this.camera_scanning = true;
       let self = this;
       this.$nextTick(() => {
         var video = document.getElementById("camera-video");
-        self.camera_scanner = new QrScanner(video, result => this.handleDecodeQR(result));
+        self.camera_scanner = new QrScanner(
+          video,
+          result => this.handleDecodeQR(result),
+          error => this.handleDecodeError()
+        );
         self.camera_scanner.start();
       });
     },
@@ -249,5 +270,12 @@ export default {
 .justify-center {
   position: absolute;
   height: 100%;
+}
+
+.scanning.found-qr {
+  background: var(--venue-green) !important;
+}
+.scanning.no-qr {
+  background: var(--venue-red) !important;
 }
 </style>

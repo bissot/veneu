@@ -36,13 +36,10 @@ const Lecture = new mongoose.Schema(
 )
   .pre("deleteOne", { document: true }, function(next) {
     Promise.all([
-      this.model("Auth").deleteMany({ shared_resource: this._id }),
-      this.model("RegistrationSection").findByIdAndUpdate(
-        { _id: this.parent_resource },
-        { $pull: { lectures: this._id } }
-      ),
-      this.model("UserGroup").findByIdAndUpdate({ _id: this.parent_resource }, { $pull: { lectures: this._id } }),
-      this.model("Course").findByIdAndUpdate({ _id: this.parent_resource }, { $pull: { lectures: this._id } })
+      mongoose.model("Auth").deleteMany({ shared_resource: this._id }),
+      mongoose.model("RegistrationSection").updateOne({ _id: this.parent_resource }, { $pull: { lectures: this._id } }),
+      mongoose.model("UserGroup").updateOne({ _id: this.parent_resource }, { $pull: { lectures: this._id } }),
+      mongoose.model("Course").updateOne({ _id: this.parent_resource }, { $pull: { lectures: this._id } })
     ]).then(next);
   })
   .pre("save", function(next) {
@@ -51,7 +48,8 @@ const Lecture = new mongoose.Schema(
   })
   .post("save", function() {
     if (this.wasNew) {
-      this.model("Auth")
+      mongoose
+        .model("Auth")
         .create({
           shared_resource: this._id,
           shared_resource_type: "Lecture",

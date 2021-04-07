@@ -1,5 +1,5 @@
 <template>
-  <div id="login-page" class="container">
+  <q-page id="login-page" class="container">
     <div class="vertical-center">
       <VenueLogo class="spinner" />
       <div>
@@ -29,7 +29,7 @@
         </template>
       </ApolloMutation>
     </div>
-  </div>
+  </q-page>
 </template>
 
 <script>
@@ -46,9 +46,15 @@ export default {
   },
   methods: {
     formValid() {
-      return (
-        this.email.length && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(this.email)
-      );
+      return this.isValidEmail(this.email);
+    },
+    isValidEmail(val) {
+      const emailPattern = /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
+      if (emailPattern.test(val)) {
+        return true;
+      } else {
+        return false;
+      }
     },
     handleSignup(res) {
       if (res && res.data && res.data.login) {

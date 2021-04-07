@@ -1,10 +1,5 @@
 <template>
   <ApolloQuery :query="require('../graphql/Courses.gql')">
-    <ApolloSubscribeToMore
-      :document="require('../graphql/AddedToCourse.gql')"
-      :variables="{ user: me._id }"
-      :update-query="onAuthCreated"
-    />
     <template slot-scope="{ result: { loading, error, data } }">
       <div v-if="loading">Loading...</div>
       <div v-if="error">Error...</div>
@@ -14,7 +9,7 @@
           <q-btn-group spread flat class="q-mx-md q-mb-none q-gutter-x-sm">
             <q-btn dense size="sm" label="New" icon="add" :to="{ name: 'CreateCourse' }" />
             <q-btn disabled dense size="sm" label="Join" icon="group_add" />
-            <q-btn dense size="sm" label="Edit" icon="edit" disabled />
+            <!-- <q-btn dense size="sm" label="Edit" icon="edit" disabled /> -->
           </q-btn-group>
         </div>
         <q-item-label header class="text-primary q-pb-md">Instructor for...</q-item-label>
@@ -389,13 +384,6 @@ export default {
     return {
       editing: false
     };
-  },
-  methods: {
-    onAuthCreated(previousResult, { subscriptionData }) {
-      return {
-        courses: [...previousResult.courses, subscriptionData.data.authCreated.shared_resource]
-      };
-    }
   }
 };
 </script>
