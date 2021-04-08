@@ -35,7 +35,7 @@ const app = express();
 app.use(cors());
 
 if (process.env.NODE_ENV === "production") {
-  const sslRedirect = require("heroku-ssl-redirect");
+  var sslRedirect = require("heroku-ssl-redirect");
   app.use(express.static(path.join(__dirname, "..", "dist")));
   app.use(sslRedirect());
   app.get("*", (req, res) => {
