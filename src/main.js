@@ -9,8 +9,6 @@ import "./styles/quasar.scss";
 import "quasar/dist/quasar.ie.polyfills";
 import { Quasar, Notify } from "quasar";
 
-import VueWorker from "vue-worker";
-
 Vue.use(Quasar, {
   config: {},
   plugins: { Notify }
@@ -33,8 +31,6 @@ Vue.directive("click-off", {
     document.body.removeEventListener("click", el.clickOutsideEvent);
   }
 });
-
-Vue.use(VueWorker);
 
 new Vue({
   apolloProvider: createProvider(),
