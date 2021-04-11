@@ -12,11 +12,8 @@
         @done="handleLogin"
       >
         <template slot-scope="{ mutate }">
-          <q-form
-            @submit.prevent="formValid && mutate()"
-            class="q-gutter-y-md q-pl-lg q-pr-lg q-pb-lg q-pt-md q-ma-lg neu-convex"
-          >
-            <q-input standout="bg-primary text-white" color="primary" v-model="email" label="Email">
+          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-y-md q-pa-lg q-ma-lg neu-convex">
+            <q-input standout="bg-primary text-white" color="primary" v-model="email" label="Email" class="q-mt-sm">
               <template v-slot:prepend>
                 <q-icon name="email" />
               </template>

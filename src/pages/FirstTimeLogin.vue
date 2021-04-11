@@ -12,7 +12,7 @@
         @done="handleLogin"
       >
         <template slot-scope="{ mutate }">
-          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-md q-ma-lg q-mt-xl neu-convex">
+          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-y-md q-pa-lg q-ma-lg neu-convex">
             <q-input
               type="password"
               standout="bg-primary text-white"
@@ -27,9 +27,22 @@
             </q-input>
 
             <q-input
+              type="password"
               standout="bg-primary text-white"
               color="primary"
-              class="text-primary q-mb-lg q-mt-lg"
+              v-model="password2"
+              label="Repeat Password"
+              class="text-primary q-mb-lg"
+            >
+              <template v-slot:prepend>
+                <q-icon name="password" />
+              </template>
+            </q-input>
+
+            <q-input
+              standout="bg-primary text-white"
+              color="primary"
+              class="text-primary"
               v-model="first_name"
               label="First Name"
             />
@@ -62,15 +75,15 @@ export default {
       access_code: this.$route.params.access_code,
       first_name: "",
       last_name: "",
-      password: ""
+      password: "",
+      password2: ""
     };
   },
   methods: {
     formValid() {
-      return this.first_name && this.last_name && this.password;
+      return this.first_name && this.last_name && this.password && this.password2 && this.password == this.password2;
     },
     handleLogin(res) {
-      console.log(res);
       if (res && res.data && res.data.firstLogin) {
         this.$router.push({ name: "Login" });
       }

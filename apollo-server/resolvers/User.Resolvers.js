@@ -38,13 +38,16 @@ module.exports = {
       return User.create({
         email
       }).then(user => {
-        let url = process.env.BASE_URL + "/firstlogin/" + user.access_code;
-
         var mailOptions = {
           from: "venue.do.not.reply@gmail.com",
           to: email,
-          subject: "Sign Up Please!!!!",
-          html: '<p>Click <a href="' + url + '">here</a> to continue Sign-up for Venue.</p>'
+          subject: "Venue Account Creation",
+          html:
+            '<p>Click <a href="' +
+            process.env.BASE_URL +
+            "/firstlogin/" +
+            user.access_code +
+            '">here</a> to continue Sign-up for Venue.</p>'
         };
 
         transporter.sendMail(mailOptions, function(error, info) {

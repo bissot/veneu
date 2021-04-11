@@ -44,22 +44,16 @@ module.exports = {
       return User.find({ email: user }).then(x => {
         if (x.length == 0) {
           User.create({ email: user }).then(y => {
-            let url = process.env.BASE_URL + "/firstlogin/" + y.access_code;
-
-            //send email
-            let myhtml = "";
-
-            if (process.env.NODE_ENV === "production") {
-              myhtml = "";
-            } else {
-              myhtml = "<p> Shared with new user " + url + " </p>";
-            }
-
             var mailOptions = {
               from: "venue.do.not.reply@gmail.com",
               to: user,
-              subject: "New user share",
-              html: myhtml
+              subject: "You have been added to a Venue course",
+              html:
+                '<p>Click <a href="' +
+                process.env.BASE_URL +
+                "/firstlogin/" +
+                y.access_code +
+                '">here</a> to continue Sign-up for Venue.</p>'
             };
 
             transporter.sendMail(mailOptions, function(error, info) {
