@@ -1,5 +1,5 @@
-const { ForbiddenError, withFilter } = require("apollo-server-express");
-// const nodemailer = require("nodemailer");
+const { PubSub, ForbiddenError, withFilter } = require("apollo-server-express");
+const nodemailer = require("nodemailer");
 
 const eventName = {
   AUTH_CREATED: "AUTH_CREATED",
@@ -7,13 +7,13 @@ const eventName = {
   AUTH_DELETED: "AUTH_DELETED"
 };
 
-// var transporter = nodemailer.createTransport({
-//   service: "gmail",
-//   auth: {
-//     user: "venue.do.not.reply@gmail.com",
-//     pass: process.env.EMAIL_PASS,
-//   },
-// });
+var transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "venue.do.not.reply@gmail.com",
+    pass: process.env.EMAIL_PASS
+  }
+});
 
 module.exports = {
   Query: {
@@ -42,39 +42,73 @@ module.exports = {
       if (!requester) throw new ForbiddenError("Not allowed");
 
       return User.find({ email: user }).then(x => {
-        // // //send email
-        // let myhtml = "";
+        if (x.length == 0) {
+          User.create({ email: user }).then(y => {
+            var mailOptions = {
+              from: "venue.do.not.reply@gmail.com",
+              to: user,
+              subject: "You have been added to a Venue course",
+              html:
+                '<p>Click <a href="' +
+                process.env.BASE_URL +
+                "/firstlogin/" +
+                y.access_code +
+                '">here</a> to continue Sign-up for Venue.</p>'
+            };
 
-        // if (process.env.NODE_ENV === "production") {
-        //   myhtml = "";
-        // } else {
-        //   myhtml = "<p> Yitty Bopkins </p>";
-        // }
-
-        // var mailOptions = {
-        //   from: "venue.do.not.reply@gmail.com",
-        //   to: user,
-        //   subject: "PUMPKIN!!!!",
-        //   html: myhtml
-        // };
-
-        // transporter.sendMail(mailOptions, function(error, info) {
-        //   if (error || info == null) {
-        //     console.log(error);
-        //   } else {
-        //     console.log("Email sent to " + user + ": " + info.response);
-        //   }
-        // });
-
-        return Auth.create({ role, user: x[0]._id, shared_resource, shared_resource_type }).then(auth => {
-          return global.pubsub
-            .publish(eventName.AUTH_CREATED, {
-              authCreated: auth
-            })
-            .then(done => {
-              return auth;
+            transporter.sendMail(mailOptions, function(error, info) {
+              if (error || info == null) {
+                console.log(error);
+              } else {
+                console.log("Email sent to " + user + ": " + info.response);
+              }
             });
-        });
+
+            return Auth.create({ role, user: y._id, shared_resource, shared_resource_type }).then(auth => {
+              return global.pubsub
+                .publish(eventName.AUTH_CREATED, {
+                  authCreated: auth
+                })
+                .then(done => {
+                  return auth;
+                });
+            });
+          });
+        } else {
+          // // //send email
+          // let myhtml = "";
+
+          // if (process.env.NODE_ENV === "production") {
+          //   myhtml = "";
+          // } else {
+          //   myhtml = "<p> Yitty Bopkins </p>";
+          // }
+
+          // var mailOptions = {
+          //   from: "venue.do.not.reply@gmail.com",
+          //   to: user,
+          //   subject: "PUMPKIN!!!!",
+          //   html: myhtml
+          // };
+
+          // transporter.sendMail(mailOptions, function(error, info) {
+          //   if (error || info == null) {
+          //     console.log(error);
+          //   } else {
+          //     console.log("Email sent to " + user + ": " + info.response);
+          //   }
+          // });
+
+          return Auth.create({ role, user: x[0]._id, shared_resource, shared_resource_type }).then(auth => {
+            return global.pubsub
+              .publish(eventName.AUTH_CREATED, {
+                authCreated: auth
+              })
+              .then(done => {
+                return auth;
+              });
+          });
+        }
       });
     },
     updateAuth(parent, { _id, ...patch }, { requester, models: { Auth } }, info) {

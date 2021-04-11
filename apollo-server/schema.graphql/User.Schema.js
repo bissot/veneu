@@ -10,6 +10,8 @@ module.exports = gql`
     password: String
     auths: [Auth!]!
     notifications: [Notification!]!
+    access_code: String
+    active: Boolean!
   }
 
   extend type Query {
@@ -19,10 +21,11 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createUser(first_name: String!, last_name: String!, email: String!, password: String!): User!
+    createUser(email: String!): User!
     updateUser(_id: ID!, first_name: String, last_name: String, email: String): User!
     deleteUser(_id: ID!): User!
     login(email: String!, password: String!): String!
+    firstLogin(access_code: String!, first_name: String!, last_name: String!, password: String!): Boolean!
   }
 
   extend type Subscription {
