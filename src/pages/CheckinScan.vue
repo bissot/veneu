@@ -61,7 +61,7 @@
         label="Stop"
       />
       <q-icon v-if="screen_scanning || camera_scanning" size="xl" :name="!last ? 'search' : 'qr_code'" />
-      <video v-if="screen_stream" id="captured-screen" autoplay :style="{ display: 'none' }"></video>
+      <video id="captured-screen" autoplay :style="{ display: 'none' }"></video>
       <video
         v-if="camera_scanning"
         id="camera-video"
@@ -101,11 +101,9 @@ export default {
   },
   data() {
     return {
-      code: "",
       screen_scanning: false,
       screen_stream: null,
       screen_scanner: null,
-      canvas: null,
       last: "",
       has_camera: false,
       camera_scanning: false,
@@ -113,7 +111,10 @@ export default {
       user: null,
       needsName: true,
       first_name: "",
-      last_name: ""
+      last_name: "",
+      video_el: null,
+      engine: null,
+      previous: []
     };
   },
   created() {
@@ -125,10 +126,15 @@ export default {
     } else {
       this.user = this.generateID();
     }
+
     var self = this;
+
     QrScanner.hasCamera().then(res => {
       self.has_camera = true;
     });
+  },
+  mounted() {
+    this.video_el = document.getElementById("captured-screen");
   },
   methods: {
     generateID() {
@@ -140,14 +146,28 @@ export default {
       }
       return result;
     },
-    handleDecodeQR(result) {
+    async handleDecodeQR(result) {
       try {
-        let found = result.split("/")[4];
-        if (found) {
-          if (this.last != found) {
-            this.sendClaim(found);
+        let url = new URL(result);
+        let code = url.searchParams.get("code");
+        let host = url.searchParams.get("host");
+        if (code && code.length == 32) {
+          if (this.last != code) {
+            if (this.previous[this.previous.length - 1] != code) {
+              this.previous.push({
+                code,
+                first_name: this.first_name,
+                last_name: this.last_name,
+                user: this.user
+              });
+              if (this.previous.length > 5) {
+                this.previous.splice(0, 1);
+                this.sendReservation(host, this.previous);
+              }
+            }
+            this.sendClaim(code);
           }
-          this.last = found;
+          this.last = code;
         } else {
           this.last = "";
         }
@@ -155,10 +175,10 @@ export default {
         this.last = "";
       }
     },
-    handleDecodeError() {
+    async handleDecodeError() {
       this.last = "";
     },
-    handleStartCamScan() {
+    async handleStartCamScan() {
       this.camera_scanning = true;
       let self = this;
       this.$nextTick(() => {
@@ -171,41 +191,45 @@ export default {
         self.camera_scanner.start();
       });
     },
-    handleStopCamScan() {
+    async handleStopCamScan() {
       this.camera_scanning = false;
       this.camera_scanner.stop();
       this.camera_scanner.destroy();
       this.camera_scanner = null;
+      this.last = "";
+      this.previous = [];
     },
-    handleStartScreenScan() {
+    async createIntervalScanner() {
+      this.screen_scanning = true;
+      this.video_el.srcObject = this.screen_stream;
+      this.screen_scanner = setInterval(() => {
+        if (this.screen_stream) {
+          QrScanner.scanImage(this.video_el, undefined, this.engine)
+            .then(result => this.handleDecodeQR(result))
+            .catch(error => this.handleDecodeError());
+        } else {
+          this.handleStopScreenScan();
+        }
+      }, 200);
+    },
+    async handleStartScreenScan() {
       let self = this;
       if (navigator && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
         navigator.mediaDevices
           .getDisplayMedia({ video: true })
           .then(res => {
             if (res) {
-              self.screen_scanning = true;
               self.screen_stream = res;
-              self.canvas = document.createElement("canvas");
-              self.$nextTick(function() {
-                var video = document.getElementById("captured-screen");
-                video.srcObject = self.screen_stream;
-                self.screen_scanner = setInterval(function() {
-                  //check for qrcode ...
-                  if (self.screen_stream) {
-                    const videoTrack = video.srcObject.getVideoTracks()[0];
-                    const { height, width } = videoTrack.getSettings();
-                    self.canvas.width = width;
-                    self.canvas.height = height;
-                    self.canvas.getContext("2d", { alpha: false }).drawImage(video, 0, 0, width, height);
-                    QrScanner.scanImage(self.canvas)
-                      .then(result => self.handleDecodeQR(result))
-                      .catch(error => {});
-                  } else {
-                    self.handleStopScreenScan();
-                  }
-                }, 200);
-              });
+              QrScanner.createQrEngine(QrScanner.WORKER_PATH)
+                .then(engine => {
+                  self.engine = engine;
+                })
+                .catch(err => {
+                  self.handleStopScreenScan();
+                });
+              self.createIntervalScanner();
+            } else {
+              self.handleStopScreenScan();
             }
           })
           .catch(err => {
@@ -213,13 +237,15 @@ export default {
           });
       }
     },
-    handleStopScreenScan() {
+    async handleStopScreenScan() {
       this.screen_scanning = false;
       clearInterval(this.screen_scanner);
       this.screen_stream.getTracks().forEach(track => track.stop());
       this.screen_stream = null;
       this.screen_scanner = null;
-      this.canvas = null;
+      this.engine = null;
+      this.last = "";
+      this.previous = [];
     },
     async sendClaim(code) {
       this.$apollo.mutate({
@@ -238,6 +264,24 @@ export default {
           user: this.user,
           first_name: this.first_name,
           last_name: this.last_name
+        }
+      });
+    },
+    async sendReservation(host, tickets) {
+      this.$apollo.mutate({
+        mutation: gql`
+          mutation reserveTicket($host: ID!, $tickets: [TicketInput!]!) {
+            reserveTicket(host: $host, tickets: $tickets) {
+              code
+              user
+              first_name
+              last_name
+            }
+          }
+        `,
+        variables: {
+          host,
+          tickets
         }
       });
     },
