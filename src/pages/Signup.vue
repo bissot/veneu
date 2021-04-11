@@ -12,7 +12,7 @@
         @done="handleSignup"
       >
         <template slot-scope="{ mutate }">
-          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-y-lg q-pa-lg q-ma-lg neu-convex">
+          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-y-md q-pa-lg q-ma-lg neu-convex">
             <q-input
               standout="bg-primary text-white"
               color="primary"
@@ -24,7 +24,10 @@
                 <q-icon name="email" />
               </template>
             </q-input>
-            <q-btn label="Submit" type="submit" color="primary" icon-right="check" class="q-ml-sm full-width" />
+            <q-bar class="bg-none q-pa-none q-gutter-x-md q-gutter-y-none q-pl-md">
+              <q-btn label="Back" type="reset" color="primary" flat @click="handleBack" />
+              <q-btn label="Submit" type="submit" color="primary" icon-right="check" class="q-ml-sm full-width" />
+            </q-bar>
           </q-form>
         </template>
       </ApolloMutation>

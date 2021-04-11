@@ -55,7 +55,10 @@
               label="Last / Family Name"
             />
 
-            <q-btn label="Submit" type="submit" color="primary" icon-right="check" class="q-ml-sm full-width" />
+            <q-bar class="bg-none q-pa-none q-gutter-x-md q-gutter-y-none q-pl-md">
+              <q-btn label="Back" type="reset" color="primary" flat @click="handleBack" />
+              <q-btn label="Submit" type="submit" color="primary" icon-right="check" class="q-ml-sm full-width" />
+            </q-bar>
           </q-form>
         </template>
       </ApolloMutation>
@@ -87,6 +90,9 @@ export default {
       if (res && res.data && res.data.firstLogin) {
         this.$router.push({ name: "Login" });
       }
+    },
+    handleBack() {
+      this.$router.push({ name: "Landing" });
     }
   }
 };

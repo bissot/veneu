@@ -18,7 +18,7 @@
                   aria-label="Menu"
                   @click="left = !left"
                 />
-                <q-toolbar-title v-if="!['Landing', 'Login', 'Signup'].includes($route.name)">
+                <q-toolbar-title v-if="!['Landing', 'Login', 'Signup', 'FirstTimeLogin'].includes($route.name)">
                   <q-avatar @click="$router.push({ name: 'Dashboard' })">
                     <VenueLogo id="nav-logo" />
                   </q-avatar>
