@@ -26,25 +26,6 @@
 
                 <q-space />
 
-                <!-- <q-btn
-                round
-                size="sm"
-                icon="insights"
-                class="q-mx-sm"
-                title="Voyager"
-                aria-label="Voyager"
-                @click="$router.push({ name: 'Voyager' })"
-              />
-              <q-btn
-                size="sm"
-                round
-                icon="volunteer_activism"
-                class="q-mx-sm"
-                title="Donate"
-                aria-label="Donate"
-                @click="handleDonate"
-              />
-              <q-btn size="sm" round icon="api" class="q-mx-sm" title="API" aria-label="API" @click="handleAPI" />-->
                 <q-btn
                   size="sm"
                   round

@@ -7,7 +7,6 @@ import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
-import Voyager from "./pages/Voyager.vue";
 import Course from "./pages/Course.vue";
 import CreateCourse from "./pages/CreateCourse.vue";
 import CreateUserGroup from "./pages/CreateUserGroup.vue";
@@ -70,14 +69,6 @@ const router = new VueRouter({
       }
     },
     {
-      path: "/voyager",
-      name: "Voyager",
-      component: Voyager,
-      meta: {
-        auth: true
-      }
-    },
-    {
       path: "/create-course",
       name: "CreateCourse",
       component: CreateCourse,
@@ -132,10 +123,6 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (from.name == "Voyager" || to.name != "Voyager") {
-    var element = document.getElementById("voyager");
-    if (element) element.parentNode.removeChild(element);
-  }
   if (to.meta.auth && !localStorage.getItem("token")) next({ name: "Login", query: { redirect: to.path } });
   else if (to.meta.noAuth && localStorage.getItem("token")) next({ name: "Dashboard" });
   else next();
