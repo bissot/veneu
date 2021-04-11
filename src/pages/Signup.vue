@@ -12,11 +12,11 @@
         @done="handleSignup"
       >
         <template slot-scope="{ mutate }">
-          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-md q-ma-lg q-mt-xl neu-convex">
+          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-y-lg q-pa-lg q-ma-lg neu-convex">
             <q-input
-              standout="bg-primary text-white q-ma-none"
+              standout="bg-primary text-white"
               color="primary"
-              class="text-primary q-mt-sm"
+              class="text-primary q-pa-none q-ma-none"
               v-model="email"
               label="Email"
             >
