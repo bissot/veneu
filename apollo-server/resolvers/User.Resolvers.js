@@ -38,12 +38,7 @@ module.exports = {
       return User.create({
         email
       }).then(user => {
-        var url = "";
-        if (process.env.NODE_ENV === "production") {
-          url = "https://venue-testing.herokuapp.com/firstlogin/" + user.access_code;
-        } else {
-          url = "http://localhost:8080/firstlogin/" + user.access_code;
-        }
+        let url = process.env.BASE_URL + "/firstlogin/" + user.access_code;
 
         var mailOptions = {
           from: "venue.do.not.reply@gmail.com",

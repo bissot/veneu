@@ -44,12 +44,7 @@ module.exports = {
       return User.find({ email: user }).then(x => {
         if (x.length == 0) {
           User.create({ email: user }).then(y => {
-            var url = "";
-            if (process.env.NODE_ENV === "production") {
-              url = "https://venue-testing.herokuapp.com/firstlogin/" + y.access_code;
-            } else {
-              url = "http://localhost:8080/firstlogin/" + y.access_code;
-            }
+            let url = process.env.BASE_URL + "/firstlogin/" + y.access_code;
 
             //send email
             let myhtml = "";

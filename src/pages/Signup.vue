@@ -57,11 +57,13 @@ export default {
       }
     },
     handleSignup(res) {
-      if (res && res.data && res.data.login) {
-        window.localStorage.setItem("token", res.data.login);
-      }
-      (this.email = ""), (this.password = "");
-      this.$router.push({ name: "Login" });
+      this.$q.notify({
+        progress: true,
+        message: "Please follow the link sent to: " + this.email,
+        icon: "email",
+        color: "primary"
+      });
+      this.$router.push({ name: "Landing" });
     },
     handleBack() {
       this.$router.push({ name: "Landing" });
