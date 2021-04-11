@@ -198,7 +198,7 @@ export default {
       win.focus();
     },
     handleAPI() {
-      var win = window.open(process.env.BASE_URL + "/graphql", "_blank");
+      var win = window.open(process.env.BASE_URL + "graphql", "_blank");
       win.focus();
     },
     handleScan() {

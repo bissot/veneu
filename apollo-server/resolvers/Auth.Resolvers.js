@@ -51,7 +51,7 @@ module.exports = {
               html:
                 '<p>Click <a href="' +
                 process.env.BASE_URL +
-                "/firstlogin/" +
+                "firstlogin/" +
                 y.access_code +
                 '">here</a> to continue Sign-up for Venue.</p>'
             };

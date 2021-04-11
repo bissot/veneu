@@ -37,9 +37,7 @@ app.use(cors());
 if (process.env.NODE_ENV === "production") {
   app.enable("trust proxy");
   app.use(function(request, response, next) {
-    if (request.url.includes("voyager")) {
-      return response.redirect("http://" + request.headers.host + request.url);
-    } else if (!request.secure) {
+    if (!request.secure) {
       return response.redirect("https://" + request.headers.host + request.url);
     }
     next();
