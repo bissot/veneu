@@ -1,5 +1,8 @@
 const { PubSub, ForbiddenError, withFilter } = require("apollo-server-express");
 const nodemailer = require("nodemailer");
+const mongoose = require("mongoose");
+const fs = require('fs');
+const hbs = require('nodemailer-express-handlebars');
 
 const eventName = {
   AUTH_CREATED: "AUTH_CREATED",
@@ -75,29 +78,57 @@ module.exports = {
             });
           });
         } else {
-          // // //send email
-          // let myhtml = "";
+          let myhtml = "";
 
-          // if (process.env.NODE_ENV === "production") {
-          //   myhtml = "";
-          // } else {
-          //   myhtml = "<p> Yitty Bopkins </p>";
-          // }
+          mongoose.model(shared_resource_type).findOne({_id: shared_resource}).then(y => {
+            var tempCourse = y.name;
+            var tempName = requester.first_name + " " + requester.last_name;
 
-          // var mailOptions = {
-          //   from: "venue.do.not.reply@gmail.com",
-          //   to: user,
-          //   subject: "PUMPKIN!!!!",
-          //   html: myhtml
-          // };
+            if (process.env.NODE_ENV === "production") {
+              myhtml = "";
+            } else {
+              myhtml =  "<p> You have been made a(n) " + role + " for " + shared_resource_type + " '" + tempCourse + "' by " + tempName + "</p>"
 
-          // transporter.sendMail(mailOptions, function(error, info) {
-          //   if (error || info == null) {
-          //     console.log(error);
-          //   } else {
-          //     console.log("Email sent to " + user + ": " + info.response);
-          //   }
-          // });
+            }
+
+            transporter.use('compile', hbs({
+              viewEngine: {
+                extName: '.handlebars',
+                partialsDir: './email_templates/',
+                layoutsDir: './email_templates/',
+                defaultLayout: ''
+              },
+              viewPath: './email_templates/',
+              extName: '.handlebars'
+            }));
+
+            var mailOptions = {
+              from: "venue.do.not.reply@gmail.com",
+              to: user,
+              subject: "You have been invited to Venue!",
+              template: 'main',
+              context: {
+                name: requester.first_name,
+                role: role.toLowerCase(),
+                type: shared_resource_type.toLowerCase(),
+                course: tempCourse,
+                instructor: tempName
+              },
+              attachments: [{
+                filename: 'venue-logo.png',
+                path: './email_templates/venue-logo.png',
+                cid: 'logo'
+              }]
+            };
+
+            transporter.sendMail(mailOptions, function(error, info) {
+              if (error || info == null) {
+                console.log(error);
+              } else {
+                console.log("Email sent to " + user + ": " + info.response);
+              }
+            });
+          });
 
           return Auth.create({ role, user: x[0]._id, shared_resource, shared_resource_type }).then(auth => {
             return global.pubsub
