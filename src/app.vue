@@ -98,6 +98,49 @@
             <q-list class="text-primary neu-convex q-mx-md q-my-md q-mb-lg">
               <course-list :me="data.me" />
             </q-list>
+            <q-list class="text-primary neu-convex q-mx-md q-my-lg">
+              <q-expansion-item
+                expand-separator
+                icon="qr_code_2"
+                label="Check-ins"
+                expand-icon-class="text-primary"
+                :content-inset-level="0.5"
+              >
+                <q-list class="rounded-borders">
+                  <q-expansion-item
+                    expand-separator
+                    icon="present_to_all"
+                    label="Hosted"
+                    :content-inset-level="0"
+                    expand-icon-class="text-primary"
+                  >
+                    <q-card>
+                      <q-card-section>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, eius reprehenderit eos
+                        corrupti commodi magni quaerat ex numquam, dolorum officiis modi facere maiores architecto
+                        suscipit iste eveniet doloribus ullam aliquid.
+                      </q-card-section>
+                    </q-card>
+                  </q-expansion-item>
+
+                  <q-expansion-item
+                    expand-separator
+                    icon="qr_code_scanner"
+                    label="Attended"
+                    :content-inset-level="0"
+                    expand-icon-class="text-primary"
+                  >
+                    <q-card>
+                      <q-card-section>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, eius reprehenderit eos
+                        corrupti commodi magni quaerat ex numquam, dolorum officiis modi facere maiores architecto
+                        suscipit iste eveniet doloribus ullam aliquid.
+                      </q-card-section>
+                    </q-card>
+                  </q-expansion-item>
+                </q-list>
+              </q-expansion-item>
+            </q-list>
             <q-list class="text-primary neu-convex q-mx-md q-my-md">
               <q-expansion-item
                 expand-separator
