@@ -243,6 +243,7 @@ export default {
       this.screen_scanning = false;
       clearInterval(this.screen_scanner);
       this.screen_stream.getTracks().forEach(track => track.stop());
+      this.video_el.srcObject = null;
       this.screen_stream = null;
       this.screen_scanner = null;
       this.engine = null;
