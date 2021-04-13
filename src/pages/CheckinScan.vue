@@ -44,7 +44,7 @@
         label="Stop"
       />
       <q-btn
-        v-if="has_camera && !screen_scanning && !camera_scanning"
+        v-if="has_camera && false === screen_scanning && !camera_scanning"
         class="q-ma-md"
         @click="handleStartCamScan()"
         icon="photo_camera"
@@ -60,7 +60,7 @@
         size="xl"
         label="Stop"
       />
-      <q-icon v-if="screen_scanning || camera_scanning" size="xl" :name="!last ? 'search' : 'qr_code'" />
+      <q-icon v-if="true === screen_scanning || camera_scanning" size="xl" :name="!last ? 'search' : 'qr_code'" />
       <video id="captured-screen" autoplay :style="{ display: 'none' }"></video>
       <video
         v-if="camera_scanning"
