@@ -92,7 +92,7 @@ h1 {
 .form {
   margin: auto;
   width: 100%;
-  max-width: 28rem;
+  /* max-width: 28rem; */
 }
 #actions {
   position: relative;

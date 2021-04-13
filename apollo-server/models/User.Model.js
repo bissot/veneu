@@ -44,7 +44,14 @@ const User = new mongoose.Schema(
       type: Boolean,
       default: false,
       required: true
-    }
+    },
+    checkins: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Checkin",
+        required: true
+      }
+    ]
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
@@ -62,7 +69,7 @@ const User = new mongoose.Schema(
       this.access_code = "";
       var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
       var charactersLength = characters.length;
-      for (var i = 0; i < 32; i++) {
+      for (var i = 0; i < 24; i++) {
         this.access_code += characters.charAt(Math.floor(Math.random() * charactersLength));
       }
     }

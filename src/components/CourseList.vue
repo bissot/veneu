@@ -7,7 +7,7 @@
         <q-item-label header class="text-primary q-pb-md">Courses</q-item-label>
         <div class="">
           <q-btn-group spread flat class="q-mx-md q-mb-none q-gutter-x-sm">
-            <q-btn dense size="sm" label="New" icon="add" :to="{ name: 'CreateCourse' }" />
+            <q-btn dense size="sm" label="New" icon="add" :to="{ name: 'CreateCourse' }" class="q-ma-none" />
             <q-btn disabled dense size="sm" label="Join" icon="group_add" />
             <!-- <q-btn dense size="sm" label="Edit" icon="edit" disabled /> -->
           </q-btn-group>
@@ -19,7 +19,6 @@
           )"
           :key="course._id + '_INST'"
           expand-icon-toggle
-          expand-separator
           icon="school"
           class="courses"
           expand-icon-class="text-primary"
@@ -51,6 +50,7 @@
                   label="Section"
                   icon="add"
                   :to="{ path: '/create-registration-section?course=' + (course._id ? course._id : '') }"
+                  class="q-ma-none"
                 />
                 <q-btn
                   dense
@@ -63,7 +63,6 @@
             </div>
             <q-list class="rounded-borders">
               <q-expansion-item
-                expand-separator
                 expand-icon-toggle
                 icon="event_seat"
                 class="q-pr-none"
@@ -148,7 +147,6 @@
           )"
           :key="course._id + '_TA'"
           expand-icon-toggle
-          expand-separator
           icon="school"
           class="courses"
           expand-icon-class="text-primary"
@@ -180,6 +178,7 @@
                   label="Section"
                   icon="add"
                   :to="{ path: '/create-registration-section?course=' + (course._id ? course._id : '') }"
+                  class="q-ma-none"
                 />
                 <q-btn
                   dense
@@ -192,7 +191,6 @@
             </div>
             <q-list class="rounded-borders">
               <q-expansion-item
-                expand-separator
                 expand-icon-toggle
                 icon="event_seat"
                 class="q-pr-none"
@@ -277,7 +275,6 @@
           )"
           :key="course._id + '_STUD'"
           expand-icon-toggle
-          expand-separator
           icon="school"
           class="courses"
           expand-icon-class="text-primary"
@@ -303,7 +300,6 @@
           <q-list class="rounded-borders">
             <q-list class="rounded-borders">
               <q-expansion-item
-                expand-separator
                 expand-icon-toggle
                 icon="event_seat"
                 class="q-pr-none"

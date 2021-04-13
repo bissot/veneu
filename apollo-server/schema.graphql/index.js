@@ -50,6 +50,7 @@ const linkSchema = gql`
 module.exports = [
   linkSchema,
   require("./Auth.Schema"),
+  require("./Checkin.Schema"),
   require("./Course.Schema"),
   require("./Lecture.Schema"),
   require("./Notification.Schema"),

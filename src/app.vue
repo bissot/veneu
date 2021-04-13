@@ -26,15 +26,18 @@
 
                 <q-space />
 
-                <q-btn
-                  size="sm"
-                  round
-                  icon="qr_code_2"
-                  class="q-mx-sm"
-                  title="Scan"
-                  aria-label="Scan"
-                  @click="handleScan"
-                />
+                <q-btn size="sm" round icon="qr_code_2" class="q-mx-sm" title="Checkin" aria-label="Checkin">
+                  <q-menu :offset="[50, 16]">
+                    <div class="q-pa-xs">
+                      <q-item clickable class="row full-width items-center q-ma-none" @click="handleScan"
+                        ><q-icon color="primary" size="sm" name="qr_code_scanner" class="q-mr-sm" />Attend</q-item
+                      >
+                      <q-item clickable class="row full-width items-center q-ma-none" @click="handleHost"
+                        ><q-icon color="primary" size="sm" name="present_to_all" class="q-mr-sm" />Host</q-item
+                      >
+                    </div>
+                  </q-menu>
+                </q-btn>
                 <q-btn v-if="data.me" size="sm" round icon="notifications" class="q-mx-sm" title="API" aria-label="API">
                   <q-badge rounded color="red" floating label="1+" />
                 </q-btn>
@@ -75,13 +78,14 @@
                   @click="confirmLogout = true"
                 />
                 <q-dialog v-model="confirmLogout">
-                  <q-card>
-                    <q-card-section class="row items-center">
-                      <span class="q-ml-sm text-primary">Are you sure? We'd hate to see you leave...</span>
+                  <q-card class="q-pa-sm">
+                    <q-card-section>
+                      <span class="text-primary">Are you sure? We'd hate to see you leave...</span>
                     </q-card-section>
 
-                    <q-card-actions align="around">
+                    <q-card-actions>
                       <q-btn flat label="Cancel" color="primary" v-close-popup />
+                      <q-space />
                       <q-btn
                         flat
                         label="Logout"
@@ -95,15 +99,16 @@
                 </q-dialog>
               </q-item-section>
             </q-item>
-            <q-list class="text-primary neu-convex q-mx-md q-my-md q-mb-lg">
+            <q-list class="text-primary neu-convex q-mx-md q-my-md q-mb-lg q-pa-xs">
               <course-list :me="data.me" />
             </q-list>
-            <q-list class="text-primary neu-convex q-mx-md q-my-lg">
+            <q-list class="text-primary neu-convex q-mx-md q-my-lg q-pa-xs">
               <q-expansion-item
                 expand-separator
                 icon="qr_code_2"
                 label="Check-ins"
                 expand-icon-class="text-primary"
+                :header-inset-level="0"
                 :content-inset-level="0.5"
               >
                 <q-list class="rounded-borders">
@@ -111,16 +116,30 @@
                     expand-separator
                     icon="present_to_all"
                     label="Hosted"
+                    :header-inset-level="0"
                     :content-inset-level="0"
                     expand-icon-class="text-primary"
                   >
-                    <q-card>
-                      <q-card-section>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, eius reprehenderit eos
-                        corrupti commodi magni quaerat ex numquam, dolorum officiis modi facere maiores architecto
-                        suscipit iste eveniet doloribus ullam aliquid.
-                      </q-card-section>
-                    </q-card>
+                    <ApolloQuery :query="require('./graphql/Checkins.gql')">
+                      <template slot-scope="{ result: { loading, error, data } }">
+                        <div v-if="error">Error...</div>
+                        <div v-else-if="loading">Loading...</div>
+                        <q-list v-else-if="data">
+                          <q-item
+                            class="row items-center justify-center"
+                            clickable
+                            v-for="checkin in data.checkins"
+                            :key="checkin._id"
+                            @click="handleHosted(checkin._id)"
+                          >
+                            {{ checkin.created_at }}
+                          </q-item>
+                        </q-list>
+                        <q-item v-else class="row items-center justify-center" clickable>
+                          None
+                        </q-item>
+                      </template>
+                    </ApolloQuery>
                   </q-expansion-item>
 
                   <q-expansion-item
@@ -141,7 +160,7 @@
                 </q-list>
               </q-expansion-item>
             </q-list>
-            <q-list class="text-primary neu-convex q-mx-md q-my-md">
+            <q-list class="text-primary neu-convex q-mx-md q-my-md q-pa-xs">
               <q-expansion-item
                 expand-separator
                 icon="assignment"
@@ -196,6 +215,7 @@
 </template>
 
 <script>
+import gql from "graphql-tag";
 import VenueLogo from "./components/VenueLogo";
 import CourseList from "./components/CourseList";
 import "quasar/icon-set/fontawesome-v5";
@@ -227,6 +247,41 @@ export default {
     },
     handleScan() {
       this.$router.push({ name: "CheckinScan" });
+    },
+    generateID() {
+      var result = "";
+      var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      var charactersLength = characters.length;
+      for (var i = 0; i < 24; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+      }
+      return result;
+    },
+    handleHost() {
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation createCheckin {
+              createCheckin {
+                _id
+              }
+            }
+          `
+        })
+        .then(({ data }) => {
+          this.$router.push({ name: "CheckinShow", params: { _id: data.createCheckin._id } });
+        })
+        .catch(e => {
+          this.$q.notify({
+            progress: true,
+            message: "Issue creating a checkin, try again " + e,
+            icon: "error",
+            color: "negative"
+          });
+        });
+    },
+    handleHosted(_id) {
+      this.$router.push({ name: "CheckinShow", params: { _id } });
     },
     tryLogout() {
       if (localStorage.getItem("token")) {

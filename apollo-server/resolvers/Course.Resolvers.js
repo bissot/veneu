@@ -62,7 +62,7 @@ module.exports = {
       subscribe: () => global.pubsub.asyncIterator([eventName.COURSE_CREATED])
     },
     courseUpdated: {
-      subscribe: () => global.pubsub.asyncIterator([eventName.COURSE_CREATED])
+      subscribe: () => global.pubsub.asyncIterator([eventName.COURSE_UPDATED])
     },
     courseDeleted: {
       subscribe: () => global.pubsub.asyncIterator([eventName.COURSE_DELETED])

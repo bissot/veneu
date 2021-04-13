@@ -10,6 +10,7 @@ module.exports = gql`
     password: String
     auths: [Auth!]!
     notifications: [Notification!]!
+    checkins: [Checkin!]!
     access_code: String
     active: Boolean!
   }

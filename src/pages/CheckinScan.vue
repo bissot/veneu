@@ -141,7 +141,7 @@ export default {
       var result = "";
       var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
       var charactersLength = characters.length;
-      for (var i = 0; i < 32; i++) {
+      for (var i = 0; i < 24; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
       }
       return result;
@@ -150,8 +150,9 @@ export default {
       try {
         let url = new URL(result);
         let code = url.searchParams.get("code");
+        let checkin = url.searchParams.get("checkin");
         let host = url.searchParams.get("host");
-        if (code && code.length == 32) {
+        if (code && code.length == 24) {
           if (this.last != code) {
             if (this.previous[this.previous.length - 1] != code) {
               this.previous.push({
@@ -165,7 +166,7 @@ export default {
                 this.sendReservation(host, this.previous);
               }
             }
-            this.sendClaim(code);
+            this.sendClaim(code, checkin);
           }
           this.last = code;
         } else {
@@ -247,11 +248,11 @@ export default {
       this.last = "";
       this.previous = [];
     },
-    async sendClaim(code) {
+    async sendClaim(code, checkin) {
       this.$apollo.mutate({
         mutation: gql`
-          mutation claimTicket($code: String!, $user: ID!, $first_name: String!, $last_name: String!) {
-            claimTicket(code: $code, user: $user, first_name: $first_name, last_name: $last_name) {
+          mutation claimTicket($code: String!, $user: ID!, $first_name: String!, $last_name: String!, $checkin: ID!) {
+            claimTicket(code: $code, user: $user, first_name: $first_name, last_name: $last_name, checkin: $checkin) {
               code
               user
               first_name
@@ -263,7 +264,8 @@ export default {
           code,
           user: this.user,
           first_name: this.first_name,
-          last_name: this.last_name
+          last_name: this.last_name,
+          checkin
         }
       });
     },

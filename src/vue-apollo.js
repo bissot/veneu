@@ -63,8 +63,8 @@ export function createProvider(options = {}) {
   const apolloProvider = new VueApollo({
     defaultClient: apolloClient,
     defaultOptions: {
-      $query: {
-        // fetchPolicy: 'cache-and-network',
+      $mutate: {
+        fetchPolicy: "no-cache"
       }
     },
     errorHandler(error) {

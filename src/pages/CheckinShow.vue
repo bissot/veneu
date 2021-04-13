@@ -4,7 +4,9 @@
       <div class="neu-convex" style="width: 50vh; height: 50vh;">
         <vue-qr
           :key="current.code"
-          :text="getBaseUrl() + '/checkin/scan?host=' + me._id + '&code=' + current.code"
+          :text="
+            getBaseUrl() + '/checkin/scan?host=' + me._id + '&code=' + current.code + '&checkin=' + $route.params._id
+          "
           :size="512"
           backgroundColor="#dfdfdf"
           colorLight="#dfdfdf"
@@ -59,6 +61,9 @@
         </div>
       </div>
     </div>
+    <div class="row full-width justify-center q-mt-xl">
+      <q-btn label="Delete" size="md" icon-right="delete" class="bg-red text-white" @click="deleteModal = true" />
+    </div>
     <ApolloSubscribeToMore
       :document="
         gql =>
@@ -93,6 +98,20 @@
       :variables="{ host: me._id }"
       :updateQuery="onReserved"
     />
+    <q-dialog v-model="deleteModal" persistent>
+      <q-card class="q-pa-sm">
+        <q-card-section class="row items-center">
+          <q-avatar icon="delete" color="red" text-color="white" />
+          <span class="q-ml-sm">Are you sure? This is <b>permanent</b>.</span>
+        </q-card-section>
+
+        <q-card-actions>
+          <q-btn label="Cancel" class="text-primary" v-close-popup />
+          <q-space />
+          <q-btn label="Delete" color="white" class="bg-red" v-close-popup @click="handleDelete" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -108,7 +127,8 @@ export default {
     return {
       tickets: {},
       current: this.generateTicket(),
-      next: this.generateTicket()
+      next: this.generateTicket(),
+      deleteModal: false
     };
   },
   created() {
@@ -146,7 +166,7 @@ export default {
       this.next = this.generateTicket();
       this.tickets[this.current.code] = { ...this.current };
       this.tickets[claimedTicket.code] = { ...this.tickets[claimedTicket.code], ...claimedTicket };
-      this.sendApprove(claimedTicket);
+      this.sendApprove(this.tickets[claimedTicket.code]);
       this.$q.notify({
         progress: true,
         message: claimedTicket.first_name + " " + claimedTicket.last_name + " checked in",
@@ -177,32 +197,32 @@ export default {
           icon: "event_seat",
           color: "primary"
         });
-        const ticket = {
+        this.sendApprove({
           ...this.generateTicket(),
           user: reservedTicket[0].user,
           first_name: reservedTicket[0].first_name,
           last_name: reservedTicket[0].last_name
-        };
-        this.sendApprove(ticket);
+        });
       }
     },
     generateTicket() {
       var result = "";
       var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
       var charactersLength = characters.length;
-      for (var i = 0; i < 32; i++) {
+      for (var i = 0; i < 24; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
       }
       return {
         code: result,
-        creation_time: Date.now()
+        creation_time: Date.now(),
+        checkin: this.$route.params._id
       };
     },
     async sendApprove(ticket) {
       this.$apollo.mutate({
         mutation: gql`
-          mutation approveTicket($code: String!, $user: ID!, $first_name: String!, $last_name: String!) {
-            approveTicket(code: $code, user: $user, first_name: $first_name, last_name: $last_name) {
+          mutation approveTicket($code: String!, $user: ID!, $first_name: String!, $last_name: String!, $checkin: ID!) {
+            approveTicket(code: $code, user: $user, first_name: $first_name, last_name: $last_name, checkin: $checkin) {
               code
               user
               first_name
@@ -212,6 +232,32 @@ export default {
         `,
         variables: ticket
       });
+    },
+    async handleDelete() {
+      this.$apollo
+        .mutate({
+          mutation: gql`
+            mutation deleteCheckin($_id: ID!) {
+              deleteCheckin(_id: $_id) {
+                _id
+              }
+            }
+          `,
+          variables: {
+            _id: this.$route.params._id
+          }
+        })
+        .then(({ data }) => {
+          location.href = "/dashboard";
+        })
+        .catch(e => {
+          this.$q.notify({
+            progress: true,
+            message: "Couldn't delete checkin",
+            icon: "error",
+            color: "negative"
+          });
+        });
     }
   }
 };
