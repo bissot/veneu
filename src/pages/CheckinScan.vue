@@ -27,7 +27,7 @@
     </q-dialog>
     <div class="vertical-center text-center q-pa-md">
       <q-btn
-        v-if="$q.platform.is.desktop && !screen_scanning && !camera_scanning"
+        v-if="$q.platform.is.desktop && false === screen_scanning && !camera_scanning"
         class="q-ma-md"
         @click="handleStartScreenScan()"
         icon="monitor"
@@ -36,7 +36,7 @@
         label="Screen Scan"
       />
       <q-btn
-        v-else-if="screen_scanning"
+        v-else-if="true === screen_scanning"
         class="q-ma-md"
         @click="handleStopScreenScan()"
         icon-right="stop"
@@ -213,7 +213,7 @@ export default {
       }, 200);
     },
     async handleStartScreenScan() {
-      this.screen_scanning = true;
+      this.screen_scanning = null;
       let self = this;
       if (navigator && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
         navigator.mediaDevices
