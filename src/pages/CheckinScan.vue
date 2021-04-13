@@ -201,6 +201,7 @@ export default {
       this.previous = [];
     },
     async createIntervalScanner() {
+      this.screen_scanning = true;
       this.video_el.srcObject = this.screen_stream;
       this.screen_scanner = setInterval(() => {
         if (this.screen_stream) {
