@@ -2,23 +2,20 @@ const { AuthenticationError, ForbiddenError } = require("apollo-server-express")
 
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-
 const jwt = require("jsonwebtoken");
+
 const nodemailer = require("nodemailer");
+const { google } = require("googleapis");
+const { OAuth2 } = google.auth;
+const OAUTH_PLAYGROUND = "https://developers.google.com/oauthplayground";
+const { GMAIL_OAUTH_ID, GMAIL_OAUTH_SECRET, GMAIL_OAUTH_REFRESH } = process.env;
+const oauth2Client = new OAuth2(GMAIL_OAUTH_ID, GMAIL_OAUTH_SECRET, OAUTH_PLAYGROUND);
 
 const eventName = {
   USER_CREATED: "USER_CREATED",
   USER_UPDATED: "USER_UPDATED",
   USER_DELETED: "USER_DELETED"
 };
-
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "venue.do.not.reply@gmail.com",
-    pass: process.env.EMAIL_PASS
-  }
-});
 
 module.exports = {
   Query: {
@@ -38,25 +35,44 @@ module.exports = {
       return User.create({
         email
       }).then(user => {
-        var mailOptions = {
-          from: "venue.do.not.reply@gmail.com",
-          to: email,
-          subject: "Venue Account Creation",
-          html:
-            '<p>Click <a href="' +
-            process.env.BASE_URL +
-            "firstlogin/" +
-            user.access_code +
-            '">here</a> to continue Sign-up for Venue.</p>'
-        };
-
-        transporter.sendMail(mailOptions, function(error, info) {
-          if (error || info == null) {
-            console.log(error);
-          } else {
-            console.log("Email sent to " + user + ": " + info.response);
+        oauth2Client.setCredentials({
+          refresh_token: GMAIL_OAUTH_REFRESH
+        });
+        const accessToken = oauth2Client.getAccessToken();
+        var transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            type: "OAuth2",
+            user: "venue.do.not.reply@gmail.com",
+            clientId: GMAIL_OAUTH_ID,
+            clientSecret: GMAIL_OAUTH_SECRET,
+            refreshToken: GMAIL_OAUTH_REFRESH,
+            accessToken
           }
         });
+        if (transporter) {
+          var mailOptions = {
+            from: "venue.do.not.reply@gmail.com",
+            to: email,
+            subject: "Venue Account Creation",
+            html:
+              '<p>Click <a href="' +
+              process.env.BASE_URL +
+              "firstlogin/" +
+              user.access_code +
+              '">here</a> to continue Sign-up for Venue.</p>'
+          };
+
+          transporter.sendMail(mailOptions, function(error, info) {
+            if (error || info == null) {
+              console.log(error);
+            } else {
+              console.log("Email sent to " + user + ": " + info.response);
+            }
+          });
+        } else {
+          console.log("MAILER FAILED");
+        }
 
         return global.pubsub.publish(eventName.USER_CREATED, { userCreated: user }).then(done => {
           return user;

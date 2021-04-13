@@ -1,19 +1,17 @@
 const { PubSub, ForbiddenError, withFilter } = require("apollo-server-express");
+
 const nodemailer = require("nodemailer");
+const { google } = require("googleapis");
+const { OAuth2 } = google.auth;
+const OAUTH_PLAYGROUND = "https://developers.google.com/oauthplayground";
+const { GMAIL_OAUTH_ID, GMAIL_OAUTH_SECRET, GMAIL_OAUTH_REFRESH } = process.env;
+const oauth2Client = new OAuth2(GMAIL_OAUTH_ID, GMAIL_OAUTH_SECRET, OAUTH_PLAYGROUND);
 
 const eventName = {
   AUTH_CREATED: "AUTH_CREATED",
   AUTH_UPDATED: "AUTH_UPDATED",
   AUTH_DELETED: "AUTH_DELETED"
 };
-
-var transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: "venue.do.not.reply@gmail.com",
-    pass: process.env.EMAIL_PASS
-  }
-});
 
 module.exports = {
   Query: {
@@ -44,25 +42,43 @@ module.exports = {
       return User.find({ email: user }).then(x => {
         if (x.length == 0) {
           User.create({ email: user }).then(y => {
-            var mailOptions = {
-              from: "venue.do.not.reply@gmail.com",
-              to: user,
-              subject: "You have been added to a Venue course",
-              html:
-                '<p>Click <a href="' +
-                process.env.BASE_URL +
-                "firstlogin/" +
-                y.access_code +
-                '">here</a> to continue Sign-up for Venue.</p>'
-            };
-
-            transporter.sendMail(mailOptions, function(error, info) {
-              if (error || info == null) {
-                console.log(error);
-              } else {
-                console.log("Email sent to " + user + ": " + info.response);
+            oauth2Client.setCredentials({
+              refresh_token: GMAIL_OAUTH_REFRESH
+            });
+            const accessToken = oauth2Client.getAccessToken();
+            var transporter = nodemailer.createTransport({
+              service: "gmail",
+              auth: {
+                type: "OAuth2",
+                user: "venue.do.not.reply@gmail.com",
+                clientId: GMAIL_OAUTH_ID,
+                clientSecret: GMAIL_OAUTH_SECRET,
+                refreshToken: GMAIL_OAUTH_REFRESH,
+                accessToken
               }
             });
+            if (transporter) {
+              var mailOptions = {
+                from: "venue.do.not.reply@gmail.com",
+                to: user,
+                subject: "You have been added to a Venue course",
+                html:
+                  '<p>Click <a href="' +
+                  process.env.BASE_URL +
+                  "firstlogin/" +
+                  y.access_code +
+                  '">here</a> to continue Sign-up for Venue.</p>'
+              };
+              transporter.sendMail(mailOptions, function(error, info) {
+                if (error || info == null) {
+                  console.log(error);
+                } else {
+                  console.log("Email sent to " + user + ": " + info.response);
+                }
+              });
+            } else {
+              console.log("MAILER FAILED");
+            }
 
             return Auth.create({ role, user: y._id, shared_resource, shared_resource_type }).then(auth => {
               return global.pubsub
