@@ -217,7 +217,7 @@ export default {
       let self = this;
       if (navigator && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
         navigator.mediaDevices
-          .getDisplayMedia({ video: true, audio: false, framerate: 24 })
+          .getDisplayMedia({ video: true, audio: false, frameRate: 24 })
           .then(res => {
             if (res) {
               self.screen_stream = res;
