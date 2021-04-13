@@ -201,7 +201,6 @@ export default {
       this.previous = [];
     },
     async createIntervalScanner() {
-      this.screen_scanning = true;
       this.video_el.srcObject = this.screen_stream;
       this.screen_scanner = setInterval(() => {
         if (this.screen_stream) {
@@ -214,6 +213,7 @@ export default {
       }, 200);
     },
     async handleStartScreenScan() {
+      this.screen_scanning = true;
       let self = this;
       if (navigator && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
         navigator.mediaDevices
