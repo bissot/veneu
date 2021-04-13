@@ -217,18 +217,18 @@ export default {
       let self = this;
       if (navigator && navigator.mediaDevices && navigator.mediaDevices.getDisplayMedia) {
         navigator.mediaDevices
-          .getDisplayMedia({ video: true, framerate: 24 })
+          .getDisplayMedia({ video: true, audio: false, framerate: 24 })
           .then(res => {
             if (res) {
               self.screen_stream = res;
               QrScanner.createQrEngine(QrScanner.WORKER_PATH)
                 .then(engine => {
                   self.engine = engine;
+                  self.createIntervalScanner();
                 })
                 .catch(err => {
                   self.handleStopScreenScan();
                 });
-              self.createIntervalScanner();
             } else {
               self.handleStopScreenScan();
             }
