@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row full-width justify-center">
-      <div class="neu-convex" style="width: 50vh; height: 50vh;">
+      <q-responsive class="neu-convex" style="width: 50vh;" :ratio="1">
         <vue-qr
           :key="current.code"
           :text="
@@ -11,11 +11,14 @@
           backgroundColor="#dfdfdf"
           colorLight="#dfdfdf"
           colorDark="#1a4974"
-          :margin="8"
+          logoBackgroundColor="#dfdfdf"
+          :logoCornerRadius="20"
+          :logoSrc="require('../assets/venue-logo.svg')"
+          :margin="16"
           :style="{ height: '100%', width: '100%' }"
           class="q-pa-md"
         />
-      </div>
+      </q-responsive>
     </div>
     <div class="row full-width justify-center q-mt-xl">
       <div v-if="$q.platform.is.mobile">
