@@ -114,6 +114,7 @@ export default {
       last_name: "",
       video_el: null,
       engine: null,
+      canvas: null,
       previous: []
     };
   },
@@ -132,9 +133,15 @@ export default {
     QrScanner.hasCamera().then(res => {
       self.has_camera = true;
     });
+
+    this.canvas = document.createElement("canvas");
   },
   mounted() {
     this.video_el = document.getElementById("captured-screen");
+  },
+  beforeDestroy() {
+    this.handleStopScreenScan();
+    this.handleStopCamScan();
   },
   methods: {
     generateID() {
@@ -194,9 +201,11 @@ export default {
     },
     async handleStopCamScan() {
       this.camera_scanning = false;
-      this.camera_scanner.stop();
-      this.camera_scanner.destroy();
-      this.camera_scanner = null;
+      if (this.camera_scanner) {
+        this.camera_scanner.stop();
+        this.camera_scanner.destroy();
+        this.camera_scanner = null;
+      }
       this.last = "";
       this.previous = [];
     },
@@ -205,7 +214,7 @@ export default {
       this.video_el.srcObject = this.screen_stream;
       this.screen_scanner = setInterval(() => {
         if (this.screen_stream) {
-          QrScanner.scanImage(this.video_el, undefined, this.engine)
+          QrScanner.scanImage(this.video_el, undefined, this.engine, this.canvas)
             .then(result => this.handleDecodeQR(result))
             .catch(error => this.handleDecodeError());
         } else {
@@ -241,12 +250,19 @@ export default {
     },
     async handleStopScreenScan() {
       this.screen_scanning = false;
-      clearInterval(this.screen_scanner);
-      this.screen_stream.getTracks().forEach(track => track.stop());
+      if (this.screen_scanner) {
+        clearInterval(this.screen_scanner);
+        this.screen_scanner = null;
+      }
+      if (this.screen_stream) {
+        this.screen_stream.getTracks().forEach(track => track.stop());
+        this.screen_stream = null;
+      }
       this.video_el.srcObject = null;
-      this.screen_stream = null;
-      this.screen_scanner = null;
-      this.engine = null;
+      if (this.engine) {
+        this.engine.terminate();
+        this.engine = null;
+      }
       this.last = "";
       this.previous = [];
     },
