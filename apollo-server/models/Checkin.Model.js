@@ -37,9 +37,8 @@ const Checkin = new mongoose.Schema(
   })
   .post("save", function() {
     if (this.wasNew) {
-      mongoose
-        .model("User")
-        .updateOne(
+      Promise.all([
+        mongoose.model("User").updateOne(
           {
             _id: this.creator
           },
@@ -47,9 +46,9 @@ const Checkin = new mongoose.Schema(
             $addToSet: { checkins: this._id }
           }
         )
-        .then(res => {
-          return;
-        });
+      ]).then(res => {
+        return;
+      });
     }
   });
 

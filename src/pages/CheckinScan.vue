@@ -166,7 +166,8 @@ export default {
                 code,
                 first_name: this.first_name,
                 last_name: this.last_name,
-                user: this.user
+                user: this.user,
+                checkin
               });
               if (this.previous.length > 5) {
                 this.previous.splice(0, 1);

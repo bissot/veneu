@@ -1,15 +1,27 @@
 const { PubSub, ForbiddenError, withFilter } = require("apollo-server-express");
 
 module.exports = {
+  Query: {
+    ticket: (parent, { _id }, { requester, models: { Ticket } }, info) => {
+      if (!requester) throw new ForbiddenError("Not allowed");
+      return Ticket.findById({ _id: _id });
+    },
+    tickets: (parent, args, { requester, models: { Ticket } }, info) => {
+      if (!requester) throw new ForbiddenError("Not allowed");
+      return Ticket.find({ user: requester._id });
+    }
+  },
   Mutation: {
     claimTicket: (parent, ticket, { requester }, info) => {
       return global.pubsub.publish("CLAIMED_TICKET", { claimedTicket: { ticket } }).then(done => {
         return ticket;
       });
     },
-    approveTicket: (parent, ticket, { requester }, info) => {
-      return global.pubsub.publish("APPROVED_TICKET", { approvedTicket: { ticket } }).then(done => {
-        return ticket;
+    approveTicket: (parent, ticket, { requester, models: { Ticket } }, info) => {
+      return Ticket.create(ticket).then(ticket => {
+        return global.pubsub.publish("APPROVED_TICKET", { approvedTicket: { ticket } }).then(done => {
+          return ticket;
+        });
       });
     },
     reserveTicket: (parent, { host, tickets }, { requester }, info) => {

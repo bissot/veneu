@@ -50,5 +50,12 @@ module.exports = {
     checkinDeleted: {
       subscribe: () => global.pubsub.asyncIterator([eventName.CHECKIN_DELETED])
     }
+  },
+  Checkin: {
+    tickets: (parent, args, { models: { Ticket } }, info) => {
+      return Ticket.find({ checkin: parent._id }).then(tickets => {
+        return tickets;
+      });
+    }
   }
 };

@@ -196,4 +196,11 @@ h1 {
 .q-item__label--caption,
 .q-field__native:not(:focus) .q-field__label {
   color: var(--venue-dark) !important;
+  font-size: 0.65rem !important;
+}
+
+.q-item__label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

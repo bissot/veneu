@@ -1,39 +1,35 @@
 <template>
   <q-page class="q-pa-md">
-    <div class="row full-width justify-center">
-      <q-responsive class="neu-convex" style="width: 50vh;" :ratio="1">
-        <vue-qr
-          :key="current.code"
-          :text="
-            getBaseUrl() + '/checkin/scan?host=' + me._id + '&code=' + current.code + '&checkin=' + $route.params._id
-          "
-          :size="512"
-          backgroundColor="#dfdfdf"
-          colorLight="#dfdfdf"
-          colorDark="#1a4974"
-          :margin="16"
-          :style="{ height: '100%', width: '100%' }"
-          class="q-pa-md"
-        />
-      </q-responsive>
-    </div>
-    <div class="row full-width justify-center q-mt-xl">
-      <div v-if="$q.platform.is.mobile">
-        <p>
-          <q-icon size="sm" color="primary" name="event_seat" /> x{{ Object.keys(tickets).length - 1 }}
-          <q-btn
-            v-if="Object.keys(tickets).length - 1 > 0"
-            icon="download"
-            class="q-ml-sm"
-            title="Download Attendance CSV"
-            @click="downloadCSV"
+    <q-skeleton
+      v-if="checkinQuery.loading"
+      class="bg-primary q-pa-md"
+      width="50vh"
+      height="50vh"
+      style="margin: auto"
+    />
+    <div v-if="checkinQuery.error">Error...</div>
+    <div v-if="checkinQuery.data && checkinQuery.data.checkin" class="q-px-md" id="checkinloaded">
+      <div class="row full-width justify-center">
+        <q-responsive class="neu-convex" style="width: 50vh;" :ratio="1">
+          <vue-qr
+            :key="current.code"
+            :text="
+              getBaseUrl() + '/checkin/scan?host=' + me._id + '&code=' + current.code + '&checkin=' + $route.params._id
+            "
+            :size="512"
+            backgroundColor="#dfdfdf"
+            colorLight="#dfdfdf"
+            colorDark="#1a4974"
+            :margin="16"
+            :style="{ height: '100%', width: '100%' }"
+            class="q-pa-md"
           />
-        </p>
+        </q-responsive>
       </div>
-      <div v-else>
-        <div class="row full-width justify-center q-mt-md">
+      <div class="row full-width justify-center q-mt-xl">
+        <div v-if="$q.platform.is.mobile">
           <p>
-            {{ Object.keys(tickets).length - 1 }} seats claimed
+            <q-icon size="sm" color="primary" name="event_seat" /> x{{ Object.keys(tickets).length - 1 }}
             <q-btn
               v-if="Object.keys(tickets).length - 1 > 0"
               icon="download"
@@ -43,75 +39,89 @@
             />
           </p>
         </div>
-        <div id="seatsiconscroll" class="row full-width justify-center q-mt-md">
-          <div
-            class="seatindicator q-pa-xs"
-            v-for="ticket in tickets"
-            :key="ticket.code"
-            :title="ticket.first_name + ' ' + ticket.last_name"
-            :style="{ display: ticket.code == current.code ? 'none' : 'inline-block' }"
-          >
-            <div v-if="ticket.code != current.code">
-              <q-icon size="lg" color="primary" name="event_seat" />
-              <p>
-                {{ ticket.first_name + " " + ticket.last_name }}
-              </p>
+        <div v-else>
+          <div class="row full-width justify-center q-mt-md">
+            <p>
+              {{ Object.keys(tickets).length - 1 }} seats claimed
+              <q-btn
+                v-if="Object.keys(tickets).length - 1 > 0"
+                icon="download"
+                class="q-ml-sm"
+                title="Download Attendance CSV"
+                @click="downloadCSV"
+              />
+            </p>
+          </div>
+          <div id="seatsiconscroll" class="row full-width justify-center q-mt-md">
+            <div
+              class="seatindicator q-pa-xs"
+              v-for="ticket in tickets"
+              :key="ticket.code"
+              :title="ticket.first_name + ' ' + ticket.last_name"
+              :style="{ display: ticket.code == current.code ? 'none' : 'inline-block' }"
+            >
+              <div v-if="ticket.code != current.code">
+                <q-icon size="lg" color="primary" name="event_seat" />
+                <p>
+                  {{ ticket.first_name + " " + ticket.last_name }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div class="row full-width justify-center q-mt-xl">
-      <q-btn label="Delete" size="md" icon-right="delete" class="bg-red text-white" @click="deleteModal = true" />
-    </div>
-    <ApolloSubscribeToMore
-      :document="
-        gql =>
-          gql`
-            subscription claimedTicket($code: String!) {
-              claimedTicket(code: $code) {
-                code
-                user
-                first_name
-                last_name
+      <div class="row full-width justify-center q-mt-xl">
+        <q-btn label="Delete" size="md" icon-right="delete" class="bg-red text-white" @click="deleteModal = true" />
+      </div>
+      <ApolloSubscribeToMore
+        :document="
+          gql =>
+            gql`
+              subscription claimedTicket($code: String!) {
+                claimedTicket(code: $code) {
+                  code
+                  user
+                  first_name
+                  last_name
+                }
               }
-            }
-          `
-      "
-      :variables="{ code: current.code }"
-      :updateQuery="onClaimed"
-    />
-    <ApolloSubscribeToMore
-      :document="
-        gql =>
-          gql`
-            subscription reservedTicket($host: ID!) {
-              reservedTicket(host: $host) {
-                code
-                user
-                first_name
-                last_name
+            `
+        "
+        :variables="{ code: current.code }"
+        :updateQuery="onClaimed"
+      />
+      <ApolloSubscribeToMore
+        :document="
+          gql =>
+            gql`
+              subscription reservedTicket($host: ID!) {
+                reservedTicket(host: $host) {
+                  code
+                  user
+                  first_name
+                  last_name
+                }
               }
-            }
-          `
-      "
-      :variables="{ host: me._id }"
-      :updateQuery="onReserved"
-    />
-    <q-dialog v-model="deleteModal" persistent>
-      <q-card class="q-pa-sm">
-        <q-card-section class="row items-center">
-          <q-avatar icon="delete" color="red" text-color="white" />
-          <span class="q-ml-sm">Are you sure? This is <b>permanent</b>.</span>
-        </q-card-section>
+            `
+        "
+        :variables="{ host: me._id }"
+        :updateQuery="onReserved"
+      />
+      <q-dialog v-model="deleteModal" persistent>
+        <q-card class="q-pa-sm">
+          <q-card-section class="row items-center">
+            <q-avatar icon="delete" color="red" text-color="white" />
+            <span class="q-ml-sm">Are you sure? This is <b>permanent</b>.</span>
+          </q-card-section>
 
-        <q-card-actions>
-          <q-btn label="Cancel" class="text-primary" v-close-popup />
-          <q-space />
-          <q-btn label="Delete" color="white" class="bg-red" v-close-popup @click="handleDelete" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
+          <q-card-actions>
+            <q-btn label="Cancel" class="text-primary" v-close-popup />
+            <q-space />
+            <q-btn label="Delete" color="white" class="bg-red" v-close-popup @click="handleDelete" />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+    </div>
   </q-page>
 </template>
 
@@ -128,11 +138,46 @@ export default {
       tickets: {},
       current: this.generateTicket(),
       next: this.generateTicket(),
-      deleteModal: false
+      deleteModal: false,
+      checkinQuery: {
+        error: null,
+        loading: null,
+        data: null
+      }
     };
   },
   created() {
-    this.tickets[this.current.code] = { ...this.current };
+    this.checkinQuery.loading = true;
+    this.$apollo
+      .query({
+        query: gql`
+          query checkin($_id: ID!) {
+            checkin(_id: $_id) {
+              _id
+              tickets {
+                first_name
+                last_name
+                user
+                code
+              }
+              creator {
+                name
+              }
+              created_at
+            }
+          }
+        `,
+        variables: { _id: this.$route.params._id }
+      })
+      .then(data => {
+        this.checkinQuery.loading = false;
+        this.checkinQuery.data = data.data;
+        this.tickets = this.checkinQuery.data.checkin.tickets;
+        this.tickets[this.current.code] = { ...this.current };
+      })
+      .catch(e => {
+        this.checkinQuery.error = e;
+      });
   },
   methods: {
     downloadCSV() {
@@ -162,17 +207,23 @@ export default {
         }
       }
     ) {
-      this.current = this.next; // iteration logic
-      this.next = this.generateTicket();
-      this.tickets[this.current.code] = { ...this.current };
-      this.tickets[claimedTicket.code] = { ...this.tickets[claimedTicket.code], ...claimedTicket };
-      this.sendApprove(this.tickets[claimedTicket.code]);
-      this.$q.notify({
-        progress: true,
-        message: claimedTicket.first_name + " " + claimedTicket.last_name + " checked in",
-        icon: "event_seat",
-        color: "primary"
-      });
+      if (
+        !Object.values(this.tickets)
+          .map(a => a.user)
+          .includes(claimedTicket.user)
+      ) {
+        this.current = this.next; // iteration logic
+        this.next = this.generateTicket();
+        this.tickets[this.current.code] = { ...this.current };
+        this.tickets[claimedTicket.code] = { ...this.tickets[claimedTicket.code], ...claimedTicket };
+        this.sendApprove(this.tickets[claimedTicket.code]);
+        this.$q.notify({
+          progress: true,
+          message: claimedTicket.first_name + " " + claimedTicket.last_name + " checked in",
+          icon: "event_seat",
+          color: "primary"
+        });
+      }
     },
     onReserved(
       previousResult,
@@ -189,19 +240,24 @@ export default {
         reservedTicket.every(
           ticket =>
             undefined != this.tickets[ticket.code] && reservation_time - this.tickets[ticket.code].creation_time <= 5000
-        )
+        ) &&
+        !Object.values(this.tickets)
+          .map(a => a.user)
+          .includes(reservedTicket[0].user)
       ) {
-        this.$q.notify({
-          progress: true,
-          message: reservedTicket[0].first_name + " " + reservedTicket[0].last_name + " reserved their seat",
-          icon: "event_seat",
-          color: "primary"
-        });
-        this.sendApprove({
+        var reservedticket = {
           ...this.generateTicket(),
           user: reservedTicket[0].user,
           first_name: reservedTicket[0].first_name,
           last_name: reservedTicket[0].last_name
+        };
+        this.tickets[reservedticket.code] = reservedTicket;
+        this.sendApprove(reservedticket);
+        this.$q.notify({
+          progress: true,
+          message: reservedticket.first_name + " " + reservedticket.last_name + " reserved their seat",
+          icon: "event_seat",
+          color: "primary"
         });
       }
     },
