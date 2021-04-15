@@ -146,6 +146,16 @@ export default {
       }
     };
   },
+  beforeDestroy() {
+    this.tickets = {};
+    this.current = {};
+    this.next = {};
+    this.checkinQuery = {
+      error: null,
+      loading: null,
+      data: null
+    };
+  },
   created() {
     this.checkinQuery.loading = true;
     this.$apollo
