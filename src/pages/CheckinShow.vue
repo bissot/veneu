@@ -146,15 +146,13 @@ export default {
       }
     };
   },
+  watch: {
+    $route() {
+      this.cleanup();
+    }
+  },
   beforeDestroy() {
-    this.tickets = {};
-    this.current = {};
-    this.next = {};
-    this.checkinQuery = {
-      error: null,
-      loading: null,
-      data: null
-    };
+    this.cleanup();
   },
   mounted() {
     this.checkinQuery.loading = true;
@@ -190,6 +188,16 @@ export default {
       });
   },
   methods: {
+    cleanup() {
+      this.tickets = {};
+      this.current = {};
+      this.next = {};
+      this.checkinQuery = {
+        error: null,
+        loading: null,
+        data: null
+      };
+    },
     downloadCSV() {
       const csvContent =
         "data:text/csv;charset=utf-8,First,Last,User ID,Code\n" +
