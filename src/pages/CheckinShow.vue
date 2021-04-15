@@ -156,7 +156,7 @@ export default {
       data: null
     };
   },
-  created() {
+  mounted() {
     this.checkinQuery.loading = true;
     this.$apollo
       .query({
