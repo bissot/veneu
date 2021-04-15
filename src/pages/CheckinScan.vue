@@ -185,7 +185,7 @@ export default {
       }
     },
     async handleDecodeError() {
-      this.last = "";
+      // this.last = "";
     },
     async handleStartCamScan() {
       this.camera_scanning = true;
