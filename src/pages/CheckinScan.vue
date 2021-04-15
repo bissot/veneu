@@ -160,22 +160,21 @@ export default {
         let checkin = url.searchParams.get("checkin");
         let host = url.searchParams.get("host");
         if (code && code.length == 24) {
-          if (this.last != code) {
-            if (this.previous[this.previous.length - 1] != code) {
-              this.previous.push({
-                code,
-                first_name: this.first_name,
-                last_name: this.last_name,
-                user: this.user,
-                checkin
-              });
-              if (this.previous.length > 5) {
-                this.previous.splice(0, 1);
-                this.sendReservation(host, this.previous);
-              }
+          if (this.previous[this.previous.length - 1] != code) {
+            this.previous.push({
+              code,
+              first_name: this.first_name,
+              last_name: this.last_name,
+              user: this.user,
+              checkin
+            });
+            if (this.previous.length > 5) {
+              this.previous.splice(0, 1);
+              this.sendReservation(host, this.previous);
             }
             this.sendClaim(code, checkin);
           }
+
           this.last = code;
         } else {
           this.last = "";
@@ -185,7 +184,7 @@ export default {
       }
     },
     async handleDecodeError() {
-      // this.last = "";
+      this.last = "";
     },
     async handleStartCamScan() {
       this.camera_scanning = true;
