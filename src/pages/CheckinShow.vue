@@ -149,45 +149,49 @@ export default {
   watch: {
     $route() {
       this.cleanup();
+      this.startNewSession();
     }
   },
   beforeDestroy() {
     this.cleanup();
   },
-  mounted() {
-    this.checkinQuery.loading = true;
-    this.$apollo
-      .query({
-        query: gql`
-          query checkin($_id: ID!) {
-            checkin(_id: $_id) {
-              _id
-              tickets {
-                first_name
-                last_name
-                user
-                code
-              }
-              creator {
-                name
-              }
-              created_at
-            }
-          }
-        `,
-        variables: { _id: this.$route.params._id }
-      })
-      .then(data => {
-        this.checkinQuery.loading = false;
-        this.checkinQuery.data = data.data;
-        this.tickets = this.checkinQuery.data.checkin.tickets;
-        this.tickets[this.current.code] = { ...this.current };
-      })
-      .catch(e => {
-        this.checkinQuery.error = e;
-      });
+  created() {
+    this.startNewSession();
   },
   methods: {
+    startNewSession() {
+      this.checkinQuery.loading = true;
+      this.$apollo
+        .query({
+          query: gql`
+            query checkin($_id: ID!) {
+              checkin(_id: $_id) {
+                _id
+                tickets {
+                  first_name
+                  last_name
+                  user
+                  code
+                }
+                creator {
+                  name
+                }
+                created_at
+              }
+            }
+          `,
+          variables: { _id: this.$route.params._id }
+        })
+        .then(data => {
+          this.checkinQuery.loading = false;
+          this.checkinQuery.data = data.data;
+          this.tickets = this.checkinQuery.data.checkin.tickets;
+          this.tickets[this.current.code] = { ...this.current };
+        })
+        .catch(e => {
+          this.checkinQuery.error = e;
+        });
+    },
     cleanup() {
       this.tickets = {};
       this.current = {};
