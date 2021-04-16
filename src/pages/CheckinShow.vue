@@ -161,6 +161,14 @@ export default {
   },
   methods: {
     startNewSession() {
+      this.current = this.generateTicket();
+      this.next = this.generateTicket();
+      this.deleteModal = false;
+      this.checkinQuery = {
+        error: null,
+        loading: true,
+        data: null
+      };
       this.checkinQuery.loading = true;
       this.$apollo
         .query({
