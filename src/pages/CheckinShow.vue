@@ -156,6 +156,7 @@ export default {
     this.cleanup();
   },
   created() {
+    this.cleanup();
     this.startNewSession();
   },
   methods: {
