@@ -202,9 +202,11 @@ export default {
         });
     },
     cleanup() {
-      Object.keys(this.tickets).forEach(key => {
-        this.tickets[key] = null;
-      });
+      if (this.tickets) {
+        Object.keys(this.tickets).forEach(key => {
+          this.tickets[key] = null;
+        });
+      }
       this.current = null;
       this.next = null;
       this.checkinQuery = {
