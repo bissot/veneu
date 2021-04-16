@@ -212,7 +212,7 @@ h1 {
   padding: 3rem;
   text-align: center;
   .q-btn {
-    box-shadow: var(--red-button-shadow) !important;
+    animation: grow-in-button-red 1s forwards !important;
   }
   &::before {
     content: "danger zone";

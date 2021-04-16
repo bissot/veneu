@@ -83,27 +83,44 @@ label {
 @keyframes grow-in {
   from {
     box-shadow: none;
+    -moz-box-shadow: none;
   }
   to {
     box-shadow: var(--elevated-shadow);
+    -moz-box-shadow: var(--elevated-shadow);
   }
 }
 
 @keyframes grow-in-button {
   from {
     box-shadow: none;
+    -moz-box-shadow: none;
   }
   to {
     box-shadow: var(--button-shadow);
+    -moz-box-shadow: var(--button-shadow);
+  }
+}
+
+@keyframes grow-in-button-red {
+  from {
+    box-shadow: none;
+    -moz-box-shadow: none;
+  }
+  to {
+    box-shadow: var(--red-button-shadow);
+    -moz-box-shadow: var(--red-button-shadow);
   }
 }
 
 @keyframes grow-in-input {
   from {
     box-shadow: none;
+    -moz-box-shadow: none;
   }
   to {
     box-shadow: var(--field-shadow);
+    -moz-box-shadow: var(--field-shadow);
   }
 }
 
