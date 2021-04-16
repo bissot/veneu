@@ -208,8 +208,9 @@ h1 {
 
 .dangerzone {
   background-color: var(--venue-red);
-  box-shadow: 0rem 0rem 2rem 3rem var(--venue-red);
-  padding: 3rem;
+  box-shadow: 0rem 0rem 1.5rem 2rem var(--venue-red);
+  padding: 1rem 2rem;
+  margin: 3rem;
   text-align: center;
   .q-btn {
     animation: grow-in-button-red 1s forwards !important;
@@ -220,7 +221,7 @@ h1 {
     font-family: "Exo 2";
     font-weight: 900;
     font-style: italic;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: var(--venue-light);
     margin-bottom: 0.5rem;
   }

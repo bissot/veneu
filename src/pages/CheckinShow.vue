@@ -70,8 +70,8 @@
           </div>
         </div>
       </div>
-      <div class="row full-width justify-center q-mt-xl">
-        <div class="q-px-md q-py-md bg-red dangerzone">
+      <div class="row full-width justify-center">
+        <div class="dangerzone">
           <q-btn label="Delete" size="md" icon-right="delete" class="bg-red text-white" @click="deleteModal = true" />
         </div>
       </div>

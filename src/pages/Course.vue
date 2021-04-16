@@ -11,8 +11,8 @@
               <ShareResourceModal :resourceid="data.course._id" resourcetype="Course" :me="me" />
             </div>
             <div class="row full-width">Description: {{ data.course.description }}</div>
-            <div class="row full-width justify-center q-mt-xl">
-              <div class="q-pa-md q-ma-md dangerzone">
+            <div class="row full-width justify-center">
+              <div class="dangerzone">
                 <ApolloMutation
                   :mutation="require('../graphql/DeleteCourse.gql')"
                   :variables="{ _id: data.course._id }"
