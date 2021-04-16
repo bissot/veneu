@@ -135,9 +135,9 @@ export default {
   components: { VueQr },
   data() {
     return {
-      tickets: {},
-      current: this.generateTicket(),
-      next: this.generateTicket(),
+      tickets: null,
+      current: null,
+      next: null,
       deleteModal: false,
       checkinQuery: {
         error: null,
@@ -155,7 +155,7 @@ export default {
   beforeDestroy() {
     this.cleanup();
   },
-  created() {
+  mounted() {
     this.cleanup();
     this.startNewSession();
   },
@@ -170,7 +170,6 @@ export default {
         loading: true,
         data: null
       };
-      this.checkinQuery.loading = true;
       this.$apollo
         .query({
           query: gql`
@@ -203,9 +202,11 @@ export default {
         });
     },
     cleanup() {
-      this.tickets = {};
-      this.current = {};
-      this.next = {};
+      Object.keys(this.tickets).forEach(key => {
+        this.tickets[key] = null;
+      });
+      this.current = null;
+      this.next = null;
       this.checkinQuery = {
         error: null,
         loading: null,
