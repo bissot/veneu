@@ -187,8 +187,8 @@ h1 {
 .bg-red {
   background-color: var(--venue-red) !important;
 
-  &:hover:not([disabled]),
-  &:focus:not([disabled]) {
+  &.q-btn:hover:not([disabled]),
+  &.q-btn:focus:not([disabled]) {
     box-shadow: var(--red-field-shadow) !important;
   }
 }
@@ -199,8 +199,29 @@ h1 {
   font-size: 0.65rem !important;
 }
 
-.q-item__label {
+.q-item__label,
+h1 {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.dangerzone {
+  background-color: var(--venue-red);
+  box-shadow: 0rem 0rem 2rem 3rem var(--venue-red);
+  padding: 3rem;
+  text-align: center;
+  .q-btn {
+    box-shadow: var(--red-button-shadow) !important;
+  }
+  &::before {
+    content: "danger zone";
+    display: block;
+    font-family: "Exo 2";
+    font-weight: 900;
+    font-style: italic;
+    font-size: 2rem;
+    color: var(--venue-light);
+    margin-bottom: 0.5rem;
+  }
 }

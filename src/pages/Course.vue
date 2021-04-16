@@ -9,25 +9,43 @@
             <h1 class="q-pa-sm">{{ data.course.name }}</h1>
             <div class="row full-width q-mt-sm q-mb-md">
               <ShareResourceModal :resourceid="data.course._id" resourcetype="Course" :me="me" />
-              <q-space />
-              <ApolloMutation
-                :mutation="require('../graphql/DeleteCourse.gql')"
-                :variables="{ _id: data.course._id }"
-                @done="onDelete"
-                class="flex inline"
-              >
-                <template slot-scope="{ mutate }">
-                  <q-btn
-                    class="bg-red text-white q-mt-md"
-                    label="Delete"
-                    icon-right="delete"
-                    type="submit"
-                    @click="mutate()"
-                  />
-                </template>
-              </ApolloMutation>
             </div>
-            Description: {{ data.course.description }}
+            <div class="row full-width">Description: {{ data.course.description }}</div>
+            <div class="row full-width justify-center q-mt-xl">
+              <div class="q-pa-md q-ma-md dangerzone">
+                <ApolloMutation
+                  :mutation="require('../graphql/DeleteCourse.gql')"
+                  :variables="{ _id: data.course._id }"
+                  @done="onDelete"
+                  class="flex inline"
+                >
+                  <template slot-scope="{ mutate }">
+                    <q-dialog v-model="deleteModal" persistent>
+                      <q-card class="q-pa-sm">
+                        <q-card-section class="row items-center">
+                          <q-avatar icon="delete" color="red" text-color="white" />
+                          <span class="q-ml-sm">Are you sure? This is <b>permanent</b>.</span>
+                        </q-card-section>
+
+                        <q-card-actions>
+                          <q-btn label="Cancel" class="text-primary" v-close-popup />
+                          <q-space />
+                          <q-btn
+                            label="Delete"
+                            color="white"
+                            class="bg-red"
+                            v-close-popup
+                            @click="mutate()"
+                            type="submit"
+                          />
+                        </q-card-actions>
+                      </q-card>
+                    </q-dialog>
+                    <q-btn class="bg-red text-white" label="Delete" icon-right="delete" @click="deleteModal = true" />
+                  </template>
+                </ApolloMutation>
+              </div>
+            </div>
           </div>
           <!-- <h2 class="q-py-none q-px-sm">Resources</h2>
         <q-tree class="text-primary" :nodes="simple" accordion node-key="label" :expanded.sync="expanded" /> -->
@@ -45,7 +63,9 @@ export default {
     me: Object
   },
   data() {
-    return {};
+    return {
+      deleteModal: false
+    };
   },
 
   methods: {

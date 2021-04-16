@@ -9,6 +9,7 @@
   --elevated-shadow: 0.5rem 0.5rem 0.5rem #bebebe, -0.5rem -0.5rem 0.5rem #f8f8f866;
   --button-shadow: 0.25rem 0.25rem 0.25rem #bebebe, -0.25rem -0.25rem 0.25rem #f8f8f866;
   --field-shadow: inset 0.25rem 0.25rem 0.25rem #bebebe, inset -0.25rem -0.25rem 0.25rem #f8f8f888;
+  --red-button-shadow: 0.25rem 0.25rem 0.25rem #75252e, -0.25rem -0.25rem 0.25rem #9f313e;
   --red-field-shadow: inset 0.25rem 0.25rem 0.25rem #75252e, inset -0.25rem -0.25rem 0.25rem #9f313e;
 }
 
