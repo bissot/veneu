@@ -161,6 +161,7 @@ export default {
   },
   methods: {
     startNewSession() {
+      this.tickets = {};
       this.current = this.generateTicket();
       this.next = this.generateTicket();
       this.deleteModal = false;
