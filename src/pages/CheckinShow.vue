@@ -58,7 +58,7 @@
               v-for="ticket in tickets"
               :key="ticket.code"
               :title="ticket.first_name + ' ' + ticket.last_name"
-              :style="{ display: ticket.code == current.code ? 'none' : 'inline-block' }"
+              :style="{ display: ticket && ticket.code == current.code ? 'none' : 'inline-block' }"
             >
               <div v-if="ticket.code != current.code">
                 <q-icon size="lg" color="primary" name="event_seat" />
@@ -148,15 +148,10 @@ export default {
   },
   watch: {
     $route() {
-      this.cleanup();
       this.startNewSession();
     }
   },
-  beforeDestroy() {
-    this.cleanup();
-  },
-  mounted() {
-    this.cleanup();
+  created() {
     this.startNewSession();
   },
   methods: {
@@ -194,26 +189,14 @@ export default {
         .then(data => {
           this.checkinQuery.loading = false;
           this.checkinQuery.data = data.data;
-          this.tickets = this.checkinQuery.data.checkin.tickets;
+          this.checkinQuery.data.checkin.tickets.forEach(ticket => {
+            this.tickets[ticket.code] = ticket;
+          });
           this.tickets[this.current.code] = { ...this.current };
         })
         .catch(e => {
           this.checkinQuery.error = e;
         });
-    },
-    cleanup() {
-      if (this.tickets) {
-        Object.keys(this.tickets).forEach(key => {
-          this.tickets[key] = null;
-        });
-      }
-      this.current = null;
-      this.next = null;
-      this.checkinQuery = {
-        error: null,
-        loading: null,
-        data: null
-      };
     },
     downloadCSV() {
       const csvContent =
