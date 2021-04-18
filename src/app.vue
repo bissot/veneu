@@ -27,12 +27,12 @@
                 <q-space />
 
                 <q-btn size="sm" round icon="qr_code_2" class="q-mx-sm" title="Checkin" aria-label="Checkin">
-                  <q-menu :offset="[50, 16]">
+                  <q-menu :offset="[0, 16]">
                     <div class="q-pa-xs">
                       <q-item clickable class="row full-width items-center q-ma-none" @click="handleScan"
                         ><q-icon color="primary" size="sm" name="qr_code_scanner" class="q-mr-sm" />Attend</q-item
                       >
-                      <q-item clickable class="row full-width items-center q-ma-none" @click="handleHost"
+                      <q-item v-if="data.me" clickable class="row full-width items-center q-ma-none" @click="handleHost"
                         ><q-icon color="primary" size="sm" name="present_to_all" class="q-mr-sm" />Host</q-item
                       >
                     </div>
@@ -104,7 +104,6 @@
             </q-list>
             <q-list class="text-primary neu-convex q-mx-md q-my-lg q-pa-xs">
               <q-expansion-item
-                expand-separator
                 icon="qr_code_2"
                 label="Check-ins"
                 expand-icon-class="text-primary"
@@ -113,7 +112,6 @@
               >
                 <q-list class="rounded-borders">
                   <q-expansion-item
-                    expand-separator
                     icon="present_to_all"
                     label="Hosted"
                     :header-inset-level="0"
@@ -143,7 +141,6 @@
                   </q-expansion-item>
 
                   <q-expansion-item
-                    expand-separator
                     icon="qr_code_scanner"
                     label="Attended"
                     :content-inset-level="0"
@@ -162,7 +159,6 @@
             </q-list>
             <q-list class="text-primary neu-convex q-mx-md q-my-md q-pa-xs">
               <q-expansion-item
-                expand-separator
                 icon="assignment"
                 label="Assignments"
                 expand-icon-class="text-primary"
@@ -170,7 +166,6 @@
               >
                 <q-list class="rounded-borders">
                   <q-expansion-item
-                    expand-separator
                     icon="assignment_late"
                     label="Due"
                     :content-inset-level="0"
@@ -186,7 +181,6 @@
                   </q-expansion-item>
 
                   <q-expansion-item
-                    expand-separator
                     icon="assignment_turned_in"
                     label="Complete"
                     :content-inset-level="0"
