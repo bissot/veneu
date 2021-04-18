@@ -35,16 +35,22 @@ h1 {
 }
 h2 {
   font-size: 1.5rem !important;
+  font-weight: 900;
+  font-style: italic;
   font-family: "Exo 2";
   color: var(--venue-blue);
 }
 h3 {
   font-size: 1.25rem !important;
+  font-weight: 900;
+  font-style: italic;
   font-family: "Exo 2";
   color: var(--venue-blue);
 }
 
 .special-font {
+  font-weight: 900;
+  font-style: italic;
   font-family: "Exo 2" !important;
 }
 
