@@ -16,7 +16,6 @@ aside.q-drawer--mobile {
 
 .q-field--standout .q-field__control {
   background: none;
-  // box-shadow: var(--field-shadow);
   transition: color 0.5s cubic-bezier(0.19, 1, 0.22, 1) !important;
   animation: grow-in-input 1s forwards;
 }
@@ -74,18 +73,49 @@ body,
 .q-hoverable,
 #me,
 .q-menu,
-.q-item__section--side > .q-icon {
+.q-item__section--side > .q-icon,
+.q-date {
   border-radius: 1rem !important;
+}
+
+.q-textarea {
+  .q-field__control {
+    padding-bottom: 0.5rem;
+  }
 }
 
 .q-btn,
 .q-time__container-child,
 .q-dialog__inner > div,
 .q-menu,
-#me .q-avatar {
-  box-shadow: var(--button-shadow);
+#me .q-avatar,
+.q-date {
   animation: grow-in-button 1s forwards !important;
 }
+.q-date {
+  min-width: unset;
+  // * {
+  //   font-size: 0.65rem;
+  // }
+  .q-date__view {
+    width: unset;
+  }
+  .q-date__header {
+    padding: 0.75rem;
+  }
+  .q-date__calendar {
+    padding: 0.25rem;
+    margin: 0.25rem;
+    // .q-date__calendar-item button {
+    //   width: 1.5rem;
+    //   height: 1.5rem;
+    // }
+  }
+  .q-btn {
+    padding: 0rem;
+  }
+}
+
 .q-date__content .q-btn,
 .q-btn-group .q-btn:hover:not([disabled])::before,
 .q-btn-group .q-focus-helper,

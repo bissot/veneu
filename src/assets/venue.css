@@ -27,21 +27,25 @@ h1 {
   font-family: "Exo 2";
   font-weight: 900;
   font-style: italic;
-  color: #2c3e50;
-  font-size: 3rem !important;
+  color: var(--venue-blue);
+  font-size: 2rem !important;
   line-height: initial !important;
   margin-top: 0rem;
   margin-bottom: 0rem;
 }
 h2 {
-  font-size: 2.5rem !important;
+  font-size: 1.5rem !important;
   font-family: "Exo 2";
-  color: var(--venue-dark);
+  color: var(--venue-blue);
 }
 h3 {
-  font-size: 2.25rem !important;
+  font-size: 1.25rem !important;
   font-family: "Exo 2";
-  color: var(--venue-dark);
+  color: var(--venue-blue);
+}
+
+.special-font {
+  font-family: "Exo 2" !important;
 }
 
 .q-avatar,

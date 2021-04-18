@@ -125,12 +125,12 @@
                         <q-list v-else-if="data">
                           <q-item
                             class="row items-center justify-center"
-                            clickable
+                            :clickable="$route.params._id != checkin._id || $route.name != 'CheckinShow'"
                             v-for="checkin in data.checkins"
                             :key="checkin._id"
                             @click="handleHosted(checkin._id)"
                           >
-                            {{ checkin.created_at }}
+                            {{ getFormattedDate(checkin.created_at) }}
                           </q-item>
                         </q-list>
                         <q-item v-else class="row items-center justify-center" clickable>
@@ -209,6 +209,7 @@
 </template>
 
 <script>
+import { date } from "quasar";
 import gql from "graphql-tag";
 import VenueLogo from "./components/VenueLogo";
 import CourseList from "./components/CourseList";
@@ -228,6 +229,9 @@ export default {
     };
   },
   methods: {
+    getFormattedDate(d) {
+      return date.formatDate(d, "MMM Do, YYYY @ h:mma");
+    },
     handleDonate() {
       var win = window.open(
         "https://www.paypal.com/donate/?cmd=_donations&business=ejwhitton43%40gmail.com&currency_code=USD",
@@ -275,7 +279,9 @@ export default {
         });
     },
     handleHosted(_id) {
-      this.$router.push({ name: "CheckinShow", params: { _id } });
+      if (this.$route.name != "CheckinShow" || this.$route.params._id != _id) {
+        this.$router.push({ name: "CheckinShow", params: { _id } });
+      }
     },
     tryLogout() {
       if (localStorage.getItem("token")) {

@@ -4,15 +4,15 @@
       <div v-if="loading">Loading...</div>
       <div v-if="error">Error...</div>
       <div v-if="data">
-        <q-item-label header class="text-primary q-pb-md">Courses</q-item-label>
-        <div class="">
+        <q-item-label header class="text-primary q-pb-md special-font">Courses</q-item-label>
+        <div>
           <q-btn-group spread flat class="q-mx-md q-mb-none q-gutter-x-sm">
             <q-btn dense size="sm" label="New" icon="add" :to="{ name: 'CreateCourse' }" class="q-ma-none" />
             <q-btn disabled dense size="sm" label="Join" icon="group_add" />
             <!-- <q-btn dense size="sm" label="Edit" icon="edit" disabled /> -->
           </q-btn-group>
         </div>
-        <q-item-label header class="text-primary q-pb-md">Instructor for...</q-item-label>
+        <q-item-label header class="text-primary q-pb-md special-font">Instructor for...</q-item-label>
         <q-expansion-item
           v-for="course in data.courses.filter(
             c => c.auths.filter(a => a.role == 'INSTRUCTOR' && a.user.email == me.email).length
@@ -29,8 +29,8 @@
           <q-item
             slot="header"
             class="col q-pl-md q-py-sm q-mr-sm q-pr-none"
-            clickable
-            :to="{ name: 'Course', params: { _id: course._id } }"
+            :clickable="$route.name != 'Course' || $route.params._id != course._id"
+            @click="$router.push({ name: 'Course', params: { _id: course._id } })"
           >
             <q-item-section avatar>
               <q-icon name="school" />
@@ -140,7 +140,7 @@
             </q-list>
           </q-list>
         </q-expansion-item>
-        <q-item-label header class="text-primary q-pb-md">Teaching Assistant for...</q-item-label>
+        <q-item-label header class="text-primary q-pb-md special-font">Teaching Assistant for...</q-item-label>
         <q-expansion-item
           v-for="course in data.courses.filter(
             c => c.auths.filter(a => a.role == 'TEACHING_ASSISTANT' && a.user.email == me.email).length
@@ -268,7 +268,7 @@
             </q-list>
           </q-list>
         </q-expansion-item>
-        <q-item-label header class="text-primary q-pb-md">Student for...</q-item-label>
+        <q-item-label header class="text-primary q-pb-md special-font">Student for...</q-item-label>
         <q-expansion-item
           v-for="course in data.courses.filter(
             c => c.auths.filter(a => a.role == 'STUDENT' && a.user.email == me.email).length

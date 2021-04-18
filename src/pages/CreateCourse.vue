@@ -1,144 +1,83 @@
 <template>
-  <q-page id="create-course" class="container">
-    <div class="vertical-center">
-      <ApolloMutation
-        :mutation="require('../graphql/CreateCourse.gql')"
-        :variables="{ name, prefix, suffix, start, end, description }"
-        class="form"
-        @done="handleCreateCourse"
-      >
-        <template slot-scope="{ mutate }">
-          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-md q-ma-lg q-px-md q-py-lg neu-convex">
-            <div>
-              <i><h1>New Course...</h1></i>
-            </div>
-            <q-input
-              standout="bg-primary text-white q-ma-none"
-              color="primary"
-              class="text-primary"
-              v-model="name"
-              label="Name"
-              placeholder="e.g. Computer Science I"
-            >
-            </q-input>
+  <q-page id="create-course" class="q-pb-md">
+    <ApolloMutation
+      :mutation="require('../graphql/CreateCourse.gql')"
+      :variables="{ name, prefix, suffix, start, end, description }"
+      class="form"
+      @done="handleCreateCourse"
+    >
+      <template slot-scope="{ mutate }">
+        <q-form @submit.prevent="formValid && mutate()" class="q-ma-lg q-pa-md q-pt-xl neu-convex">
+          <div>
+            <i><h1>New Course...</h1></i>
+          </div>
+          <q-input
+            standout="bg-primary text-white q-ma-none"
+            color="primary"
+            class="text-primary q-mt-md"
+            v-model="name"
+            label="Name"
+            placeholder="e.g. Computer Science I"
+          >
+          </q-input>
 
-            <q-input
-              standout="bg-primary text-white q-ma-none"
-              color="primary"
-              class="text-primary"
-              v-model="description"
-              label="Description"
-              placeholder="e.g. Learning about x, y, and z."
-              type="textarea"
-            >
-            </q-input>
+          <q-input
+            standout="bg-primary text-white q-ma-none"
+            color="primary"
+            class="text-primary q-mt-md"
+            v-model="description"
+            label="Description"
+            placeholder="e.g. Learning about x, y, and z."
+            type="textarea"
+          >
+          </q-input>
 
-            <q-separator class="q-my-lg" />
-            <q-input
-              type="text"
-              standout="bg-primary text-white"
-              color="primary"
-              v-model="prefix"
-              label="Department"
-              placeholder="e.g. CSCI"
-            >
-              <template v-slot:prepend>
-                <q-icon name="sort_by_alpha" />
-              </template>
-            </q-input>
-            <q-input
-              type="number"
-              standout="bg-primary text-white"
-              color="primary"
-              v-model="suffix"
-              label="Number"
-              placeholder="e.g. 101"
-            >
-              <template v-slot:prepend>
-                <q-icon name="pin" />
-              </template>
-            </q-input>
-            <q-separator class="q-my-lg" />
-            <q-input
-              v-model="start"
-              type="text"
-              standout="bg-primary text-white"
-              color="primary"
-              label="Start Date"
-              placeholder="e.g. 1970-01-01"
-            >
-              <template v-slot:prepend>
-                <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy transition-show="scale" transition-hide="scale">
-                    <q-date v-model="start" mask="YYYY-MM-DD">
-                      <div class="row items-center justify-end">
-                        <q-btn v-close-popup label="Close" color="primary" flat />
-                      </div>
-                    </q-date>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
+          <q-separator class="q-my-md" />
 
-              <!-- <template v-slot:append>
-                <q-icon name="access_time" class="cursor-pointer">
-                  <q-popup-proxy transition-show="scale" transition-hide="scale">
-                    <q-time v-model="start" mask="YYYY-MM-DD HH:mm">
-                      <div class="row items-center justify-end">
-                        <q-btn v-close-popup label="Close" color="primary" flat />
-                      </div>
-                    </q-time>
-                  </q-popup-proxy>
-                </q-icon>
-              </template> -->
-            </q-input>
-
-            <q-input
-              v-model="end"
-              type="text"
-              standout="bg-primary text-white"
+          <q-input
+            type="text"
+            standout="bg-primary text-white"
+            color="primary"
+            v-model="prefix"
+            label="Department"
+            placeholder="e.g. CSCI"
+            class="q-mt-md"
+          >
+            <template v-slot:prepend>
+              <q-icon name="sort_by_alpha" />
+            </template>
+          </q-input>
+          <q-input
+            type="number"
+            standout="bg-primary text-white"
+            color="primary"
+            v-model="suffix"
+            label="Number"
+            placeholder="e.g. 101"
+            class="q-mt-md"
+          >
+            <template v-slot:prepend>
+              <q-icon name="pin" />
+            </template>
+          </q-input>
+          <q-separator class="q-mt-md" />
+          <div class="row full-width q-mt-none q-pt-none">
+            <q-date dense v-model="start" class="col-12 col-sm q-mt-md q-mr-md neu-convex" subtitle="Start date" />
+            <q-date dense v-model="end" class="col-12 col-sm q-mt-md neu-convex" subtitle="End date" />
+          </div>
+          <q-bar class="q-pa-none q-gutter-x-md q-mt-md q-pl-md">
+            <q-btn flat color="primary" @click="handleBack" label="Back" />
+            <q-btn
+              type="submit"
               color="primary"
-              label="End Date"
-              placeholder="e.g. 1970-01-01"
-            >
-              <template v-slot:prepend>
-                <q-icon name="event" class="cursor-pointer">
-                  <q-popup-proxy transition-show="scale" transition-hide="scale">
-                    <q-date v-model="end" mask="YYYY-MM-DD">
-                      <div class="row items-center justify-end">
-                        <q-btn v-close-popup label="Close" color="primary" flat />
-                      </div>
-                    </q-date>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-
-              <!-- <template v-slot:append>
-                <q-icon name="access_time" class="cursor-pointer">
-                  <q-popup-proxy transition-show="scale" transition-hide="scale">
-                    <q-time v-model="end" mask="YYYY-MM-DD HH:mm">
-                      <div class="row items-center justify-end">
-                        <q-btn v-close-popup label="Close" color="primary" flat />
-                      </div>
-                    </q-time>
-                  </q-popup-proxy>
-                </q-icon>
-              </template> -->
-            </q-input>
-            <!-- <q-separator class="q-my-lg" /> -->
-            <q-bar class="q-pa-none q-gutter-x-md q-mt-lg">
-              <q-btn flat color="primary" @click="handleBack" label="Back" />
-              <q-btn
-                type="submit"
-                color="primary"
-                label="Finish"
-                class="q-ml-sm full-width"
-                :disabled="formValid() ? false : true"
-              />
-            </q-bar>
-          </q-form>
-        </template>
-      </ApolloMutation>
-    </div>
+              label="Finish"
+              class="full-width"
+              :disabled="formValid() ? false : true"
+            />
+          </q-bar>
+        </q-form>
+      </template>
+    </ApolloMutation>
   </q-page>
 </template>
 
