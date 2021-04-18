@@ -66,8 +66,6 @@ module.exports = {
           transporter.sendMail(mailOptions, function(error, info) {
             if (error || info == null) {
               console.log(error);
-            } else {
-              console.log("Email sent to " + user + ": " + info.response);
             }
           });
         } else {

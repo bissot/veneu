@@ -120,7 +120,7 @@ body,
 .q-btn-group .q-btn:hover:not([disabled])::before,
 .q-btn-group .q-focus-helper,
 .q-btn__wrapper::before {
-  box-shadow: unset !important;
+  box-shadow: none !important;
   animation: none;
 }
 
