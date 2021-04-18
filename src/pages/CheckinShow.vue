@@ -17,10 +17,10 @@
               getBaseUrl() + '/checkin/scan?host=' + me._id + '&code=' + current.code + '&checkin=' + $route.params._id
             "
             :size="512"
-            backgroundColor="#dfdfdf"
-            colorLight="#dfdfdf"
+            backgroundColor="#fff"
+            colorLight="#fff"
             colorDark="#1a4974"
-            :margin="16"
+            :margin="12"
             :style="{ height: '100%', width: '100%' }"
             class="q-pa-md"
           />
