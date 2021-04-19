@@ -4,14 +4,15 @@
       <div v-if="loading">Loading...</div>
       <div v-if="error">Error...</div>
       <div v-if="data">
-        <q-item-label header class="text-primary q-pb-md special-font">Courses</q-item-label>
-        <div>
-          <q-btn-group spread flat class="q-mx-md q-mb-none q-gutter-x-sm">
-            <q-btn dense size="sm" label="New" icon="add" :to="{ name: 'CreateCourse' }" class="q-ma-none" />
-            <q-btn disabled dense size="sm" label="Join" icon="group_add" />
-            <!-- <q-btn dense size="sm" label="Edit" icon="edit" disabled /> -->
-          </q-btn-group>
-        </div>
+        <q-item-label header class="text-primary q-pb-md special-font row justify-between">
+          Courses
+        </q-item-label>
+        <!-- <div>
+          <q-btn-group spread flat class="q-mx-md q-mb-none q-gutter-x-sm"> -->
+
+        <!-- <q-btn dense size="sm" label="Edit" icon="edit" disabled /> -->
+        <!-- </q-btn-group>
+        </div> -->
         <q-item-label header class="text-primary q-pb-md special-font">Instructor for...</q-item-label>
         <q-expansion-item
           v-for="course in data.courses.filter(
@@ -268,7 +269,10 @@
             </q-list>
           </q-list>
         </q-expansion-item>
-        <q-item-label header class="text-primary q-pb-md special-font">Student for...</q-item-label>
+        <q-item-label header class="text-primary q-pb-md special-font row justify-between items-center">
+          Student for...
+          <q-btn disabled size="sm" label="Join" icon="group_add" />
+        </q-item-label>
         <q-expansion-item
           v-for="course in data.courses.filter(
             c => c.auths.filter(a => a.role == 'STUDENT' && a.user.email == me.email).length

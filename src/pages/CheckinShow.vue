@@ -8,7 +8,7 @@
       style="margin: auto"
     />
     <div v-if="checkinQuery.error">Error...</div>
-    <div v-if="checkinQuery.data && checkinQuery.data.checkin" class="q-px-md" id="checkinloaded">
+    <div v-if="checkinQuery.data && checkinQuery.data.checkin" id="checkinloaded">
       <div class="row full-width justify-center">
         <q-responsive class="neu-convex" style="width: 50vh;" :ratio="1">
           <vue-qr

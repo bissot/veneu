@@ -7,7 +7,7 @@
       @done="handleCreateCourse"
     >
       <template slot-scope="{ mutate }">
-        <q-form @submit.prevent="formValid && mutate()" class="q-ma-lg q-pa-md q-pt-xl neu-convex">
+        <q-form @submit.prevent="formValid && mutate()" class="q-ma-md q-pa-md q-pt-xl neu-convex">
           <div>
             <i><h1>New Course...</h1></i>
           </div>

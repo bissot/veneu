@@ -1,22 +1,71 @@
 :root {
-  --venue-dark: #2c3e50;
-  --venue-dark-blue: #234462;
+  /* Colors */
   --venue-blue: #1a4974;
+  --venue-blue-highlight: #163e63;
+  --venue-blue-lowlight: #1e5485;
+
   --venue-red: #8a2b36;
+  --venue-red-highlight: #75252e;
+  --venue-red-lowlight: #9f313e;
+
   --venue-green: #4a7756; /* "Amazon" green */
+  --venue-green-highlight: #558963;
+  --venue-green-lowlight: #3f6549;
+
   --venue-light: #dfdfdf;
   --venue-light-backdrop: #dfdfdfaa;
-  --elevated-shadow: 0.5rem 0.5rem 0.5rem #bebebe, -0.5rem -0.5rem 0.5rem #f8f8f866;
-  --button-shadow: 0.25rem 0.25rem 0.25rem #bebebe, -0.25rem -0.25rem 0.25rem #f8f8f866;
-  --field-shadow: inset 0.25rem 0.25rem 0.25rem #bebebe, inset -0.25rem -0.25rem 0.25rem #f8f8f888;
-  --red-button-shadow: 0.25rem 0.25rem 0.25rem #75252e, -0.25rem -0.25rem 0.25rem #9f313e;
-  --red-field-shadow: inset 0.25rem 0.25rem 0.25rem #75252e, inset -0.25rem -0.25rem 0.25rem #9f313e;
+  --venue-light-highlight: #bebebe;
+  --venue-light-lowlight: #f8f8f866;
+
+  --venue-dark: #2c3e50;
+  --venue-dark-blue: #234462;
+
+  /* Shadows */
+  --elevated-shadow: 0.25rem 0.25rem 0.25rem var(--venue-light-highlight),
+    -0.25rem -0.25rem 0.25rem var(--venue-light-lowlight);
+  /* --elevated-shadow: 0.5rem 0.5rem 0.5rem var(--venue-light-highlight),
+    -0.5rem -0.5rem 0.5rem var(--venue-light-lowlight); */
+  --button-shadow: 0.25rem 0.25rem 0.25rem var(--venue-light-highlight),
+    -0.25rem -0.25rem 0.25rem var(--venue-light-lowlight);
+  --field-shadow: inset 0.25rem 0.25rem 0.25rem var(--venue-light-highlight),
+    inset -0.25rem -0.25rem 0.25rem var(--venue-light-lowlight);
+  --red-button-shadow: 0.25rem 0.25rem 0.25rem var(--venue-red-highlight),
+    -0.25rem -0.25rem 0.25rem var(--venue-red-lowlight);
+  --red-field-shadow: inset 0.25rem 0.25rem 0.25rem var(--venue-red-highlight),
+    inset -0.25rem -0.25rem 0.25rem var(--venue-red-lowlight);
+  /* --elevated-shadow: 0.25rem 0.25rem 0.75rem var(--venue-light-highlight), -0.25rem -0.25rem 0.75rem #ffffff;
+  --button-shadow: 0.25rem 0.25rem 0.75rem var(--venue-light-highlight), -0.25rem -0.25rem 0.75rem #ffffff;
+  --field-shadow: inset 0.25rem 0.25rem 0.75rem var(--venue-light-highlight), inset -0.25rem -0.25rem 0.75rem #ffffff;
+  --red-button-shadow: 0.25rem 0.25rem 0.75rem var(--venue-red-highlight), -0.25rem -0.25rem 0.75rem var(--venue-red-lowlight);
+  --red-field-shadow: inset 0.25rem 0.25rem 0.75rem var(--venue-red-highlight), inset -0.25rem -0.25rem 0.75rem var(--venue-red-lowlight); */
 }
 
 * {
   font-family: "Comfortaa", sans-serif;
-  -webkit-font-smoothing: antialiased;
+  /* -webkit-font-smoothing: antialiased; */
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 0.5rem !important;
+  height: 0.5rem !important;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--venue-light);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--venue-blue);
+  border-radius: 0.25rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--venue-blue);
 }
 
 #nav-logo {
@@ -147,7 +196,8 @@ main {
   min-height: 1rem;
   border-radius: 1rem !important;
   background: none;
-  /* box-shadow: inset 0.5rem 0.5rem 0.5rem #bebebe, inset -0.5rem -0.5rem 0.5rem #f8f8f8; */
+  box-shadow: var(--field-shadow);
+  animation: grow-in-input 1s forwards;
 }
 
 .neu-convex {

@@ -99,10 +99,23 @@
                 </q-dialog>
               </q-item-section>
             </q-item>
-            <q-list class="text-primary neu-convex q-mx-md q-my-md q-mb-lg q-pa-xs">
+            <div class="row full-width q-px-md q-mt-md">
+              <q-btn dense size="md" label="New" icon-right="add" class="full-width">
+                <q-menu anchor="bottom middle" self="top middle" :offset="[0, 8]">
+                  <q-list class="q-pa-xs text-primary">
+                    <q-item class="items-center" title="Checkin" clickable @click="handleHost">
+                      <!-- <q-icon color="primary" size="sm" name="present_to_all" class="q-mr-sm" /> -->
+                      Checkin
+                    </q-item>
+                    <q-item class="items-center" title="Course" :to="{ name: 'CreateCourse' }">Course</q-item>
+                  </q-list>
+                </q-menu>
+              </q-btn>
+            </div>
+            <q-list class="text-primary neu-convex q-ma-md q-pa-xs">
               <course-list :me="data.me" />
             </q-list>
-            <q-list class="text-primary neu-convex q-mx-md q-my-lg q-pa-xs">
+            <q-list class="text-primary neu-convex q-ma-md q-pa-xs">
               <q-expansion-item
                 icon="qr_code_2"
                 label="Check-ins"
@@ -132,10 +145,10 @@
                           >
                             {{ getFormattedDate(checkin.created_at) }}
                           </q-item>
+                          <q-item v-if="!data.checkins.length" class="row items-center justify-center">
+                            None
+                          </q-item>
                         </q-list>
-                        <q-item v-else class="row items-center justify-center" clickable>
-                          None
-                        </q-item>
                       </template>
                     </ApolloQuery>
                   </q-expansion-item>
@@ -146,13 +159,9 @@
                     :content-inset-level="0"
                     expand-icon-class="text-primary"
                   >
-                    <q-card>
-                      <q-card-section>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, eius reprehenderit eos
-                        corrupti commodi magni quaerat ex numquam, dolorum officiis modi facere maiores architecto
-                        suscipit iste eveniet doloribus ullam aliquid.
-                      </q-card-section>
-                    </q-card>
+                    <q-item class="items-center justify-center">
+                      <em>Coming soon</em>
+                    </q-item>
                   </q-expansion-item>
                 </q-list>
               </q-expansion-item>
@@ -171,13 +180,9 @@
                     :content-inset-level="0"
                     expand-icon-class="text-primary"
                   >
-                    <q-card>
-                      <q-card-section>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, eius reprehenderit eos
-                        corrupti commodi magni quaerat ex numquam, dolorum officiis modi facere maiores architecto
-                        suscipit iste eveniet doloribus ullam aliquid.
-                      </q-card-section>
-                    </q-card>
+                    <q-item class="items-center justify-center">
+                      <em>Coming soon</em>
+                    </q-item>
                   </q-expansion-item>
 
                   <q-expansion-item
@@ -186,13 +191,9 @@
                     :content-inset-level="0"
                     expand-icon-class="text-primary"
                   >
-                    <q-card>
-                      <q-card-section>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, eius reprehenderit eos
-                        corrupti commodi magni quaerat ex numquam, dolorum officiis modi facere maiores architecto
-                        suscipit iste eveniet doloribus ullam aliquid.
-                      </q-card-section>
-                    </q-card>
+                    <q-item class="items-center justify-center">
+                      <em>Coming soon</em>
+                    </q-item>
                   </q-expansion-item>
                 </q-list>
               </q-expansion-item>
