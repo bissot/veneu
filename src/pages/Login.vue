@@ -1,7 +1,7 @@
 <template>
   <q-page id="login-page" class="container">
     <div class="vertical-center">
-      <VenueLogo class="spinner" />
+      <VeneuLogo class="spinner" />
       <div class="q-mb-xl">
         <i><h1>Login</h1></i>
       </div>
@@ -42,11 +42,11 @@
 </template>
 
 <script>
-import VenueLogo from "../components/VenueLogo";
+import VeneuLogo from "../components/VeneuLogo";
 export default {
   name: "Login",
   components: {
-    VenueLogo
+    VeneuLogo
   },
   data() {
     return {

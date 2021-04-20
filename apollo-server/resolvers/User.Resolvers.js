@@ -43,7 +43,7 @@ module.exports = {
           service: "gmail",
           auth: {
             type: "OAuth2",
-            user: "venue.do.not.reply@gmail.com",
+            user: "veneu.do.not.reply@gmail.com",
             clientId: GMAIL_OAUTH_ID,
             clientSecret: GMAIL_OAUTH_SECRET,
             refreshToken: GMAIL_OAUTH_REFRESH,
@@ -52,15 +52,15 @@ module.exports = {
         });
         if (transporter) {
           var mailOptions = {
-            from: "venue.do.not.reply@gmail.com",
+            from: "veneu.do.not.reply@gmail.com",
             to: email,
-            subject: "Venue Account Creation",
+            subject: "Veneu Account Creation",
             html:
               '<p>Click <a href="' +
               process.env.BASE_URL +
               "firstlogin/" +
               user.access_code +
-              '">here</a> to continue Sign-up for Venue.</p>'
+              '">here</a> to continue Sign-up for Veneu.</p>'
           };
 
           transporter.sendMail(mailOptions, function(error, info) {

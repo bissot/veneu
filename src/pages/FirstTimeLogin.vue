@@ -1,7 +1,7 @@
 <template>
   <div id="first_login" class="container">
     <div class="vertical-center">
-      <VenueLogo class="spinner" />
+      <VeneuLogo class="spinner" />
       <div>
         <i><h1>Continue setting up...</h1></i>
       </div>
@@ -67,11 +67,11 @@
 </template>
 
 <script>
-import VenueLogo from "../components/VenueLogo";
+import VeneuLogo from "../components/VeneuLogo";
 export default {
   name: "FirstLogin",
   components: {
-    VenueLogo
+    VeneuLogo
   },
   data() {
     return {

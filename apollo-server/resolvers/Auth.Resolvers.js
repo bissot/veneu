@@ -50,7 +50,7 @@ module.exports = {
               service: "gmail",
               auth: {
                 type: "OAuth2",
-                user: "venue.do.not.reply@gmail.com",
+                user: "veneu.do.not.reply@gmail.com",
                 clientId: GMAIL_OAUTH_ID,
                 clientSecret: GMAIL_OAUTH_SECRET,
                 refreshToken: GMAIL_OAUTH_REFRESH,
@@ -59,15 +59,15 @@ module.exports = {
             });
             if (transporter) {
               var mailOptions = {
-                from: "venue.do.not.reply@gmail.com",
+                from: "veneu.do.not.reply@gmail.com",
                 to: user,
-                subject: "You have been added to a Venue course",
+                subject: "You have been added to a Veneu course",
                 html:
                   '<p>Click <a href="' +
                   process.env.BASE_URL +
                   "firstlogin/" +
                   y.access_code +
-                  '">here</a> to continue Sign-up for Venue.</p>'
+                  '">here</a> to continue Sign-up for Veneu.</p>'
               };
               transporter.sendMail(mailOptions, function(error, info) {
                 if (error || info == null) {
@@ -99,7 +99,7 @@ module.exports = {
           // }
 
           // var mailOptions = {
-          //   from: "venue.do.not.reply@gmail.com",
+          //   from: "veneu.do.not.reply@gmail.com",
           //   to: user,
           //   subject: "PUMPKIN!!!!",
           //   html: myhtml

@@ -1,10 +1,10 @@
 <template>
   <q-page id="landing-page">
     <div class="vertical-center spinner-stage">
-      <VenueLogo class="spinner" />
-      <!-- <img alt="Venue Logo" src="../assets/venue-logo.svg" /> -->
+      <VeneuLogo class="spinner" />
+      <!-- <img alt="Veneu Logo" src="../assets/veneu-logo.svg" /> -->
       <div>
-        <h1>venue</h1>
+        <h1>veneu</h1>
       </div>
       <q-bar id="landing-actions" class="q-gutter-md q-pa-sm q-ma-sm q-mt-lg justify-center">
         <q-btn color="primary" @click="handleGoSignup">
@@ -21,11 +21,11 @@
 </template>
 
 <script>
-import VenueLogo from "../components/VenueLogo";
+import VeneuLogo from "../components/VeneuLogo";
 export default {
   name: "Landing",
   components: {
-    VenueLogo
+    VeneuLogo
   },
   methods: {
     handleGoLogin() {

@@ -20,7 +20,7 @@
                 />
                 <q-toolbar-title v-if="!['Landing', 'Login', 'Signup', 'FirstTimeLogin'].includes($route.name)">
                   <q-avatar @click="$router.push({ name: 'Dashboard' })">
-                    <VenueLogo id="nav-logo" />
+                    <VeneuLogo id="nav-logo" />
                   </q-avatar>
                 </q-toolbar-title>
 
@@ -212,14 +212,14 @@
 <script>
 import { date } from "quasar";
 import gql from "graphql-tag";
-import VenueLogo from "./components/VenueLogo";
+import VeneuLogo from "./components/VeneuLogo";
 import CourseList from "./components/CourseList";
 import "quasar/icon-set/fontawesome-v5";
-import "./assets/venue.css";
+import "./assets/veneu.css";
 export default {
   name: "app",
   components: {
-    VenueLogo,
+    VeneuLogo,
     CourseList
   },
   data() {

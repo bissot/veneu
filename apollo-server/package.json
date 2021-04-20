@@ -1,7 +1,7 @@
 {
-  "name": "venue-server",
+  "name": "veneu-server",
   "version": "1.0.0",
-  "description": "server for venue",
+  "description": "server for veneu",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

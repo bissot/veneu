@@ -337,9 +337,9 @@ export default {
 }
 
 .scanning.found-qr {
-  background: var(--venue-green) !important;
+  background: var(--veneu-green) !important;
 }
 .scanning.no-qr {
-  background: var(--venue-red) !important;
+  background: var(--veneu-red) !important;
 }
 </style>

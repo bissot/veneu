@@ -1,43 +1,43 @@
 :root {
   /* Colors */
-  --venue-blue: #1a4974;
-  --venue-blue-highlight: #163e63;
-  --venue-blue-lowlight: #1e5485;
+  --veneu-blue: #1a4974;
+  --veneu-blue-highlight: #163e63;
+  --veneu-blue-lowlight: #1e5485;
 
-  --venue-red: #8a2b36;
-  --venue-red-highlight: #75252e;
-  --venue-red-lowlight: #9f313e;
+  --veneu-red: #8a2b36;
+  --veneu-red-highlight: #75252e;
+  --veneu-red-lowlight: #9f313e;
 
-  --venue-green: #4a7756; /* "Amazon" green */
-  --venue-green-highlight: #558963;
-  --venue-green-lowlight: #3f6549;
+  --veneu-green: #4a7756; /* "Amazon" green */
+  --veneu-green-highlight: #558963;
+  --veneu-green-lowlight: #3f6549;
 
-  --venue-light: #dfdfdf;
-  --venue-light-backdrop: #dfdfdfaa;
-  --venue-light-highlight: #bebebe;
-  --venue-light-lowlight: #f8f8f866;
+  --veneu-light: #dfdfdf;
+  --veneu-light-backdrop: #dfdfdfaa;
+  --veneu-light-highlight: #bebebe;
+  --veneu-light-lowlight: #f8f8f866;
 
-  --venue-dark: #2c3e50;
-  --venue-dark-blue: #234462;
+  --veneu-dark: #2c3e50;
+  --veneu-dark-blue: #234462;
 
   /* Shadows */
-  --elevated-shadow: 0.25rem 0.25rem 0.25rem var(--venue-light-highlight),
-    -0.25rem -0.25rem 0.25rem var(--venue-light-lowlight);
-  /* --elevated-shadow: 0.5rem 0.5rem 0.5rem var(--venue-light-highlight),
-    -0.5rem -0.5rem 0.5rem var(--venue-light-lowlight); */
-  --button-shadow: 0.25rem 0.25rem 0.25rem var(--venue-light-highlight),
-    -0.25rem -0.25rem 0.25rem var(--venue-light-lowlight);
-  --field-shadow: inset 0.25rem 0.25rem 0.25rem var(--venue-light-highlight),
-    inset -0.25rem -0.25rem 0.25rem var(--venue-light-lowlight);
-  --red-button-shadow: 0.25rem 0.25rem 0.25rem var(--venue-red-highlight),
-    -0.25rem -0.25rem 0.25rem var(--venue-red-lowlight);
-  --red-field-shadow: inset 0.25rem 0.25rem 0.25rem var(--venue-red-highlight),
-    inset -0.25rem -0.25rem 0.25rem var(--venue-red-lowlight);
-  /* --elevated-shadow: 0.25rem 0.25rem 0.75rem var(--venue-light-highlight), -0.25rem -0.25rem 0.75rem #ffffff;
-  --button-shadow: 0.25rem 0.25rem 0.75rem var(--venue-light-highlight), -0.25rem -0.25rem 0.75rem #ffffff;
-  --field-shadow: inset 0.25rem 0.25rem 0.75rem var(--venue-light-highlight), inset -0.25rem -0.25rem 0.75rem #ffffff;
-  --red-button-shadow: 0.25rem 0.25rem 0.75rem var(--venue-red-highlight), -0.25rem -0.25rem 0.75rem var(--venue-red-lowlight);
-  --red-field-shadow: inset 0.25rem 0.25rem 0.75rem var(--venue-red-highlight), inset -0.25rem -0.25rem 0.75rem var(--venue-red-lowlight); */
+  --elevated-shadow: 0.25rem 0.25rem 0.25rem var(--veneu-light-highlight),
+    -0.25rem -0.25rem 0.25rem var(--veneu-light-lowlight);
+  /* --elevated-shadow: 0.5rem 0.5rem 0.5rem var(--veneu-light-highlight),
+    -0.5rem -0.5rem 0.5rem var(--veneu-light-lowlight); */
+  --button-shadow: 0.25rem 0.25rem 0.25rem var(--veneu-light-highlight),
+    -0.25rem -0.25rem 0.25rem var(--veneu-light-lowlight);
+  --field-shadow: inset 0.25rem 0.25rem 0.25rem var(--veneu-light-highlight),
+    inset -0.25rem -0.25rem 0.25rem var(--veneu-light-lowlight);
+  --red-button-shadow: 0.25rem 0.25rem 0.25rem var(--veneu-red-highlight),
+    -0.25rem -0.25rem 0.25rem var(--veneu-red-lowlight);
+  --red-field-shadow: inset 0.25rem 0.25rem 0.25rem var(--veneu-red-highlight),
+    inset -0.25rem -0.25rem 0.25rem var(--veneu-red-lowlight);
+  /* --elevated-shadow: 0.25rem 0.25rem 0.75rem var(--veneu-light-highlight), -0.25rem -0.25rem 0.75rem #ffffff;
+  --button-shadow: 0.25rem 0.25rem 0.75rem var(--veneu-light-highlight), -0.25rem -0.25rem 0.75rem #ffffff;
+  --field-shadow: inset 0.25rem 0.25rem 0.75rem var(--veneu-light-highlight), inset -0.25rem -0.25rem 0.75rem #ffffff;
+  --red-button-shadow: 0.25rem 0.25rem 0.75rem var(--veneu-red-highlight), -0.25rem -0.25rem 0.75rem var(--veneu-red-lowlight);
+  --red-field-shadow: inset 0.25rem 0.25rem 0.75rem var(--veneu-red-highlight), inset -0.25rem -0.25rem 0.75rem var(--veneu-red-lowlight); */
 }
 
 * {
@@ -54,18 +54,18 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: var(--venue-light);
+  background: var(--veneu-light);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: var(--venue-blue);
+  background: var(--veneu-blue);
   border-radius: 0.25rem;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--venue-blue);
+  background: var(--veneu-blue);
 }
 
 #nav-logo {
@@ -76,7 +76,7 @@ h1 {
   font-family: "Exo 2";
   font-weight: 900;
   font-style: italic;
-  color: var(--venue-blue);
+  color: var(--veneu-blue);
   font-size: 2rem !important;
   line-height: initial !important;
   margin-top: 0rem;
@@ -87,14 +87,14 @@ h2 {
   font-weight: 900;
   font-style: italic;
   font-family: "Exo 2";
-  color: var(--venue-blue);
+  color: var(--veneu-blue);
 }
 h3 {
   font-size: 1.25rem !important;
   font-weight: 900;
   font-style: italic;
   font-family: "Exo 2";
-  color: var(--venue-blue);
+  color: var(--veneu-blue);
 }
 
 .special-font {
@@ -127,7 +127,7 @@ label {
   outline: none;
   border: none;
   padding: 0.5rem 0.75rem;
-  color: var(--venue-dark);
+  color: var(--veneu-dark);
 } */
 
 .vertical-center {

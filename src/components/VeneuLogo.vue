@@ -14,9 +14,9 @@
       width="640"
       height="640"
       id="svg931"
-      sodipodi:docname="venue-logo.svg"
+      sodipodi:docname="veneu-logo.svg"
       inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
-      inkscape:export-filename="/home/thestopsign/veneu/src/assets/venue-logo-1280x640.png"
+      inkscape:export-filename="/home/thestopsign/veneu/src/assets/veneu-logo-1280x640.png"
       inkscape:export-xdpi="96"
       inkscape:export-ydpi="96"
     >
@@ -127,15 +127,15 @@
 
 <script>
 export default {
-  name: "VenueLogo",
+  name: "VeneuLogo",
   mounted() {
-    document.getElementsByTagName("svg")[0].setAttribute("class", "venue-logo " + this.class);
+    document.getElementsByTagName("svg")[0].setAttribute("class", "veneu-logo " + this.class);
   }
 };
 </script>
 
 <style scoped>
-.venue-logo {
+.veneu-logo {
   height: auto;
 }
 </style>
