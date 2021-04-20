@@ -2,7 +2,7 @@ version: "3.4"
 
 services:
   mongo:
-    container_name: venue_new_mongo
+    container_name: veneu_mongo
     image: mongo
     restart: unless-stopped
     volumes:
@@ -15,7 +15,7 @@ services:
       - MONGO_INITDB_DATABASE=veneu
 
   server:
-    container_name: venue_new_server
+    container_name: veneu_server
     build: ./apollo-server
     command: ./node_modules/.bin/nodemon server
     restart: unless-stopped
@@ -32,7 +32,7 @@ services:
       - mongo
 
   web:
-    container_name: venue_new_web
+    container_name: veneu_web
     build: ./
     command: npm run serve
     restart: unless-stopped
