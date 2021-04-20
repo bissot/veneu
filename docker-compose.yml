@@ -12,7 +12,7 @@ services:
     logging:
       driver: none
     environment:
-      - MONGO_INITDB_DATABASE=venue-new
+      - MONGO_INITDB_DATABASE=veneu
 
   server:
     container_name: venue_new_server
