@@ -2,7 +2,11 @@
 
 <p align="center"><img src="https://github.com/TheStopsign/veneu/blob/main/src/assets/veneu-logo.svg" alt="alt text" width="96" height="96"></p>
 
-## Local development setup
+## About
+
+Veneu has goals to be the go-to solution for both synchronous and asynchronous education, in the classroom or from home.
+
+## Local Development Setup
 
 ### 1) Prerequisites
 
@@ -51,8 +55,15 @@
 
 ### All set! Navigate to `localhost:8080` in your browser to view the app live.
 
+## References and Docs for Development
+
+- Vue Apollo https://apollo.vuejs.org/guide/
+- Vue Apollo https://apollo.vuejs.org/api/
+- Quasar https://quasar.dev/
+- Apollo / GraphQL https://www.apollographql.com/docs/apollo-server/
+
 <hr/>
-#### Docker commands (working status UNKNOWN, not actively tested)
+Docker commands (UNKNOWN working status, not actively tested)
 
 Build containers: `docker-compose build`
 
