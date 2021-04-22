@@ -8,12 +8,12 @@
           <div>
             <h1 class="q-pa-sm">{{ data.course.name }}</h1>
             <div class="row full-width q-mt-sm q-mb-md">
-              <ShareResourceModal :resourceid="data.course._id" resourcetype="Course" :me="me" />
+              <ShareResourceModal :resourceid="data.course._id" resourcetype="Course" :me="me" v-if="canShare()" />
             </div>
             <div class="row full-width">
               Description: {{ data.course.description ? data.course.description : "None" }}
             </div>
-            <div class="row full-width justify-center">
+            <div class="row full-width justify-center" v-if="canDelete()">
               <div class="dangerzone">
                 <ApolloMutation
                   :mutation="require('../graphql/DeleteCourse.gql')"
@@ -69,10 +69,23 @@ export default {
       deleteModal: false
     };
   },
-
   methods: {
     onDelete() {
       location.href = "/dashboard";
+    },
+    canDelete() {
+      return (
+        this.me &&
+        this.me.auths.some(a => a.shared_resource._id == this.$route.params._id && ["INSTRUCTOR"].includes(a.role))
+      );
+    },
+    canShare() {
+      return (
+        this.me &&
+        this.me.auths.some(
+          a => a.shared_resource._id == this.$route.params._id && ["INSTRUCTOR", "TEACHING_ASSISTANT"].includes(a.role)
+        )
+      );
     }
   }
 };

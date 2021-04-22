@@ -12,6 +12,7 @@
                 :resourceid="data.registrationSection._id"
                 resourcetype="RegistrationSection"
                 :me="me"
+                v-if="canShare()"
               />
             </div>
             <h3 class="q-my-none">meets on</h3>
@@ -24,7 +25,7 @@
               <q-icon name="schedule" size="sm" class="q-mx-sm" /> {{ wde.event.start }} -
               {{ wde.event.end }}
             </div>
-            <div class="row full-width justify-center">
+            <div class="row full-width justify-center" v-if="canDelete()">
               <div class="dangerzone">
                 <ApolloMutation
                   :mutation="require('../graphql/DeleteRegistrationSection.gql')"
@@ -84,6 +85,20 @@ export default {
   methods: {
     onDelete() {
       location.href = "/dashboard";
+    },
+    canDelete() {
+      return (
+        this.me &&
+        this.me.auths.some(a => a.shared_resource._id == this.$route.params._id && ["INSTRUCTOR"].includes(a.role))
+      );
+    },
+    canShare() {
+      return (
+        this.me &&
+        this.me.auths.some(
+          a => a.shared_resource._id == this.$route.params._id && ["INSTRUCTOR", "TEACHING_ASSISTANT"].includes(a.role)
+        )
+      );
     }
   }
 };
