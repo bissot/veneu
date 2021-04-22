@@ -73,7 +73,12 @@
                 :header-inset-level="0"
                 :content-inset-level="0.5"
               >
-                <q-item slot="header" class="col q-px-md q-py-sm q-mr-sm" clickable>
+                <q-item
+                  slot="header"
+                  class="col q-px-md q-py-sm q-mr-sm"
+                  :clickable="$route.name != 'RegistrationSection' || $route.params._id != section._id"
+                  @click="$router.push({ name: 'RegistrationSection', params: { _id: section._id } })"
+                >
                   <q-item-section avatar>
                     <q-icon name="event_seat" />
                   </q-item-section>

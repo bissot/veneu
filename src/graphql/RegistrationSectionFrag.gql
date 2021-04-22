@@ -1,17 +1,34 @@
 fragment RegistrationSection on RegistrationSection {
   _id
   name
-  course {
-    _id
-    name
-  }
   auths {
     _id
     role
-    user {
+  }
+  user_groups {
+    _id
+    name
+    auths {
       _id
-      first_name
-      last_name
+      role
+    }
+  }
+  lectures {
+    _id
+    name
+    start
+    end
+    auths {
+      _id
+      role
+    }
+  }
+  meeting_times {
+    weekday
+    event {
+      name
+      start
+      end
     }
   }
 }

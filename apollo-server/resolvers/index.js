@@ -6,9 +6,9 @@ const SharedResourceResolvers = {
   }
 };
 
-const CalendarEventResolvers = {
-  CalendarEvent: {
-    __resolveType: calendarEvent => calendarEvent.type
+const CalendarizableEventResolvers = {
+  CalendarizableEvent: {
+    __resolveType: CalendarizableEvent => CalendarizableEvent.type
   }
 };
 
@@ -26,7 +26,7 @@ const SearchResultResolvers = {
 
 module.exports = [
   SharedResourceResolvers,
-  CalendarEventResolvers,
+  CalendarizableEventResolvers,
   CalendarDeadlineResolvers,
   SearchResultResolvers,
   require("./Auth.Resolvers"),

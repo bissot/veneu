@@ -1,23 +1,34 @@
 <template>
   <q-page class="q-pt-md">
-    <ApolloQuery :query="require('../graphql/Course.gql')" :variables="{ _id: $route.params._id }">
+    <ApolloQuery :query="require('../graphql/RegistrationSection.gql')" :variables="{ _id: $route.params._id }">
       <template slot-scope="{ result: { loading, error, data } }">
         <div v-if="loading">Loading...</div>
         <div v-if="error">Error...</div>
-        <div v-if="data && data.course" class="q-px-md" id="courseloaded">
+        <div v-if="data && data.registrationSection" class="q-px-md" id="registrationsectionloaded">
           <div>
-            <h1 class="q-pa-sm">{{ data.course.name }}</h1>
-            <div class="row full-width q-mt-sm q-mb-md">
-              <ShareResourceModal :resourceid="data.course._id" resourcetype="Course" :me="me" />
+            <h1 class="q-pa-sm">{{ data.registrationSection.name }}</h1>
+            <div class="row full-width q-my-sm">
+              <ShareResourceModal
+                :resourceid="data.registrationSection._id"
+                resourcetype="RegistrationSection"
+                :me="me"
+              />
             </div>
-            <div class="row full-width">
-              Description: {{ data.course.description ? data.course.description : "None" }}
+            <h3 class="q-my-none">meets on</h3>
+            <div
+              class="row full-width items-center"
+              v-for="(wde, i) in data.registrationSection.meeting_times"
+              :key="i"
+            >
+              <q-icon name="today" size="sm" class="q-mx-sm" /> {{ wde.weekday }}(s) {{ " " }}
+              <q-icon name="schedule" size="sm" class="q-mx-sm" /> {{ wde.event.start }} -
+              {{ wde.event.end }}
             </div>
             <div class="row full-width justify-center">
               <div class="dangerzone">
                 <ApolloMutation
-                  :mutation="require('../graphql/DeleteCourse.gql')"
-                  :variables="{ _id: data.course._id }"
+                  :mutation="require('../graphql/DeleteRegistrationSection.gql')"
+                  :variables="{ _id: data.registrationSection._id }"
                   @done="onDelete"
                   class="flex inline"
                 >

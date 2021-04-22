@@ -7,6 +7,10 @@ query me {
     auths {
       _id
       role
+      shared_resource {
+        _id
+        name
+      }
       shared_resource_type
     }
   }

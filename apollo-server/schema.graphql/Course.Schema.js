@@ -1,7 +1,7 @@
 const { gql } = require("apollo-server-express");
 
 module.exports = gql`
-  type Course implements SharedResource & CalendarEvent {
+  type Course implements SharedResource & CalendarizableEvent {
     _id: ID!
     name: String!
     creator: User!
