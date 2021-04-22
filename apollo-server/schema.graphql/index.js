@@ -18,7 +18,8 @@ const linkSchema = gql`
     INSTRUCTOR
     TEACHING_ASSISTANT
     STUDENT
-    OBSERVER
+    GUEST
+    UNKNOWN
   }
 
   interface SharedResource {
@@ -29,11 +30,44 @@ const linkSchema = gql`
     type: String!
   }
 
-  interface CalendarEvent {
+  interface CalendarizableEvent {
     _id: ID!
+    name: String!
     start: Date!
     end: Date!
     type: String!
+  }
+
+  type CalendarEvent {
+    name: String!
+    start: Date!
+    end: Date!
+  }
+
+  input CalendarEventInput {
+    name: String!
+    start: Date!
+    end: Date!
+  }
+
+  enum WeekDay {
+    MONDAY
+    TUESDAY
+    WEDNESDAY
+    THURSDAY
+    FRIDAY
+    SATURDAY
+    SUNDAY
+  }
+
+  type WeekDayEvent {
+    weekday: WeekDay!
+    event: CalendarEvent!
+  }
+
+  input WeekDayEventInput {
+    weekday: WeekDay!
+    event: CalendarEventInput!
   }
 
   interface CalendarDeadline {

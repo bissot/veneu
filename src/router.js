@@ -12,6 +12,7 @@ import CreateCourse from "./pages/CreateCourse.vue";
 import CreateUserGroup from "./pages/CreateUserGroup.vue";
 import CreateRegistrationSection from "./pages/CreateRegistrationSection.vue";
 import FirstTimeLogin from "./pages/FirstTimeLogin.vue";
+import RegistrationSection from "./pages/RegistrationSection.vue";
 
 import CheckinShow from "./pages/CheckinShow.vue";
 import CheckinScan from "./pages/CheckinScan.vue";
@@ -117,6 +118,14 @@ const router = new VueRouter({
       path: "/firstlogin/:access_code",
       name: "FirstTimeLogin",
       component: FirstTimeLogin
+    },
+    {
+      path: "/registration-section/:_id",
+      name: "RegistrationSection",
+      component: RegistrationSection,
+      meta: {
+        auth: true
+      }
     }
   ],
   mode: "history"

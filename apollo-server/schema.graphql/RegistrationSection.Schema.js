@@ -10,6 +10,7 @@ module.exports = gql`
     auths: [Auth!]!
     user_groups: [UserGroup!]!
     lectures: [Lecture!]!
+    meeting_times: [WeekDayEvent!]!
   }
 
   extend type Query {
@@ -18,7 +19,7 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createRegistrationSection(name: String!, course: ID!): RegistrationSection!
+    createRegistrationSection(name: String!, course: ID!, meeting_times: [WeekDayEventInput]): RegistrationSection!
     updateRegistrationSection(_id: ID!, name: String): RegistrationSection!
     deleteRegistrationSection(_id: ID!): RegistrationSection!
   }

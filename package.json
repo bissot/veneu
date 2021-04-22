@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "@quasar/quasar-ui-qcalendar": "^3.3.5",
     "core-js": "^3.6.5",
     "qr-scanner": "^1.2.0",
     "quasar": "^1.0.0",

@@ -57,7 +57,9 @@ body,
 .q-date,
 .q-select__dialog,
 .q-menu,
-.q-table__card {
+.q-table__card,
+.q-tab-panels,
+.q-calendar {
   background-color: var(--veneu-light) !important;
 }
 
@@ -74,7 +76,9 @@ body,
 #me,
 .q-menu,
 .q-item__section--side > .q-icon,
-.q-date {
+.q-date,
+.q-time,
+.q-select {
   border-radius: 1rem !important;
 }
 
@@ -84,14 +88,22 @@ body,
   }
 }
 
+.q-select {
+  .q-field__control {
+    padding: 0 12px;
+  }
+}
+
 .q-btn,
 .q-time__container-child,
 .q-dialog__inner > div,
 .q-menu,
 #me .q-avatar,
-.q-date {
+.q-date,
+.q-tab {
   animation: grow-in-button 1s forwards !important;
 }
+
 .q-date {
   min-width: unset;
   // * {
@@ -250,5 +262,26 @@ h1 {
     font-size: 1.5rem;
     color: var(--veneu-light);
     margin-bottom: 0.5rem;
+  }
+}
+
+.q-calendar {
+  * {
+    color: var(--veneu-blue) !important;
+    border-color: var(--veneu-blue) !important;
+  }
+  .q-calendar-daily__head-day-label {
+    display: inline-block !important;
+    position: relative !important;
+    margin: 8px !important;
+  }
+  .q-active-date * {
+    color: var(--veneu-light) !important;
+  }
+  .q-calendar-daily__head-day.q-active-date .q-btn__wrapper::before {
+    background-color: var(--veneu-blue);
+  }
+  .q-calendar-daily__scroll-area {
+    overflow-y: auto;
   }
 }

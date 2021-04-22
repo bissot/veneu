@@ -9,6 +9,11 @@ import "./styles/quasar.scss";
 import "quasar/dist/quasar.ie.polyfills";
 import { Quasar, Notify } from "quasar";
 
+import Plugin from "@quasar/quasar-ui-qcalendar";
+import "@quasar/quasar-ui-qcalendar/dist/index.css";
+
+Vue.use(Plugin);
+
 Vue.use(Quasar, {
   config: {},
   plugins: { Notify }

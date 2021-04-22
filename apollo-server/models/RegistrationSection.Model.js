@@ -35,6 +35,11 @@ const RegistrationSection = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Lecture"
       }
+    ],
+    meeting_times: [
+      {
+        type: Object
+      }
     ]
   },
   {
@@ -46,11 +51,10 @@ const RegistrationSection = new mongoose.Schema(
       this.model("Auth").deleteMany({ shared_resource: this._id }),
       this.model("UserGroup").deleteMany({ parent_resource: this._id }),
       this.model("Lecture").deleteMany({ parent_resource: this._id }),
-      this.model("Course").findByIdAndUpdate(
-        { _id: this.parent_resource },
-        { $pull: { registration_sections: this._id } }
-      )
-    ]).then(next);
+      this.model("Course").updateOne({ _id: this.course }, { $pull: { registration_sections: this._id } })
+    ]).then(() => {
+      next();
+    });
   })
   .pre("deleteMany", function(next) {
     this.model.find(this.getFilter()).then(registrationSections => {

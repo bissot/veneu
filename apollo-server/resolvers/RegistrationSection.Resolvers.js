@@ -20,9 +20,14 @@ module.exports = {
     }
   },
   Mutation: {
-    createRegistrationSection: (parent, { name, course }, { requester, models: { RegistrationSection } }, info) => {
+    createRegistrationSection: (
+      parent,
+      { name, course, ...args },
+      { requester, models: { RegistrationSection } },
+      info
+    ) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return RegistrationSection.create({ name, creator: requester._id, course }).then(registrationSection => {
+      return RegistrationSection.create({ name, creator: requester._id, course, ...args }).then(registrationSection => {
         return global.pubsub
           .publish(eventName.COURSE_CREATED, { registrationSectionCreated: registrationSection })
           .then(done => {
