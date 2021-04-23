@@ -3,7 +3,7 @@ Hello there! \
 Thanks for wanting to contribute to Veneu! \
 
 Here are some ways to contribute: \ 
-1. First of all code contributions must follow our Code of Conduct \
+1. First of all code contributions must follow our Code of Conduct [Code of Conduct](./CODE_OF_CONDUCT.md)\
 2. Bug Reports \
 3. Code Contributions \ 
 
