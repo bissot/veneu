@@ -3,6 +3,8 @@ const { AuthenticationError, ForbiddenError } = require("apollo-server-express")
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
+const fs = require('fs');
+const hbs = require('nodemailer-express-handlebars');
 
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
@@ -50,17 +52,31 @@ module.exports = {
               accessToken
             }
           });
+          transporter.use('compile', hbs({
+            viewEngine: {
+              extName: '.handlebars',
+              partialsDir: './email_templates/',
+              layoutsDir: './email_templates/',
+              defaultLayout: ''
+            },
+            viewPath: './email_templates/',
+            extName: '.handlebars'
+          }));
+
           if (transporter) {
             var mailOptions = {
               from: "venue.do.not.reply@gmail.com",
               to: email,
               subject: "Veneu Account Creation",
-              html:
-                '<p>Click <a href="' +
-                process.env.BASE_URL +
-                "firstlogin/" +
-                user.access_code +
-                '">here</a> to continue Sign-up for Veneu.</p>'
+              template: 'newUser',
+              context: {
+              url: process.env.BASE_URL + "firstlogin/" + user.access_code
+              },
+              attachments: [{
+                filename: 'venue-logo.png',
+                path: './email_templates/venue-logo.png',
+                cid: 'logo'
+              }]
             };
 
             transporter.sendMail(mailOptions, function(error, info) {
