@@ -17,7 +17,7 @@ aside.q-drawer--mobile {
 .q-field--standout .q-field__control {
   background: none;
   transition: color 0.5s cubic-bezier(0.19, 1, 0.22, 1) !important;
-  animation: grow-in-input 1s forwards;
+  animation: grow-in-input 0.5s forwards;
 }
 
 .q-gutter-x-md > *,
@@ -39,7 +39,7 @@ aside.q-drawer--mobile {
 .q-stepper__header,
 .q-stepper__nav {
   background: none !important;
-  // background-color: var(--veneu-light) !important;
+  // background-color: var(--veneu-background) !important;
 }
 
 .q-footer {
@@ -60,11 +60,11 @@ body,
 .q-table__card,
 .q-tab-panels,
 .q-calendar {
-  background-color: var(--veneu-light) !important;
+  background-color: var(--veneu-background) !important;
 }
 
 .q-dialog__backdrop {
-  background-color: var(--veneu-light-backdrop) !important;
+  background-color: var(--veneu-background-backdrop) !important;
 }
 
 .q-stepper__step-inner {
@@ -101,7 +101,7 @@ body,
 #me .q-avatar,
 .q-date,
 .q-tab {
-  animation: grow-in-button 1s forwards !important;
+  animation: grow-in-button 0.5s forwards !important;
 }
 
 .q-date {
@@ -137,7 +137,7 @@ body,
 .q-dialog__inner > div {
   border-radius: 1rem !important;
   &.bg-primary {
-    box-shadow: var(--button-shadow) !important;
+    animation: grow-in-button 0.5s forwards !important;
   }
 }
 
@@ -149,7 +149,7 @@ body,
     position: relative;
     box-shadow: none !important;
     border-radius: 0.25rem !important;
-    background: var(--veneu-light);
+    background: var(--veneu-background);
 
     &:first-child {
       border-top-left-radius: 1rem !important;
@@ -170,7 +170,7 @@ body,
       left: 0;
       right: 0;
       z-index: 0;
-      animation: grow-in-button 1s forwards !important;
+      animation: grow-in-button 0.5s forwards !important;
     }
   }
 }
@@ -187,7 +187,7 @@ body,
 .q-btn:hover:not(.bg-primary):not(.bg-red):not([disabled]),
 .q-focusable:active:not([disabled]) .q-focus-helper,
 .q-hoverable:active:not([disabled]) {
-  box-shadow: var(--field-shadow) !important;
+  animation: grow-in-input 0.5s forwards !important;
 }
 
 .q-focusable:active[disabled] .q-focus-helper,
@@ -213,7 +213,7 @@ body,
 h1 {
   text-align: center;
   border-radius: 1rem;
-  animation: grow-in 1s forwards;
+  animation: grow-in 0.5s forwards;
 }
 
 .form h1,
@@ -227,7 +227,7 @@ h1 {
 
   &.q-btn:hover:not([disabled]),
   &.q-btn:focus:not([disabled]) {
-    box-shadow: var(--red-field-shadow) !important;
+    animation: grow-in-input-red 0.5s forwards !important;
   }
 }
 
@@ -251,7 +251,7 @@ h1 {
   margin: 3rem;
   text-align: center;
   .q-btn {
-    animation: grow-in-button-red 1s forwards !important;
+    animation: grow-in-button-red 0.5s forwards !important;
   }
   &::before {
     content: "danger zone";
@@ -276,7 +276,7 @@ h1 {
     margin: 8px !important;
   }
   .q-active-date * {
-    color: var(--veneu-light) !important;
+    color: var(--veneu-background) !important;
   }
   .q-calendar-daily__head-day.q-active-date .q-btn__wrapper::before {
     background-color: var(--veneu-blue);

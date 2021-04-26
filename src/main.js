@@ -6,6 +6,7 @@ import { createProvider } from "./vue-apollo";
 import router from "./router";
 
 import "./styles/quasar.scss";
+import "./styles/veneu.scss";
 import "quasar/dist/quasar.ie.polyfills";
 import { Quasar, Notify } from "quasar";
 
