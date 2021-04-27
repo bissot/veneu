@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "veneu",
+  "short_name": "veneu",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -10,10 +10,12 @@
     {
       "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "theme_color": "#dfdfdf",
   "background_color": "#dfdfdf",
-  "display": "standalone"
+  "display": "standalone",
+  "start_url": "https://veneu.app"
 }
