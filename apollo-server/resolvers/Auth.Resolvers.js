@@ -43,117 +43,90 @@ module.exports = {
     ) => {
       if (!requester) throw new ForbiddenError("Not allowed");
 
-      return User.find({ email: user }).then(x => {
-        if (x.length == 0) {
+      return User.findOne({ email: user }).then(x => {
+        if (!x) {
           User.create({ email: user }).then(y => {
-            mongoose
-              .model(shared_resource_type)
-              .findOne({ _id: shared_resource })
-              .then(z => {
-                oauth2Client.setCredentials({
-                  refresh_token: GMAIL_OAUTH_REFRESH
-                });
-                oauth2Client.getAccessToken((err, accessToken) => {
-                  var transporter = nodemailer.createTransport({
-                    service: "gmail",
-                    auth: {
-                      type: "OAuth2",
-                      user: GMAIL,
-                      clientId: GMAIL_OAUTH_ID,
-                      clientSecret: GMAIL_OAUTH_SECRET,
-                      refreshToken: GMAIL_OAUTH_REFRESH,
-                      accessToken
-                    }
+            if (y) {
+              mongoose
+                .model(shared_resource_type)
+                .findOne({ _id: shared_resource })
+                .then(z => {
+                  oauth2Client.setCredentials({
+                    refresh_token: GMAIL_OAUTH_REFRESH
                   });
-                  transporter.use(
-                    "compile",
-                    hbs({
-                      viewEngine: {
-                        extName: ".handlebars",
-                        partialsDir: "./email_templates/",
-                        layoutsDir: "./email_templates/",
-                        defaultLayout: ""
-                      },
-                      viewPath: "./email_templates/",
-                      extName: ".handlebars"
-                    })
-                  );
-
-                  if (transporter) {
-                    var mailOptions = {
-                      from: GMAIL,
-                      to: user,
-                      subject: "You have been added to a Veneu course",
-                      template: "newAuth",
-                      context: {
-                        url: process.env.BASE_URL + "firstlogin/" + y.access_code,
-                        role: role.toLowerCase(),
-                        type: shared_resource_type.toLowerCase(),
-                        course: z.name,
-                        instructor: requester.first_name + " " + requester.last_name
-                      },
-                      attachments: [
-                        {
-                          filename: "venue-logo.png",
-                          path: "./email_templates/venue-logo.png",
-                          cid: "logo"
-                        }
-                      ]
-                    };
-
-                    // html:
-                    //   '<p>Click <a href="' +
-                    //   process.env.BASE_URL +
-                    //   "firstlogin/" +
-                    //   y.access_code +
-                    //   '">here</a> to continue Sign-up for Veneu.</p>'
-
-                    transporter.sendMail(mailOptions, function(error, info) {
-                      if (error || info == null) {
-                        console.log(error);
+                  oauth2Client.getAccessToken((err, accessToken) => {
+                    var transporter = nodemailer.createTransport({
+                      service: "gmail",
+                      auth: {
+                        type: "OAuth2",
+                        user: GMAIL,
+                        clientId: GMAIL_OAUTH_ID,
+                        clientSecret: GMAIL_OAUTH_SECRET,
+                        refreshToken: GMAIL_OAUTH_REFRESH,
+                        accessToken
                       }
                     });
-                  } else {
-                    console.log("MAILER FAILED");
-                  }
-                });
-              });
 
-            return Auth.create({ role, user: y._id, shared_resource, shared_resource_type }).then(auth => {
-              return global.pubsub
-                .publish(eventName.AUTH_CREATED, {
-                  authCreated: auth
-                })
-                .then(done => {
-                  return auth;
+                    if (transporter) {
+                      transporter.use(
+                        "compile",
+                        hbs({
+                          viewEngine: {
+                            extName: ".handlebars",
+                            partialsDir: "./email_templates/",
+                            layoutsDir: "./email_templates/",
+                            defaultLayout: ""
+                          },
+                          viewPath: "./email_templates/",
+                          extName: ".handlebars"
+                        })
+                      );
+                      var mailOptions = {
+                        from: GMAIL,
+                        to: user,
+                        subject: "You have been added to a Veneu course",
+                        template: "newAuth",
+                        context: {
+                          url: process.env.BASE_URL + "firstlogin/" + y.access_code,
+                          role: role.toLowerCase(),
+                          type: shared_resource_type.toLowerCase(),
+                          course: z.name,
+                          instructor: requester.first_name + " " + requester.last_name
+                        },
+                        attachments: [
+                          {
+                            filename: "venue-logo.png",
+                            path: "./email_templates/venue-logo.png",
+                            cid: "logo"
+                          }
+                        ]
+                      };
+
+                      transporter.sendMail(mailOptions, function(error, info) {
+                        if (error || info == null) {
+                          console.log(error);
+                        }
+                      });
+                    } else {
+                      console.log("MAILER FAILED");
+                    }
+                  });
+
+                  return Auth.create({ role, user: y._id, shared_resource, shared_resource_type }).then(auth => {
+                    return global.pubsub
+                      .publish(eventName.AUTH_CREATED, {
+                        authCreated: auth
+                      })
+                      .then(done => {
+                        return auth;
+                      });
+                  });
                 });
-            });
+            } else {
+              return null;
+            }
           });
         } else {
-          // // //send email
-          // let myhtml = "";
-
-          // if (process.env.NODE_ENV === "production") {
-          //   myhtml = "";
-          // } else {
-          //   myhtml = "<p> Yitty Bopkins </p>";
-          // }
-
-          // var mailOptions = {
-          //   from: GMAIL,
-          //   to: user,
-          //   subject: "PUMPKIN!!!!",
-          //   html: myhtml
-          // };
-
-          // transporter.sendMail(mailOptions, function(error, info) {
-          //   if (error || info == null) {
-          //     console.log(error);
-          //   } else {
-          //     console.log("Email sent to " + user + ": " + info.response);
-          //   }
-          // });
-
           return Auth.create({ role, user: x[0]._id, shared_resource, shared_resource_type }).then(auth => {
             return global.pubsub
               .publish(eventName.AUTH_CREATED, {
