@@ -3,14 +3,14 @@ const { AuthenticationError, ForbiddenError } = require("apollo-server-express")
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
-const fs = require('fs');
-const hbs = require('nodemailer-express-handlebars');
+const fs = require("fs");
+const hbs = require("nodemailer-express-handlebars");
 
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const { OAuth2 } = google.auth;
 const OAUTH_PLAYGROUND = "https://developers.google.com/oauthplayground";
-const { GMAIL_OAUTH_ID, GMAIL_OAUTH_SECRET, GMAIL_OAUTH_REFRESH } = process.env;
+const { GMAIL_OAUTH_ID, GMAIL_OAUTH_SECRET, GMAIL_OAUTH_REFRESH, GMAIL } = process.env;
 const oauth2Client = new OAuth2(GMAIL_OAUTH_ID, GMAIL_OAUTH_SECRET, OAUTH_PLAYGROUND);
 
 const eventName = {
@@ -45,38 +45,43 @@ module.exports = {
             service: "gmail",
             auth: {
               type: "OAuth2",
-              user: "venue.do.not.reply@gmail.com",
+              user: GMAIL,
               clientId: GMAIL_OAUTH_ID,
               clientSecret: GMAIL_OAUTH_SECRET,
               refreshToken: GMAIL_OAUTH_REFRESH,
               accessToken
             }
           });
-          transporter.use('compile', hbs({
-            viewEngine: {
-              extName: '.handlebars',
-              partialsDir: './email_templates/',
-              layoutsDir: './email_templates/',
-              defaultLayout: ''
-            },
-            viewPath: './email_templates/',
-            extName: '.handlebars'
-          }));
+          transporter.use(
+            "compile",
+            hbs({
+              viewEngine: {
+                extName: ".handlebars",
+                partialsDir: "./email_templates/",
+                layoutsDir: "./email_templates/",
+                defaultLayout: ""
+              },
+              viewPath: "./email_templates/",
+              extName: ".handlebars"
+            })
+          );
 
           if (transporter) {
             var mailOptions = {
-              from: "venue.do.not.reply@gmail.com",
+              from: GMAIL,
               to: email,
               subject: "Veneu Account Creation",
-              template: 'newUser',
+              template: "newUser",
               context: {
-              url: process.env.BASE_URL + "firstlogin/" + user.access_code
+                url: process.env.BASE_URL + "firstlogin/" + user.access_code
               },
-              attachments: [{
-                filename: 'venue-logo.png',
-                path: './email_templates/venue-logo.png',
-                cid: 'logo'
-              }]
+              attachments: [
+                {
+                  filename: "venue-logo.png",
+                  path: "./email_templates/venue-logo.png",
+                  cid: "logo"
+                }
+              ]
             };
 
             transporter.sendMail(mailOptions, function(error, info) {

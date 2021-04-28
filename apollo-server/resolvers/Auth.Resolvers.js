@@ -1,14 +1,14 @@
 const { PubSub, ForbiddenError, withFilter } = require("apollo-server-express");
 
-const fs = require('fs');
-const hbs = require('nodemailer-express-handlebars');
+const fs = require("fs");
+const hbs = require("nodemailer-express-handlebars");
 const mongoose = require("mongoose");
 
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const { OAuth2 } = google.auth;
 const OAUTH_PLAYGROUND = "https://developers.google.com/oauthplayground";
-const { GMAIL_OAUTH_ID, GMAIL_OAUTH_SECRET, GMAIL_OAUTH_REFRESH } = process.env;
+const { GMAIL_OAUTH_ID, GMAIL_OAUTH_SECRET, GMAIL_OAUTH_REFRESH, GMAIL } = process.env;
 const oauth2Client = new OAuth2(GMAIL_OAUTH_ID, GMAIL_OAUTH_SECRET, OAUTH_PLAYGROUND);
 
 const eventName = {
@@ -46,72 +46,78 @@ module.exports = {
       return User.find({ email: user }).then(x => {
         if (x.length == 0) {
           User.create({ email: user }).then(y => {
-            mongoose.model(shared_resource_type).findOne({_id: shared_resource}).then(z => {
-              oauth2Client.setCredentials({
-                refresh_token: GMAIL_OAUTH_REFRESH
-              });
-              oauth2Client.getAccessToken((err, accessToken) => {
-                var transporter = nodemailer.createTransport({
-                  service: "gmail",
-                  auth: {
-                    type: "OAuth2",
-                    user: "venue.do.not.reply@gmail.com",
-                    clientId: GMAIL_OAUTH_ID,
-                    clientSecret: GMAIL_OAUTH_SECRET,
-                    refreshToken: GMAIL_OAUTH_REFRESH,
-                    accessToken
-                  }
+            mongoose
+              .model(shared_resource_type)
+              .findOne({ _id: shared_resource })
+              .then(z => {
+                oauth2Client.setCredentials({
+                  refresh_token: GMAIL_OAUTH_REFRESH
                 });
-                transporter.use('compile', hbs({
-                  viewEngine: {
-                    extName: '.handlebars',
-                    partialsDir: './email_templates/',
-                    layoutsDir: './email_templates/',
-                    defaultLayout: ''
-                  },
-                  viewPath: './email_templates/',
-                  extName: '.handlebars'
-                }));
-
-                if (transporter) {
-                  var mailOptions = {
-                    from: "venue.do.not.reply@gmail.com",
-                    to: user,
-                    subject: "You have been added to a Veneu course",
-                    template: 'newAuth',
-                    context: {
-                    url: process.env.BASE_URL + "firstlogin/" + y.access_code,
-                    role: role.toLowerCase(),
-                    type: shared_resource_type.toLowerCase(),
-                    course: z.name,
-                    instructor: requester.first_name + " " + requester.last_name
-                    },
-                    attachments: [{
-                      filename: 'venue-logo.png',
-                      path: './email_templates/venue-logo.png',
-                      cid: 'logo'
-                    }]
-
-                  };
-
-                  // html:
-                  //   '<p>Click <a href="' +
-                  //   process.env.BASE_URL +
-                  //   "firstlogin/" +
-                  //   y.access_code +
-                  //   '">here</a> to continue Sign-up for Veneu.</p>'
-
-
-                  transporter.sendMail(mailOptions, function(error, info) {
-                    if (error || info == null) {
-                      console.log(error);
+                oauth2Client.getAccessToken((err, accessToken) => {
+                  var transporter = nodemailer.createTransport({
+                    service: "gmail",
+                    auth: {
+                      type: "OAuth2",
+                      user: GMAIL,
+                      clientId: GMAIL_OAUTH_ID,
+                      clientSecret: GMAIL_OAUTH_SECRET,
+                      refreshToken: GMAIL_OAUTH_REFRESH,
+                      accessToken
                     }
                   });
-                } else {
-                  console.log("MAILER FAILED");
-                }
+                  transporter.use(
+                    "compile",
+                    hbs({
+                      viewEngine: {
+                        extName: ".handlebars",
+                        partialsDir: "./email_templates/",
+                        layoutsDir: "./email_templates/",
+                        defaultLayout: ""
+                      },
+                      viewPath: "./email_templates/",
+                      extName: ".handlebars"
+                    })
+                  );
+
+                  if (transporter) {
+                    var mailOptions = {
+                      from: GMAIL,
+                      to: user,
+                      subject: "You have been added to a Veneu course",
+                      template: "newAuth",
+                      context: {
+                        url: process.env.BASE_URL + "firstlogin/" + y.access_code,
+                        role: role.toLowerCase(),
+                        type: shared_resource_type.toLowerCase(),
+                        course: z.name,
+                        instructor: requester.first_name + " " + requester.last_name
+                      },
+                      attachments: [
+                        {
+                          filename: "venue-logo.png",
+                          path: "./email_templates/venue-logo.png",
+                          cid: "logo"
+                        }
+                      ]
+                    };
+
+                    // html:
+                    //   '<p>Click <a href="' +
+                    //   process.env.BASE_URL +
+                    //   "firstlogin/" +
+                    //   y.access_code +
+                    //   '">here</a> to continue Sign-up for Veneu.</p>'
+
+                    transporter.sendMail(mailOptions, function(error, info) {
+                      if (error || info == null) {
+                        console.log(error);
+                      }
+                    });
+                  } else {
+                    console.log("MAILER FAILED");
+                  }
+                });
               });
-            });
 
             return Auth.create({ role, user: y._id, shared_resource, shared_resource_type }).then(auth => {
               return global.pubsub
@@ -134,7 +140,7 @@ module.exports = {
           // }
 
           // var mailOptions = {
-          //   from: "veneu.do.not.reply@gmail.com",
+          //   from: GMAIL,
           //   to: user,
           //   subject: "PUMPKIN!!!!",
           //   html: myhtml
