@@ -7,7 +7,7 @@
     </q-tabs>
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="calendar" class="row full-width q-py-sm q-px-md">
-        <h1 class="full-width">Calendar</h1>
+        <h1 class="full-width q-py-xs">Calendar</h1>
         <div class="row full-width justify-between items-center q-my-md">
           <q-btn flat label="Prev" @click="calendarPrev" class="q-mr-md" />
           <q-btn flat label="Next" @click="calendarNext" />

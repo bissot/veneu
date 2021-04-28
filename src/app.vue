@@ -215,7 +215,7 @@ import gql from "graphql-tag";
 import VeneuLogo from "./components/VeneuLogo";
 import CourseList from "./components/CourseList";
 import "quasar/icon-set/fontawesome-v5";
-import "./assets/veneu.css";
+// import "./assets/veneu.css";
 export default {
   name: "app",
   components: {
