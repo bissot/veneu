@@ -71,10 +71,6 @@ module.exports = {
     }
   },
   Course: {
-    parent_resource: (parent, args, { models }, info) => {
-      return null;
-    },
-    auths: (parent, args, { models: { Auth } }, info) => Auth.find({ _id: { $in: parent.auths } }),
     user_groups: (parent, args, { models: { UserGroup } }, info) =>
       UserGroup.find({ _id: { $in: parent.user_groups } }),
     registration_sections: (parent, args, { models: { RegistrationSection } }, info) =>

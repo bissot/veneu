@@ -289,3 +289,7 @@ h1 {
 .q-tree__node--selected {
   background-color: var(--veneu-blue) !important;
 }
+
+.q-tab--active .q-tab__indicator {
+  opacity: 0 !important;
+}

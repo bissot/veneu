@@ -68,12 +68,5 @@ module.exports = {
       subscribe: () => global.pubsub.asyncIterator([eventName.LECTURE_DELETED])
     }
   },
-  Lecture: {
-    parent_resource: (parent, args, { models }, info) => {
-      return models[parent.parent_resource_type].findOne({ _id: parent.parent_resource });
-    },
-    auths: (parent, args, { models: { Auth } }, info) => {
-      return Auth.find({ _id: { $in: parent.auths } });
-    }
-  }
+  Lecture: {}
 };

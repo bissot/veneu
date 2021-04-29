@@ -5,7 +5,7 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 
-const { ApolloServer, PubSub } = require("apollo-server-express");
+const { ApolloServer, PubSub, makeExecutableSchema } = require("apollo-server-express");
 global.pubsub = new PubSub();
 
 const mongoose = require("mongoose");
@@ -22,10 +22,13 @@ const context = require("./context");
 // const schemaDirectives = require("./directives");
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
+  schema: makeExecutableSchema({
+    typeDefs,
+    resolvers,
+    // schemaDirectives,
+    inheritResolversFromInterfaces: true
+  }),
   context,
-  // schemaDirectives,
   introspection: process.env.NODE_ENV === "production" ? false : true,
   playground: process.env.NODE_ENV === "production" ? false : true,
   tracing: process.env.NODE_ENV === "production" ? false : true

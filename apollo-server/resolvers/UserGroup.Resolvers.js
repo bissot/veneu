@@ -81,12 +81,6 @@ module.exports = {
     }
   },
   UserGroup: {
-    parent_resource: (parent, args, { models }, info) => {
-      return models[parent.parent_resource_type].findOne({ _id: parent.parent_resource });
-    },
-    auths: (parent, args, { models: { Auth } }, info) => {
-      return Auth.find({ _id: { $in: parent.auths } });
-    },
     user_groups: (parent, args, { models: { UserGroup } }, info) => {
       return UserGroup.find({ _id: { $in: parent.user_groups } });
     },

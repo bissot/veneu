@@ -8,7 +8,13 @@ const ParentResourceResolvers = {
 
 const SharedResourceResolvers = {
   SharedResource: {
-    __resolveType: sharedResource => sharedResource.type
+    __resolveType: sharedResource => sharedResource.type,
+    parent_resource: (parent, args, { models }, info) => {
+      return parent.parent_resource
+        ? models[parent.parent_resource_type].findOne({ _id: parent.parent_resource })
+        : null;
+    },
+    auths: (parent, args, { models: { Auth } }, info) => Auth.find({ _id: { $in: parent.auths } })
   }
 };
 
