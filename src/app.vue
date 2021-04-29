@@ -100,7 +100,7 @@
               </q-item-section>
             </q-item>
             <div class="row full-width q-px-md q-mt-md">
-              <q-btn size="sm" label="New" icon-right="add" class="full-width">
+              <q-btn size="sm" label="New" icon="add" class="full-width">
                 <q-menu anchor="bottom middle" self="top middle" :offset="[0, 8]">
                   <q-list class="q-pa-xs text-primary">
                     <q-item class="items-center" title="Checkin" clickable @click="handleHost">

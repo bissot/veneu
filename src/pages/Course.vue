@@ -13,9 +13,25 @@
             <div class="row full-width">
               Description: {{ data.course.description ? data.course.description : "None" }}
             </div>
-            <div class="row full-width" v-for="lect in data.course.lectures" :key="lect._id">
-              Lecture: {{ lect.start }} - {{ lect.end }}
-            </div>
+            <q-timeline :layout="layout" color="primary" v-if="data.course.lectures" class="neu-convex q-pa-md">
+              <q-timeline-entry class="text-primary" heading>
+                Timeline
+              </q-timeline-entry>
+
+              <q-timeline-entry
+                :title="'Lecture - ' + lect.name"
+                :subtitle="getFormattedDate(lect.start)"
+                side="left"
+                v-for="lect in getSorted(data.course.lectures)"
+                :key="lect._id"
+                icon="class"
+              >
+                <div>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                  et dolore magna aliqua.
+                </div>
+              </q-timeline-entry>
+            </q-timeline>
             <div class="row full-width justify-center" v-if="canDelete()">
               <div class="dangerzone">
                 <ApolloMutation
@@ -61,8 +77,14 @@
 </template>
 
 <script>
+import { date } from "quasar";
 import ShareResourceModal from "../components/ShareResourceModal.vue";
 export default {
+  computed: {
+    layout() {
+      return this.$q.screen.lt.sm ? "dense" : this.$q.screen.lt.md ? "comfortable" : "loose";
+    }
+  },
   components: { ShareResourceModal },
   props: {
     me: Object
@@ -73,6 +95,9 @@ export default {
     };
   },
   methods: {
+    getFormattedDate(d) {
+      return date.formatDate(d, "MMM Do, YYYY @ h:mma");
+    },
     onDelete() {
       location.href = "/dashboard";
     },
@@ -89,6 +114,11 @@ export default {
           a => a.shared_resource._id == this.$route.params._id && ["INSTRUCTOR", "TEACHING_ASSISTANT"].includes(a.role)
         )
       );
+    },
+    getSorted(vals) {
+      return [...vals].sort(function(a, b) {
+        return new Date(a.start) - new Date(b.start);
+      });
     }
   }
 };

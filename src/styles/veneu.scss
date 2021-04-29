@@ -52,6 +52,9 @@
     .q-checkbox[aria-checked="mixed"] * {
       background-color: var(--veneu-blue);
     }
+    .q-timeline__dot .q-icon {
+      color: var(--veneu-blue) !important;
+    }
   }
 
   /* Shadows */
