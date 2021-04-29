@@ -12,6 +12,7 @@
       >
         <template slot-scope="{ mutate }">
           <q-form @submit.prevent="formValid && mutate()" class="q-gutter-md q-ma-lg q-mt-xl q-py-md neu-convex">
+            <ResourceSelector :me="me" label="For Resource..." @change="handleChangeResource" />
             <q-input
               standout="bg-primary text-white q-ma-none"
               color="primary"
@@ -22,7 +23,14 @@
             >
             </q-input>
             <q-bar class="q-pa-none q-gutter-x-md">
-              <q-btn type="submit" color="primary" label="Continue" class="q-ml-sm full-width" :disable="!name" />
+              <q-btn type="button" label="Back" class="q-ml-md" @click="handleBack" />
+              <q-btn
+                type="submit"
+                color="primary"
+                label="Continue"
+                class="q-ml-md full-width"
+                :disable="!formValid()"
+              />
             </q-bar>
           </q-form>
         </template>
@@ -32,37 +40,40 @@
 </template>
 
 <script>
+import ResourceSelector from "../components/ResourceSelector";
 export default {
   name: "CreateUserGroup",
+  components: {
+    ResourceSelector
+  },
   props: {
     me: Object
   },
   data() {
     return {
-      step: 1,
       name: "",
       parent_resource: null,
       parent_resource_type: null
     };
-  },
-  mounted() {
-    if (this.$route.query.parent_resource) {
-      this.parent_resource = this.$route.query.parent_resource;
-      let parent_resource = this.me.auths.find(a => a.shared_resource._id == this.parent_resource);
-      this.parent_resource_type = parent_resource.shared_resource_type;
-    }
   },
   methods: {
     handleBack() {
       this.$router.go(-1);
     },
     formValid() {
-      return this.name.length;
+      return this.name.length && this.parent_resource && this.parent_resource_type;
     },
     handleCreateUserGroup() {
       this.name = "";
       this.parent_resource = null;
       this.$router.push({ name: "Dashboard" });
+    },
+    handleChangeResource(resource, type) {
+      this.parent_resource = resource;
+      let a = this.me.auths.find(a => a.shared_resource._id == resource);
+      if (a) {
+        this.parent_resource_type = a.shared_resource_type;
+      }
     }
   }
 };

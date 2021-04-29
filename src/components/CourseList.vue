@@ -37,17 +37,6 @@
             </q-item-section>
           </q-item>
           <q-list class="rounded-borders">
-            <div class="q-pb-sm">
-              <q-btn-group spread flat class="q-mx-md q-mt-sm q-gutter-x-sm">
-                <q-btn
-                  dense
-                  size="sm"
-                  label="Group"
-                  icon="add"
-                  :to="{ path: '/create-user-group?parent_resource=' + (course._id ? course._id : '') }"
-                />
-              </q-btn-group>
-            </div>
             <q-list class="rounded-borders">
               <q-expansion-item
                 expand-icon-toggle
@@ -77,17 +66,6 @@
                   </q-item-section>
                 </q-item>
 
-                <div class="q-px-md">
-                  <q-btn
-                    dense
-                    size="sm"
-                    flat
-                    class="full-width q-my-sm"
-                    label="Group"
-                    icon="add"
-                    :to="{ path: '/create-user-group?parent_resource=' + (section._id ? section._id : '') }"
-                  />
-                </div>
                 <q-list class="rounded-borders">
                   <q-item
                     clickable
@@ -162,17 +140,6 @@
             </q-item-section>
           </q-item>
           <q-list class="rounded-borders">
-            <div class="q-pb-sm">
-              <q-btn-group spread flat class="q-mx-md q-mt-sm q-gutter-x-sm">
-                <q-btn
-                  dense
-                  size="sm"
-                  label="Group"
-                  icon="add"
-                  :to="{ path: '/create-user-group?parent_resource=' + (course._id ? course._id : '') }"
-                />
-              </q-btn-group>
-            </div>
             <q-list class="rounded-borders">
               <q-expansion-item
                 expand-icon-toggle
@@ -232,7 +199,7 @@
             </q-list>
             <q-list class="rounded-borders">
               <q-item
-                clickable
+                :clickable="$route.name != 'UserGroup' || $route.params._id != group._id"
                 class="cursor-pointer q-pr-sm"
                 v-for="group of course.user_groups"
                 :key="group._id"

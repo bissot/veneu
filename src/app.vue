@@ -84,12 +84,11 @@
                     </q-card-section>
 
                     <q-card-actions>
-                      <q-btn flat label="Cancel" color="primary" v-close-popup />
+                      <q-btn label="Cancel" v-close-popup />
                       <q-space />
                       <q-btn
-                        flat
                         label="Logout"
-                        class="bg-primary text-white"
+                        color="primary"
                         v-close-popup
                         @click="tryLogout"
                         icon-right="meeting_room"
@@ -115,6 +114,14 @@
                       @click="$router.push({ name: 'CreateRegistrationSection' })"
                       :disabled="!canCreateSections(data.me.auths)"
                       >Registration Section</q-item
+                    >
+                    <q-item
+                      class="items-center"
+                      title="User Group"
+                      :clickable="canCreateGroups(data.me.auths) && $route.name != 'CreateUserGroup'"
+                      @click="$router.push({ name: 'CreateUserGroup' })"
+                      :disabled="!canCreateGroups(data.me.auths)"
+                      >User Group</q-item
                     >
                     <q-item
                       class="items-center"
@@ -182,7 +189,7 @@
                 </q-list>
               </q-expansion-item>
             </q-list>
-            <q-list class="text-primary neu-convex q-mx-md q-my-md q-pa-xs">
+            <q-list class="fdsafdsfdsatext-primary neu-convex q-mx-md q-my-md q-pa-xs">
               <q-expansion-item
                 icon="assignment"
                 label="Assignments"
@@ -250,6 +257,15 @@ export default {
       return (
         auths.filter(a => a.shared_resource_type == "Course" && ["INSTRUCTOR", "TEACHING_ASSISTANT"].includes(a.role))
           .length > 0
+      );
+    },
+    canCreateGroups(auths) {
+      return (
+        auths.filter(
+          a =>
+            ["Course", "RegistrationSection"].includes(a.shared_resource_type) &&
+            ["INSTRUCTOR", "TEACHING_ASSISTANT"].includes(a.role)
+        ).length > 0
       );
     },
     canCreateLectures(auths) {
