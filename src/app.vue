@@ -116,6 +116,14 @@
                       :disabled="!canCreateSections(data.me.auths)"
                       >Registration Section</q-item
                     >
+                    <q-item
+                      class="items-center"
+                      title="Registration Section"
+                      :clickable="canCreateLectures(data.me.auths) && $route.name != 'CreateLecture'"
+                      @click="$router.push({ name: 'CreateLecture' })"
+                      :disabled="!canCreateLectures(data.me.auths)"
+                      >Lecture</q-item
+                    >
                   </q-list>
                 </q-menu>
               </q-btn>
@@ -242,6 +250,15 @@ export default {
       return (
         auths.filter(a => a.shared_resource_type == "Course" && ["INSTRUCTOR", "TEACHING_ASSISTANT"].includes(a.role))
           .length > 0
+      );
+    },
+    canCreateLectures(auths) {
+      return (
+        auths.filter(
+          a =>
+            ["Course", "RegistrationSection", "UserGroup"].includes(a.shared_resource_type) &&
+            ["INSTRUCTOR", "TEACHING_ASSISTANT"].includes(a.role)
+        ).length > 0
       );
     },
     getFormattedDate(d) {

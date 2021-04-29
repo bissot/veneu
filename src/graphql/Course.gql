@@ -40,5 +40,19 @@ query($_id: ID!) {
         }
       }
     }
+    lectures {
+      _id
+      name
+      start
+      end
+      parent_resource {
+        ... on SharedResource {
+          _id
+          name
+          type
+        }
+      }
+      parent_resource_type
+    }
   }
 }

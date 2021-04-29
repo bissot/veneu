@@ -27,10 +27,10 @@
               placeholder="e.g. S-2021 01"
             >
             </q-input>
-            <div class="row full-width q-px-md q-py-md" v-for="(weekdayevent, i) in meeting_times" :key="i">
+            <div class="row full-width q-px-md q-pb-md" v-for="(weekdayevent, i) in meeting_times" :key="i">
               <q-select
                 standout="bg-primary text-white q-ma-none"
-                class="col-10 q-mb-md"
+                class="col-10 q-mb-md q-mt-sm"
                 :options="['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY']"
                 label="Day of the week"
                 v-model="weekdayevent.weekday"
@@ -40,7 +40,7 @@
                   }
                 "
               />
-              <div class="col-2 q-pl-md">
+              <div class="col-2 q-pl-md q-mt-sm">
                 <div class="row full-width full-height items-center">
                   <q-btn
                     label=""
@@ -54,10 +54,10 @@
               <q-time
                 v-model="weekdayevent.event.start"
                 color="primary"
-                class="col-12 col-sm q-mr-md neu-convex"
+                class="col-12 col-sm q-mr-md q-mt-md neu-convex"
                 label="Start"
               />
-              <q-time v-model="weekdayevent.event.end" color="primary" class="col-12 col-sm neu-convex" />
+              <q-time v-model="weekdayevent.event.end" color="primary" class="col-12 col-sm neu-convex q-mt-md" />
             </div>
             <div class="row full-width q-px-md">
               <q-btn label="Add a weekly meeting time" class="row full-width" @click="handleAddMeeting" />

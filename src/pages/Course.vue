@@ -13,6 +13,9 @@
             <div class="row full-width">
               Description: {{ data.course.description ? data.course.description : "None" }}
             </div>
+            <div class="row full-width" v-for="lect in data.course.lectures" :key="lect._id">
+              Lecture: {{ lect.start }} - {{ lect.end }}
+            </div>
             <div class="row full-width justify-center" v-if="canDelete()">
               <div class="dangerzone">
                 <ApolloMutation

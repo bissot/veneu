@@ -18,13 +18,19 @@ module.exports = {
     }
   },
   Mutation: {
-    createLecture: (parent, { name, start, end, parent_resource }, { requester, models: { Lecture } }, info) => {
+    createLecture: (
+      parent,
+      { name, start, end, parent_resource, parent_resource_type },
+      { requester, models: { Lecture } },
+      info
+    ) => {
       if (!requester) throw new ForbiddenError("Not allowed");
       return Lecture.create({
         name,
         start,
         end,
         parent_resource,
+        parent_resource_type,
         creator: requester._id
       }).then(lecture => {
         return global.pubsub.publish(eventName.LECTURE_CREATED, { lectureCreated: lecture }).then(done => {

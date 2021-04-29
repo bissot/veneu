@@ -23,7 +23,6 @@ module.exports = {
   Mutation: {
     createUserGroup: (parent, { name, parent_resource, parent_resource_type }, { requester, models }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      console.log(parent_resource_type);
       if (parent_resource_type == "User" && parent_resource == requester._id) {
         return models.UserGroup.create({ name, creator: requester._id, parent_resource, parent_resource_type }).then(
           userGroup => {

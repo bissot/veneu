@@ -38,7 +38,6 @@ export default {
   },
   watch: {
     selected: function(val, oldVal) {
-      console.log(val);
       this.$emit("change", val);
     }
   },
