@@ -285,3 +285,7 @@ h1 {
     overflow-y: auto;
   }
 }
+
+.q-tree__node--selected {
+  background-color: var(--veneu-blue) !important;
+}

@@ -28,7 +28,14 @@ const Lecture = new mongoose.Schema(
       type: Date,
       required: true
     },
-    parent_resource: mongoose.Schema.Types.ObjectId
+    parent_resource: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
+    },
+    parent_resource_type: {
+      type: String,
+      required: true
+    }
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }

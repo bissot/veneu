@@ -23,7 +23,7 @@
   --veneu-dark-lowlight: #33475c;
   --veneu-dark-blue: #234462;
 
-  --calendar-border-current: var(--veneu-blue) 2px solid !important;
+  --calendar-border-current: var(--veneu-red) 2px solid !important;
 
   /* Default (Light) Scheme */
   --veneu-background: var(--veneu-light);
@@ -35,6 +35,9 @@
       * {
         border-color: var(--veneu-light) !important;
       }
+      .q-active-date * {
+        color: var(--veneu-light) !important;
+      }
     }
     --veneu-background: var(--veneu-dark);
     --veneu-background-backdrop: var(--veneu-dark-backdrop);
@@ -42,6 +45,12 @@
     --veneu-background-lowlight: var(--veneu-dark-lowlight);
     * {
       color: var(--veneu-light) !important;
+    }
+    .q-checkbox[aria-checked="true"],
+    .q-checkbox[aria-checked="mixed"],
+    .q-checkbox[aria-checked="true"] *,
+    .q-checkbox[aria-checked="mixed"] * {
+      background-color: var(--veneu-blue);
     }
   }
 

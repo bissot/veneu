@@ -7,12 +7,6 @@
         <q-item-label header class="text-primary q-pb-md special-font row justify-between">
           Courses
         </q-item-label>
-        <!-- <div>
-          <q-btn-group spread flat class="q-mx-md q-mb-none q-gutter-x-sm"> -->
-
-        <!-- <q-btn dense size="sm" label="Edit" icon="edit" disabled /> -->
-        <!-- </q-btn-group>
-        </div> -->
         <q-item-label header class="text-primary q-pb-md special-font">Instructor for...</q-item-label>
         <q-expansion-item
           v-for="course in data.courses.filter(
@@ -45,14 +39,6 @@
           <q-list class="rounded-borders">
             <div class="q-pb-sm">
               <q-btn-group spread flat class="q-mx-md q-mt-sm q-gutter-x-sm">
-                <q-btn
-                  dense
-                  size="sm"
-                  label="Section"
-                  icon="add"
-                  :to="{ path: '/create-registration-section?course=' + (course._id ? course._id : '') }"
-                  class="q-ma-none"
-                />
                 <q-btn
                   dense
                   size="sm"
@@ -178,14 +164,6 @@
           <q-list class="rounded-borders">
             <div class="q-pb-sm">
               <q-btn-group spread flat class="q-mx-md q-mt-sm q-gutter-x-sm">
-                <q-btn
-                  dense
-                  size="sm"
-                  label="Section"
-                  icon="add"
-                  :to="{ path: '/create-registration-section?course=' + (course._id ? course._id : '') }"
-                  class="q-ma-none"
-                />
                 <q-btn
                   dense
                   size="sm"

@@ -22,12 +22,16 @@ const linkSchema = gql`
     UNKNOWN
   }
 
+  union ParentResource = User | Course | RegistrationSection | UserGroup | Lecture
+
   interface SharedResource {
     _id: ID!
     creator: User!
     auths: [Auth!]!
     name: String!
     type: String!
+    parent_resource: ParentResource
+    parent_resource_type: String
   }
 
   interface CalendarizableEvent {

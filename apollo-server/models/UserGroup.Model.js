@@ -20,7 +20,14 @@ const UserGroup = new mongoose.Schema(
       type: String,
       default: "UserGroup"
     },
-    parent_resource: mongoose.Schema.Types.ObjectId,
+    parent_resource: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
+    },
+    parent_resource_type: {
+      type: String,
+      required: true
+    },
     user_groups: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -12,6 +12,12 @@
       >
         <template slot-scope="{ mutate }">
           <q-form @submit.prevent="mutate()" class="q-gutter-md q-ma-lg q-mt-xl q-py-md neu-convex">
+            <ResourceSelector
+              :me="me"
+              label="For Course..."
+              :selectable="me.auths.filter(a => a.shared_resource_type === 'Course').map(a => a._id)"
+              @change="handleChangeCourse"
+            />
             <q-input
               standout="bg-primary text-white q-ma-none"
               color="primary"
@@ -74,8 +80,15 @@
 </template>
 
 <script>
+import ResourceSelector from "../components/ResourceSelector";
 export default {
   name: "CreateRegistrationSection",
+  props: {
+    me: Object
+  },
+  components: {
+    ResourceSelector
+  },
   data() {
     return {
       name: "",
@@ -83,16 +96,14 @@ export default {
       meeting_times: []
     };
   },
-  created() {
-    if (this.$route.query.course) {
-      this.course = this.$route.query.course;
-    }
-  },
   methods: {
     handleBack() {
       this.$router.go(-1);
     },
     formValid() {
+      if (!this.course) {
+        return false;
+      }
       if (!this.name.length) {
         return false;
       }
@@ -134,6 +145,9 @@ export default {
           name: ""
         }
       });
+    },
+    handleChangeCourse(course) {
+      this.course = course;
     }
   }
 };

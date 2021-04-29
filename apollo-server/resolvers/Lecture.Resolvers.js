@@ -63,17 +63,11 @@ module.exports = {
     }
   },
   Lecture: {
+    parent_resource: (parent, args, { models }, info) => {
+      return models[parent.parent_resource_type].findOne({ _id: parent.parent_resource });
+    },
     auths: (parent, args, { models: { Auth } }, info) => {
       return Auth.find({ _id: { $in: parent.auths } });
-    },
-    parent_resource: (parent, args, { models: { Course, UserGroup, RegistrationSection } }, info) => {
-      return Promise.all([
-        Course.findById({ _id: parent.parent_resource }),
-        UserGroup.findById({ _id: parent.parent_resource }),
-        RegistrationSection.findById({ _id: parent.parent_resource })
-      ]).then(res => {
-        return res[0] || res[1] || res[2];
-      });
     }
   }
 };

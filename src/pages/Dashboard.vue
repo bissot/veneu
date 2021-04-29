@@ -15,7 +15,7 @@
         <q-calendar
           ref="calendar"
           v-model="selectedDate"
-          view="3day"
+          view="week"
           locale="en-us"
           style="height: 100%;"
           color="primary"

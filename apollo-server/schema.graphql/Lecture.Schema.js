@@ -9,7 +9,8 @@ module.exports = gql`
     auths: [Auth!]!
     start: Date!
     end: Date!
-    parent_resource: SharedResource!
+    parent_resource: ParentResource!
+    parent_resource_type: String!
   }
 
   extend type Query {

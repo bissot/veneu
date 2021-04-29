@@ -6,7 +6,7 @@
       </div>
       <ApolloMutation
         :mutation="require('../graphql/CreateUserGroup.gql')"
-        :variables="{ name, parent_resource }"
+        :variables="{ name, parent_resource, parent_resource_type }"
         class="form"
         @done="handleCreateUserGroup"
       >
@@ -34,16 +34,22 @@
 <script>
 export default {
   name: "CreateUserGroup",
+  props: {
+    me: Object
+  },
   data() {
     return {
       step: 1,
       name: "",
-      parent_resource: null
+      parent_resource: null,
+      parent_resource_type: null
     };
   },
   mounted() {
     if (this.$route.query.parent_resource) {
       this.parent_resource = this.$route.query.parent_resource;
+      let parent_resource = this.me.auths.find(a => a.shared_resource._id == this.parent_resource);
+      this.parent_resource_type = parent_resource.shared_resource_type;
     }
   },
   methods: {

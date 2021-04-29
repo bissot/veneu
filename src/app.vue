@@ -100,7 +100,7 @@
               </q-item-section>
             </q-item>
             <div class="row full-width q-px-md q-mt-md">
-              <q-btn dense size="md" label="New" icon-right="add" class="full-width">
+              <q-btn size="sm" label="New" icon-right="add" class="full-width">
                 <q-menu anchor="bottom middle" self="top middle" :offset="[0, 8]">
                   <q-list class="q-pa-xs text-primary">
                     <q-item class="items-center" title="Checkin" clickable @click="handleHost">
@@ -108,6 +108,14 @@
                       Checkin
                     </q-item>
                     <q-item class="items-center" title="Course" :to="{ name: 'CreateCourse' }">Course</q-item>
+                    <q-item
+                      class="items-center"
+                      title="Registration Section"
+                      :clickable="canCreateSections(data.me.auths) && $route.name != 'CreateRegistrationSection'"
+                      @click="$router.push({ name: 'CreateRegistrationSection' })"
+                      :disabled="!canCreateSections(data.me.auths)"
+                      >Registration Section</q-item
+                    >
                   </q-list>
                 </q-menu>
               </q-btn>
@@ -230,6 +238,12 @@ export default {
     };
   },
   methods: {
+    canCreateSections(auths) {
+      return (
+        auths.filter(a => a.shared_resource_type == "Course" && ["INSTRUCTOR", "TEACHING_ASSISTANT"].includes(a.role))
+          .length > 0
+      );
+    },
     getFormattedDate(d) {
       return date.formatDate(d, "MMM Do, YYYY @ h:mma");
     },

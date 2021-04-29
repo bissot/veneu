@@ -27,7 +27,14 @@ module.exports = {
       info
     ) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return RegistrationSection.create({ name, creator: requester._id, course, ...args }).then(registrationSection => {
+      return RegistrationSection.create({
+        name,
+        creator: requester._id,
+        course,
+        parent_resource: course,
+        parent_resource_type: "Course",
+        ...args
+      }).then(registrationSection => {
         return global.pubsub
           .publish(eventName.COURSE_CREATED, { registrationSectionCreated: registrationSection })
           .then(done => {
@@ -70,6 +77,9 @@ module.exports = {
     }
   },
   RegistrationSection: {
+    parent_resource: (parent, args, { models }, info) => {
+      return models[parent.parent_resource_type].findOne({ _id: parent.parent_resource });
+    },
     course: (parent, args, { models: { Course } }, info) => {
       return Course.findById({ _id: parent.course });
     },

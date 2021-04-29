@@ -40,7 +40,15 @@ const RegistrationSection = new mongoose.Schema(
       {
         type: Object
       }
-    ]
+    ],
+    parent_resource: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
+    },
+    parent_resource_type: {
+      type: String,
+      required: true
+    }
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }

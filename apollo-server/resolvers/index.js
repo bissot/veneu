@@ -1,5 +1,11 @@
 const { ForbiddenError, withFilter } = require("apollo-server-express");
 
+const ParentResourceResolvers = {
+  ParentResource: {
+    __resolveType: parentResource => parentResource.type
+  }
+};
+
 const SharedResourceResolvers = {
   SharedResource: {
     __resolveType: sharedResource => sharedResource.type
@@ -25,6 +31,7 @@ const SearchResultResolvers = {
 };
 
 module.exports = [
+  ParentResourceResolvers,
   SharedResourceResolvers,
   CalendarizableEventResolvers,
   CalendarDeadlineResolvers,
