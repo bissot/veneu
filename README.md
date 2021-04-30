@@ -5,6 +5,7 @@
 ## About
 
 Veneu has goals to be the go-to solution for both synchronous and asynchronous education, in the classroom or from home.
+Want to contribute? Checkout out our [Contributing](./CONTRIBUTING.md)
 
 ## Local Development Setup
 
