@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Course from "./pages/Course.vue";
 import RegistrationSection from "./pages/RegistrationSection.vue";
+import Lecture from "./pages/Lecture.vue";
 
 import CreateCourse from "./pages/CreateCourse.vue";
 import CreateUserGroup from "./pages/CreateUserGroup.vue";
@@ -133,6 +134,14 @@ const router = new VueRouter({
       path: "/create-lecture",
       name: "CreateLecture",
       component: CreateLecture,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/lecture/:_id",
+      name: "Lecture",
+      component: Lecture,
       meta: {
         auth: true
       }

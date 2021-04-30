@@ -19,6 +19,14 @@ const SharedResourceResolvers = {
 };
 
 const CalendarizableEventResolvers = {
+  Query: {
+    calendarEvents: (parent, args, { requester, models: { Lecture } }, info) => {
+      if (!requester) throw new ForbiddenError("Not allowed");
+      return Lecture.find({
+        _id: { $in: requester.auths.filter(a => a.shared_resource_type == "Lecture").map(a => a.shared_resource) }
+      });
+    }
+  },
   CalendarizableEvent: {
     __resolveType: CalendarizableEvent => CalendarizableEvent.type
   }

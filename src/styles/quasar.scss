@@ -270,6 +270,12 @@ h1 {
     color: var(--veneu-blue) !important;
     border-color: var(--veneu-blue) !important;
   }
+  .q-badge * {
+    color: var(--veneu-light) !important;
+  }
+  .week-view-current-time-line {
+    border-color: var(--veneu-red) !important;
+  }
   .q-calendar-daily__head-day-label {
     display: inline-block !important;
     position: relative !important;

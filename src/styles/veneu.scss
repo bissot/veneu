@@ -35,6 +35,9 @@
       * {
         border-color: var(--veneu-light) !important;
       }
+      .week-view-current-time-line {
+        border-color: var(--veneu-red) !important;
+      }
       .q-active-date * {
         color: var(--veneu-light) !important;
       }
@@ -150,7 +153,8 @@ label {
   display: block;
 }
 
-.form {
+.form,
+.q-form {
   margin: auto;
   max-width: 40rem;
 }
