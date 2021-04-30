@@ -93,10 +93,9 @@ module.exports = {
             } else {
               console.log("MAILER FAILED");
             }
-
-            return global.pubsub.publish(eventName.USER_CREATED, { userCreated: user }).then(done => {
-              return user;
-            });
+          });
+          return global.pubsub.publish(eventName.USER_CREATED, { userCreated: user }).then(done => {
+            return user;
           });
         } else {
           return null;

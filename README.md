@@ -1,6 +1,6 @@
 # veneu
 
-<p align="center"><img src="https://github.com/TheStopsign/veneu/blob/main/src/assets/veneu-logo.svg" alt="alt text" width="96" height="96"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/TheStopsign/veneu/main/src/assets/veneu-logo.svg" alt="alt text" width="96" height="96"></p>
 
 ## About
 
