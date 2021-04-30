@@ -22,4 +22,4 @@ How to fill out a good bug report
 # Code Contributions
 
 - All code contributions need to follow the Code of Conduct
-- All code contributions should try and follow the formatting given in the file that the modification occurs
+- All code contributions should try and follow the formatting given in the file that the modification occurs or checkout the [Style Guide](./Style_Guide.md)

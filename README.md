@@ -5,6 +5,7 @@
 ## About
 
 Veneu has goals to be the go-to solution for both synchronous and asynchronous education, in the classroom or from home.
+Want to contribute? Checkout out our [Contributing](./CONTRIBUTING.md)
 
 ## Local Development Setup
 
@@ -17,7 +18,7 @@ Veneu has goals to be the go-to solution for both synchronous and asynchronous e
 
 ### 2) Installation
 
-1. Clone the repository 
+1. Clone the repository
 2. Run `npm install` in the project's root directory
 
 - Should any errors occur during installation, try running `npm update` in both the `/` and `/apollo-server` directories, and retrying step 2
