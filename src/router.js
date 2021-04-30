@@ -16,7 +16,7 @@ import CreateCourse from "./pages/CreateCourse.vue";
 import CreateUserGroup from "./pages/CreateUserGroup.vue";
 import CreateRegistrationSection from "./pages/CreateRegistrationSection.vue";
 import CreateLecture from "./pages/CreateLecture.vue";
-import Settings from "./components/Settings.vue"
+import Settings from "./components/Settings.vue";
 
 import CheckinShow from "./pages/CheckinShow.vue";
 import CheckinScan from "./pages/CheckinScan.vue";
@@ -140,12 +140,12 @@ const router = new VueRouter({
       }
     },
     {
-        path: "/settings",
-        name: "Settings",
-        component: Settings,
-        meta: {
-          auth: false
-        }
+      path: "/settings",
+      name: "Settings",
+      component: Settings,
+      meta: {
+        auth: false
+      }
     },
     {
       path: "/lecture/:_id",

@@ -1,104 +1,121 @@
 <template>
-  <q-page id="dashboard" class="q-pb-md">
-    <div v-if="events">
-      <q-tabs color="primary" v-model="tab" align="justify" indicator-color="transparent" active-color="secondary">
+  <q-page id="dashboard" class="q-pb-md" style="height: 100%;">
+    <div v-if="events" style="position: absolute; height: 100%; width: 100%; display: flex; flex-direction: column;">
+      <q-tabs
+        style="display: flex; flex-direction: row;"
+        color="primary"
+        v-model="tab"
+        align="justify"
+        indicator-color="transparent"
+        active-color="secondary"
+        class="full-width"
+      >
         <q-tab name="calendar" label="Calendar" class="q-mr-sm q-ml-md q-mt-md q-mb-sm" />
         <q-tab name="timeline" label="Timeline" class="q-mx-sm q-mt-md q-mb-sm" />
         <q-tab name="resource" label="Resource" class="q-mr-md q-ml-sm q-mt-md q-mb-sm" />
       </q-tabs>
-      <q-tab-panels v-model="tab" animated>
-        <q-tab-panel name="calendar" class="row full-width q-py-sm q-px-md">
-          <div class="row full-width justify-between items-center q-mb-md q-px-md">
+      <q-tab-panels v-model="tab" animated style="display: flex; flex-direction: column; height: 100%; width: 100%;">
+        <q-tab-panel name="calendar" class="q-pt-sm">
+          <div class="row full-width justify-between items-center ">
             <q-btn flat label="Prev" @click="calendarPrev" />
             <q-btn flat label="Next" @click="calendarNext" />
           </div>
-          <q-calendar
-            ref="calendar"
-            v-model="selectedDate"
-            view="week"
-            locale="en-us"
-            style="height: 100%; minWidth: 50rem;"
-            color="primary"
-            short-interval-label
-            transition-prev="slide-right"
-            transition-next="slide-left"
-            class="neu-convex q-pa-xs"
-            :interval-minutes="30"
-            :interval-count="48"
-            @click:time2="onClickInterval"
-          >
-            <template #day-header="{ timestamp }">
-              <div class="row justify-center">
-                <template v-for="(event, index) in eventsMap[timestamp.date]">
+          <div class="neu-convex q-mt-md" style="display: flex; flex-direction: column; height: 100%; width: 100%;">
+            <q-calendar
+              ref="calendar"
+              v-model="selectedDate"
+              view="week"
+              locale="en-us"
+              color="primary"
+              short-interval-label
+              transition-prev="slide-right"
+              transition-next="slide-left"
+              class="neu-convex q-pa-xs"
+              :interval-minutes="30"
+              :interval-count="48"
+              @click:time2="onClickInterval"
+            >
+              <template #day-header="{ timestamp }">
+                <div class="row justify-center">
+                  <template v-for="(event, index) in eventsMap[timestamp.date]">
+                    <q-badge
+                      v-if="!event.time"
+                      :key="index"
+                      style="width: 100%; cursor: pointer;"
+                      :class="badgeClasses(event, 'header')"
+                      :style="badgeStyles(event, 'header')"
+                    >
+                      <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs"></q-icon
+                      ><span class="ellipsis">{{ event.title }}</span>
+                    </q-badge>
+                    <q-badge
+                      v-else
+                      :key="index"
+                      class="q-ma-xs"
+                      :class="badgeClasses(event, 'header')"
+                      :style="badgeStyles(event, 'header')"
+                      style="width: 10px; max-width: 10px; height: 10px; max-height: 10px"
+                    />
+                  </template>
+                </div>
+              </template>
+
+              <template #day-body="{ timestamp, timeStartPos, timeDurationHeight }">
+                <template v-for="event in getEvents(timestamp.date)">
                   <q-badge
-                    v-if="!event.time"
-                    :key="index"
-                    style="width: 100%; cursor: pointer;"
-                    :class="badgeClasses(event, 'header')"
-                    :style="badgeStyles(event, 'header')"
+                    v-if="event.time"
+                    :key="event._id"
+                    class="my-event justify-center"
+                    :class="badgeClasses(event, 'body') + ' ' + event.type"
+                    :style="badgeStyles(event, 'body', timeStartPos, timeDurationHeight)"
+                    :id="event._id"
                   >
                     <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs"></q-icon
                     ><span class="ellipsis">{{ event.title }}</span>
                   </q-badge>
-                  <q-badge
-                    v-else
-                    :key="index"
-                    class="q-ma-xs"
-                    :class="badgeClasses(event, 'header')"
-                    :style="badgeStyles(event, 'header')"
-                    style="width: 10px; max-width: 10px; height: 10px; max-height: 10px"
-                  />
                 </template>
-              </div>
-            </template>
-
-            <template #day-body="{ timestamp, timeStartPos, timeDurationHeight }">
-              <template v-for="event in getEvents(timestamp.date)">
-                <q-badge
-                  v-if="event.time"
-                  :key="event._id"
-                  class="my-event justify-center"
-                  :class="badgeClasses(event, 'body') + ' ' + event.type"
-                  :style="badgeStyles(event, 'body', timeStartPos, timeDurationHeight)"
-                  :id="event._id"
-                >
-                  <q-icon v-if="event.icon" :name="event.icon" class="q-mr-xs"></q-icon
-                  ><span class="ellipsis">{{ event.title }}</span>
-                </q-badge>
               </template>
-            </template>
 
-            <template #day-container="{ /* timestamp */ }">
-              <div class="week-view-current-time-indicator" :style="style" />
-              <div class="week-view-current-time-line" :style="style" />
-            </template>
-          </q-calendar>
+              <template #day-container="{ /* timestamp */ }">
+                <div class="week-view-current-time-indicator" :style="style" />
+                <div class="week-view-current-time-line" :style="style" />
+              </template>
+            </q-calendar>
+          </div>
         </q-tab-panel>
 
-        <q-tab-panel name="timeline" class="row full-width q-py-sm q-px-md">
-          <q-timeline :layout="layout" color="primary" v-if="events" class="neu-convex q-pa-md">
-            <q-timeline-entry class="text-primary" heading>
-              Timeline
-            </q-timeline-entry>
+        <q-tab-panel name="timeline" class="q-pt-sm">
+          <div
+            class="neu-convex q-pa-md q-my-none"
+            style="display: flex; flex-direction: column; height: 100%; width: 100%; overflow: auto;"
+          >
+            <q-timeline :layout="layout" color="primary" v-if="events">
+              <q-timeline-entry class="text-primary" heading>
+                Timeline
+              </q-timeline-entry>
 
-            <q-timeline-entry
-              :title="evt.type + ' - ' + evt.name"
-              :subtitle="evt.type + getFormattedDate(evt.start)"
-              side="left"
-              v-for="evt in getSorted(events)"
-              :key="evt._id"
-              icon="class"
-            >
-              <div>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua.
-              </div>
-            </q-timeline-entry>
-          </q-timeline>
+              <q-timeline-entry
+                :title="evt.type + ' - ' + evt.name"
+                :subtitle="evt.type + getFormattedDate(evt.start)"
+                side="left"
+                v-for="evt in getSorted(events)"
+                :key="evt._id"
+                icon="class"
+              >
+                <div>
+                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
+                  et dolore magna aliqua.
+                </div>
+              </q-timeline-entry>
+            </q-timeline>
+          </div>
         </q-tab-panel>
 
-        <q-tab-panel name="resource" class="row full-width q-py-sm q-px-md">
-          <div class="neu-convex full-width q-pa-md">
+        <q-tab-panel name="resource" class="q-pt-sm">
+          <div
+            class="neu-convex full-width q-pa-md"
+            style="display: flex; flex-direction: column; height: 100%; width: 100%; overflow: auto;"
+          >
             <div class="text-h6">Resource View</div>
             Coming soon
           </div>
@@ -359,6 +376,15 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.q-tab-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+</style>
 
 <style lang="sass">
 .calendar-container
