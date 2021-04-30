@@ -28,8 +28,8 @@
           What are the start and end times?
         </div>
         <div class="row full-width q-px-md q-pb-md">
-          <q-time v-model="start" color="primary" mask="HH:mm" class="col-12 col-sm q-mr-md neu-convex q-mt-md" />
-          <q-time v-model="end" color="primary" mask="HH:mm" class="col-12 col-sm neu-convex q-mt-md" />
+          <q-time v-model="start" color="primary" mask="HH:mm Z" class="col-12 col-sm q-mr-md neu-convex q-mt-md" />
+          <q-time v-model="end" color="primary" mask="HH:mm Z" class="col-12 col-sm neu-convex q-mt-md" />
         </div>
         <q-bar class="q-pa-none q-gutter-x-md">
           <q-btn label="Back" class="q-ml-sm" @click="handleBack" />
