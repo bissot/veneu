@@ -25,12 +25,7 @@
               <q-icon name="schedule" size="sm" class="q-mx-sm" /> {{ wde.event.start }} -
               {{ wde.event.end }}
             </div>
-            <q-timeline
-              :layout="layout"
-              color="primary"
-              v-if="data.registrationSection.lectures"
-              class="neu-convex q-pa-md"
-            >
+            <q-timeline :layout="layout" color="primary" v-if="data.registrationSection.lectures">
               <q-timeline-entry class="text-primary" heading>
                 Timeline
               </q-timeline-entry>

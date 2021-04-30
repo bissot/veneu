@@ -78,7 +78,8 @@ body,
 .q-item__section--side > .q-icon,
 .q-date,
 .q-time,
-.q-select {
+.q-select,
+.q-timeline__entry {
   border-radius: 1rem !important;
 }
 
@@ -100,7 +101,8 @@ body,
 .q-menu,
 #me .q-avatar,
 .q-date,
-.q-tab {
+.q-tab,
+.q-timeline__entry {
   animation: grow-in-button 0.5s forwards !important;
 }
 
@@ -298,4 +300,51 @@ h1 {
 
 .q-tab--active .q-tab__indicator {
   opacity: 0 !important;
+}
+
+.q-timeline__entry {
+  margin: 16px 0px !important;
+  padding: 16px !important;
+  width: 100% !important;
+}
+
+.q-timeline--dense--right .q-timeline__entry {
+  padding-left: 48px !important;
+}
+
+.q-timeline__heading .q-timeline__heading-title {
+  margin-left: 16px !important;
+}
+
+.q-timeline--loose .q-timeline__heading .q-timeline__heading-title {
+  margin-left: 0px !important;
+}
+
+.q-timeline--comfortable {
+  display: block;
+  .q-timeline__entry {
+    display: block;
+  }
+}
+
+.q-timeline--comfortable--right .q-timeline__content {
+  padding-left: 16px !important;
+}
+
+.q-timeline__dot,
+.q-timeline--loose .q-timeline__dot {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.q-timeline--dense--right .q-timeline__entry--icon .q-timeline__dot {
+  left: 8px;
+}
+
+.q-timeline__entry:last-child {
+  padding-bottom: 16px !important;
+}
+
+.q-timeline__content {
+  padding-bottom: 0px !important;
 }

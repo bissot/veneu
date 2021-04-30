@@ -84,9 +84,9 @@
           </div>
         </q-tab-panel>
 
-        <q-tab-panel name="timeline" class="q-pt-sm">
+        <q-tab-panel name="timeline" class="q-pt-sm q-px-none">
           <div
-            class="neu-convex q-pa-md q-my-none"
+            class="q-px-md q-my-none"
             style="display: flex; flex-direction: column; height: 100%; width: 100%; overflow: auto;"
           >
             <q-timeline :layout="layout" color="primary" v-if="events">
@@ -96,7 +96,7 @@
 
               <q-timeline-entry
                 :title="evt.type + ' - ' + evt.name"
-                :subtitle="evt.type + getFormattedDate(evt.start)"
+                :subtitle="getFormattedDate(evt.start)"
                 side="left"
                 v-for="evt in getSorted(events)"
                 :key="evt._id"

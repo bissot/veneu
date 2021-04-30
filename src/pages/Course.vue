@@ -13,7 +13,7 @@
             <div class="row full-width">
               Description: {{ data.course.description ? data.course.description : "None" }}
             </div>
-            <q-timeline :layout="layout" color="primary" v-if="data.course.lectures" class="neu-convex q-pa-md">
+            <q-timeline :layout="layout" color="primary" v-if="data.course.lectures">
               <q-timeline-entry class="text-primary" heading>
                 Timeline
               </q-timeline-entry>
