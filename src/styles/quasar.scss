@@ -131,7 +131,9 @@ body,
 .q-btn-group .q-focus-helper,
 .q-btn__wrapper::before {
   box-shadow: none !important;
-  animation: none;
+  animation: none !important;
+  -webkit-box-shadow: none !important;
+  -webkit-animation: none !important;
 }
 
 .q-btn--rectangle,
