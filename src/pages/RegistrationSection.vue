@@ -1,10 +1,10 @@
 <template>
-  <q-page class="q-pt-md">
+  <q-page>
     <ApolloQuery :query="require('../graphql/RegistrationSection.gql')" :variables="{ _id: $route.params._id }">
       <template slot-scope="{ result: { loading, error, data } }">
         <div v-if="loading">Loading...</div>
         <div v-if="error">Error...</div>
-        <div v-if="data && data.registrationSection" class="q-px-md" id="registrationsectionloaded">
+        <div v-if="data && data.registrationSection" id="registrationsectionloaded">
           <div>
             <h1 class="q-pa-sm">{{ data.registrationSection.name }}</h1>
             <div class="row full-width q-my-sm">
