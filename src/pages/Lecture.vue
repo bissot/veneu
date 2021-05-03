@@ -1,10 +1,10 @@
 <template>
-  <q-page>
+  <q-page class="q-pa-md">
     <ApolloQuery :query="require('../graphql/Lecture.gql')" :variables="{ _id: $route.params._id }">
       <template slot-scope="{ result: { loading, error, data } }">
         <div v-if="loading">Loading...</div>
         <div v-if="error">Error...</div>
-        <div v-if="data && data.lecture" class="q-px-md" id="lectureloaded">
+        <div v-if="data && data.lecture" id="lectureloaded">
           <div>
             <h1 class="q-pa-sm q-mb-md">{{ data.lecture.name }}</h1>
             {{ getFormattedDate(data.lecture.start) }} - {{ getFormattedDate(data.lecture.end) }}

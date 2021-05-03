@@ -1,13 +1,13 @@
 <template>
-  <q-page id="create-course" class="q-pb-md">
+  <q-page id="create-course" class="q-pa-md">
     <ApolloMutation
       :mutation="require('../graphql/CreateCourse.gql')"
       :variables="{ name, prefix, suffix, start, end, description }"
-      class="form"
+      class="form q-pb-md"
       @done="handleCreateCourse"
     >
       <template slot-scope="{ mutate }">
-        <q-form @submit.prevent="formValid && mutate()" class="q-ma-md q-pa-md q-pt-xl neu-convex">
+        <q-form @submit.prevent="formValid && mutate()" class="q-ma-md q-pa-md q-pt-lg neu-convex">
           <div>
             <i><h1>New Course...</h1></i>
           </div>

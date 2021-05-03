@@ -1,11 +1,11 @@
 <template>
-  <q-page id="create-course" class="container">
-    <div class="vertical-center">
-      <div class="q-my-md">
-        <i><h1>Create a New Lecture</h1></i>
-      </div>
-      <q-form class="q-gutter-md q-ma-lg q-py-md neu-convex">
-        <ResourceSelector :me="me" label="For Resource..." @change="handleChangeResource" />
+  <q-page id="create-course" class="q-pa-md">
+    <div class="q-pb-md">
+      <q-form class="q-gutter-md q-ma-md q-py-md neu-convex form q-mb-lg">
+        <div>
+          <i><h1>Create a New Lecture</h1></i>
+        </div>
+        <ResourceSelector :me="me" label="For Resource..." @change="handleChangeResource" class="q-mt-md" />
         <q-input
           standout="bg-primary text-white q-ma-none"
           color="primary"

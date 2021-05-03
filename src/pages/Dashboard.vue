@@ -2,7 +2,7 @@
   <q-page id="dashboard" class="q-pb-md" style="height: 100%;">
     <div v-if="events" style="position: absolute; height: 100%; width: 100%; display: flex; flex-direction: column;">
       <q-tabs
-        style="display: flex; flex-direction: row;"
+        style="display: flex; flex-direction: row; width: 100%;"
         color="primary"
         v-model="tab"
         align="justify"

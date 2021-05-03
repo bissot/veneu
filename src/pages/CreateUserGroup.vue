@@ -1,41 +1,33 @@
 <template>
-  <q-page id="create-course" class="container">
-    <div class="vertical-center">
-      <div>
-        <i><h1>Create a New Group</h1></i>
-      </div>
-      <ApolloMutation
-        :mutation="require('../graphql/CreateUserGroup.gql')"
-        :variables="{ name, parent_resource, parent_resource_type }"
-        class="form"
-        @done="handleCreateUserGroup"
-      >
-        <template slot-scope="{ mutate }">
-          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-md q-ma-lg q-mt-xl q-py-md neu-convex">
-            <ResourceSelector :me="me" label="For Resource..." @change="handleChangeResource" />
-            <q-input
-              standout="bg-primary text-white q-ma-none"
-              color="primary"
-              class="text-primary q-mt-none"
-              v-model="name"
-              label="Group Name"
-              placeholder="e.g. Team 2"
-            >
-            </q-input>
-            <q-bar class="q-pa-none q-gutter-x-md">
-              <q-btn type="button" label="Back" class="q-ml-md" @click="handleBack" />
-              <q-btn
-                type="submit"
-                color="primary"
-                label="Continue"
-                class="q-ml-md full-width"
-                :disable="!formValid()"
-              />
-            </q-bar>
-          </q-form>
-        </template>
-      </ApolloMutation>
-    </div>
+  <q-page id="create-course" class="q-pa-md">
+    <ApolloMutation
+      :mutation="require('../graphql/CreateUserGroup.gql')"
+      :variables="{ name, parent_resource, parent_resource_type }"
+      class="form q-pb-md"
+      @done="handleCreateUserGroup"
+    >
+      <template slot-scope="{ mutate }">
+        <q-form @submit.prevent="formValid && mutate()" class="q-gutter-md q-ma-md q-py-md neu-convex">
+          <div>
+            <i><h1>Create a New Group</h1></i>
+          </div>
+          <ResourceSelector :me="me" label="For Resource..." @change="handleChangeResource" />
+          <q-input
+            standout="bg-primary text-white q-ma-none"
+            color="primary"
+            class="text-primary q-mt-none"
+            v-model="name"
+            label="Group Name"
+            placeholder="e.g. Team 2"
+          >
+          </q-input>
+          <q-bar class="q-pa-none q-gutter-x-md">
+            <q-btn type="button" label="Back" class="q-ml-md" @click="handleBack" />
+            <q-btn type="submit" color="primary" label="Continue" class="q-ml-md full-width" :disable="!formValid()" />
+          </q-bar>
+        </q-form>
+      </template>
+    </ApolloMutation>
   </q-page>
 </template>
 
