@@ -1,5 +1,5 @@
 <template>
-  <q-page style="display: flex; flex-direction: column; height: 100%;">
+  <q-page class="q-pa-md">
     <q-dialog v-model="needsName" persistent transition-show="scale" transition-hide="scale">
       <q-card class="bg-teal text-primary" style="width: 300px">
         <q-card-section>

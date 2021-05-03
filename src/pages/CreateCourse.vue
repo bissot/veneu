@@ -32,8 +32,6 @@
           >
           </q-input>
 
-          <q-separator class="q-my-md" />
-
           <q-input
             type="text"
             standout="bg-primary text-white"
@@ -41,7 +39,7 @@
             v-model="prefix"
             label="Department"
             placeholder="e.g. CSCI"
-            class="q-mt-md"
+            class="q-mt-lg"
           >
             <template v-slot:prepend>
               <q-icon name="sort_by_alpha" />
@@ -60,8 +58,8 @@
               <q-icon name="pin" />
             </template>
           </q-input>
-          <q-separator class="q-mt-md" />
-          <div class="row full-width q-mt-none q-pt-none">
+
+          <div class="row full-width q-mt-sm q-pt-none">
             <q-date dense v-model="start" class="col-12 col-sm q-mt-md q-mr-md neu-convex" subtitle="Start date" />
             <q-date dense v-model="end" class="col-12 col-sm q-mt-md neu-convex" subtitle="End date" />
           </div>
