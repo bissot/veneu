@@ -1,10 +1,7 @@
 <template>
   <div id="first_login" class="container">
-    <div class="vertical-center">
+    <div class="vertical-center q-px-md">
       <VeneuLogo class="spinner" />
-      <div>
-        <i><h1>Continue setting up...</h1></i>
-      </div>
       <ApolloMutation
         :mutation="require('../graphql/FirstLogin.gql')"
         :variables="{ access_code, first_name, last_name, password }"
@@ -12,14 +9,17 @@
         @done="handleLogin"
       >
         <template slot-scope="{ mutate }">
-          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-y-md q-pa-lg q-ma-lg neu-convex">
+          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-y-md q-pa-md q-ma-md neu-convex">
+            <div>
+              <i><h1>Continue setting up...</h1></i>
+            </div>
             <q-input
               type="password"
               standout="bg-primary text-white"
               color="primary"
               v-model="password"
               label="Password"
-              class="q-mt-sm"
+              class="q-mt-md"
             >
               <template v-slot:prepend>
                 <q-icon name="password" />

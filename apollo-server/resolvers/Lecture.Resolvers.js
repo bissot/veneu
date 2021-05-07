@@ -18,13 +18,19 @@ module.exports = {
     }
   },
   Mutation: {
-    createLecture: (parent, { name, start, end, parent_resource }, { requester, models: { Lecture } }, info) => {
+    createLecture: (
+      parent,
+      { name, start, end, parent_resource, parent_resource_type },
+      { requester, models: { Lecture } },
+      info
+    ) => {
       if (!requester) throw new ForbiddenError("Not allowed");
       return Lecture.create({
         name,
         start,
         end,
         parent_resource,
+        parent_resource_type,
         creator: requester._id
       }).then(lecture => {
         return global.pubsub.publish(eventName.LECTURE_CREATED, { lectureCreated: lecture }).then(done => {
@@ -62,18 +68,5 @@ module.exports = {
       subscribe: () => global.pubsub.asyncIterator([eventName.LECTURE_DELETED])
     }
   },
-  Lecture: {
-    auths: (parent, args, { models: { Auth } }, info) => {
-      return Auth.find({ _id: { $in: parent.auths } });
-    },
-    parent_resource: (parent, args, { models: { Course, UserGroup, RegistrationSection } }, info) => {
-      return Promise.all([
-        Course.findById({ _id: parent.parent_resource }),
-        UserGroup.findById({ _id: parent.parent_resource }),
-        RegistrationSection.findById({ _id: parent.parent_resource })
-      ]).then(res => {
-        return res[0] || res[1] || res[2];
-      });
-    }
-  }
+  Lecture: {}
 };

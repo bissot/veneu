@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="q-pa-md">
     <q-dialog v-model="needsName" persistent transition-show="scale" transition-hide="scale">
       <q-card class="bg-teal text-primary" style="width: 300px">
         <q-card-section>
@@ -25,27 +25,27 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <div class="vertical-center text-center q-pa-md">
+    <div class="text-center" style="display: flex; flex-direction: column; height: 100%;">
       <q-btn
         v-if="$q.platform.is.desktop && false === screen_scanning && !camera_scanning"
-        class="q-ma-md"
         @click="handleStartScreenScan()"
         icon="monitor"
         icon-right="qr_code_scanner"
         size="xl"
         label="Screen Scan"
+        class="row"
       />
       <q-btn
         v-else-if="true === screen_scanning"
-        class="q-ma-md"
         @click="handleStopScreenScan()"
         icon-right="stop"
         size="xl"
         label="Stop"
+        class="row"
       />
       <q-btn
         v-if="has_camera && false === screen_scanning && !camera_scanning"
-        class="q-ma-md"
+        class="q-mt-md row"
         @click="handleStartCamScan()"
         icon="photo_camera"
         icon-right="qr_code_scanner"
@@ -54,21 +54,28 @@
       />
       <q-btn
         v-else-if="camera_scanning"
-        class="q-ma-md"
+        class="q-mt-md row"
         @click="handleStopCamScan()"
         icon-right="stop"
         size="xl"
         label="Stop"
       />
-      <q-icon v-if="true === screen_scanning || camera_scanning" size="xl" :name="!last ? 'search' : 'qr_code'" />
-      <video id="captured-screen" autoplay :style="{ display: 'none' }"></video>
-      <video
-        v-if="camera_scanning"
-        id="camera-video"
-        autoplay
-        :style="{ display: 'inline-block', maxWidth: '100%' }"
-        class="q-pa-md neu-convex"
-      ></video>
+      <q-icon
+        v-if="true === screen_scanning || camera_scanning"
+        size="xl"
+        :name="!last ? 'search' : 'qr_code'"
+        style="display: flex; flex-direction: row;"
+      />
+      <q-responsive :ratio="16 / 9" style="max-height: 50vh;">
+        <video id="captured-screen" autoplay :style="{ display: 'none' }"></video>
+        <video
+          v-if="camera_scanning"
+          id="camera-video"
+          autoplay
+          style="display: flex; flex-direction: row;"
+          class="q-pa-md neu-convex"
+        ></video>
+      </q-responsive>
     </div>
     <ApolloSubscribeToMore
       v-if="user"

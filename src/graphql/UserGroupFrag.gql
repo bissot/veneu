@@ -2,8 +2,10 @@ fragment UserGroup on UserGroup {
   _id
   name
   parent_resource {
-    _id
-    name
+    ... on SharedResource {
+      _id
+      type
+    }
   }
   auths {
     _id

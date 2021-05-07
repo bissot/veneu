@@ -57,7 +57,15 @@ const Course = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Lecture"
       }
-    ]
+    ],
+    parent_resource: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: false
+    },
+    parent_resource_type: {
+      type: String,
+      required: false
+    }
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }

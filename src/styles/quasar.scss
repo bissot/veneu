@@ -26,8 +26,12 @@ aside.q-drawer--mobile {
 }
 
 .q-table__bottom .q-btn {
-  margin: 8px;
+  margin: 8px !important;
 }
+
+// .q-form {
+//   margin: 16px 0px !important;
+// }
 
 .q-bar,
 .q-footer,
@@ -78,7 +82,8 @@ body,
 .q-item__section--side > .q-icon,
 .q-date,
 .q-time,
-.q-select {
+.q-select,
+.q-timeline__entry {
   border-radius: 1rem !important;
 }
 
@@ -100,7 +105,8 @@ body,
 .q-menu,
 #me .q-avatar,
 .q-date,
-.q-tab {
+.q-tab,
+.q-timeline__entry {
   animation: grow-in-button 0.5s forwards !important;
 }
 
@@ -129,7 +135,9 @@ body,
 .q-btn-group .q-focus-helper,
 .q-btn__wrapper::before {
   box-shadow: none !important;
-  animation: none;
+  animation: none !important;
+  -webkit-box-shadow: none !important;
+  -webkit-animation: none !important;
 }
 
 .q-btn--rectangle,
@@ -198,7 +206,7 @@ body,
 
 .q-timeline__heading-title {
   font-family: "Exo 2" !important;
-  color: var(--veneu-dark);
+  color: var(--veneu-blue);
 }
 
 .q-badge[rounded] {
@@ -270,6 +278,12 @@ h1 {
     color: var(--veneu-blue) !important;
     border-color: var(--veneu-blue) !important;
   }
+  .q-badge * {
+    color: var(--veneu-light) !important;
+  }
+  .week-view-current-time-line {
+    border-color: var(--veneu-red) !important;
+  }
   .q-calendar-daily__head-day-label {
     display: inline-block !important;
     position: relative !important;
@@ -284,4 +298,59 @@ h1 {
   .q-calendar-daily__scroll-area {
     overflow-y: auto;
   }
+}
+
+.q-tree__node--selected {
+  background-color: var(--veneu-blue) !important;
+}
+
+.q-tab--active .q-tab__indicator {
+  opacity: 0 !important;
+}
+
+.q-timeline__entry {
+  margin: 16px 0px !important;
+  padding: 16px !important;
+  width: 100% !important;
+}
+
+.q-timeline--dense--right .q-timeline__entry {
+  padding-left: 48px !important;
+}
+
+.q-timeline__heading .q-timeline__heading-title {
+  margin-left: 16px !important;
+}
+
+.q-timeline--loose .q-timeline__heading .q-timeline__heading-title {
+  margin-left: 0px !important;
+}
+
+.q-timeline--comfortable {
+  display: block;
+  .q-timeline__entry {
+    display: block;
+  }
+}
+
+.q-timeline--comfortable--right .q-timeline__content {
+  padding-left: 16px !important;
+}
+
+.q-timeline__dot,
+.q-timeline--loose .q-timeline__dot {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.q-timeline--dense--right .q-timeline__entry--icon .q-timeline__dot {
+  left: 8px;
+}
+
+.q-timeline__entry:last-child {
+  padding-bottom: 16px !important;
+}
+
+.q-timeline__content {
+  padding-bottom: 0px !important;
 }

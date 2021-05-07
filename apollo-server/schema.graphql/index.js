@@ -1,16 +1,6 @@
 const { gql } = require("apollo-server-express");
 
 const linkSchema = gql`
-  type Query {
-    _: Boolean
-  }
-  type Mutation {
-    _: Boolean
-  }
-  type Subscription {
-    _: Boolean
-  }
-
   # directive @auth(requires: Role!) on OBJECT | FIELD_DEFINITION
 
   enum Role {
@@ -22,12 +12,16 @@ const linkSchema = gql`
     UNKNOWN
   }
 
+  union ParentResource = User | Course | RegistrationSection | UserGroup | Lecture
+
   interface SharedResource {
     _id: ID!
     creator: User!
     auths: [Auth!]!
     name: String!
     type: String!
+    parent_resource: ParentResource
+    parent_resource_type: String
   }
 
   interface CalendarizableEvent {
@@ -79,6 +73,17 @@ const linkSchema = gql`
   union SearchResult = User | Course | UserGroup
 
   scalar Date
+
+  type Query {
+    _: Boolean
+    calendarEvents: [CalendarizableEvent!]!
+  }
+  type Mutation {
+    _: Boolean
+  }
+  type Subscription {
+    _: Boolean
+  }
 `;
 
 module.exports = [

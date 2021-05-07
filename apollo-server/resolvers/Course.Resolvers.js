@@ -22,11 +22,13 @@ module.exports = {
   Mutation: {
     createCourse: (parent, args, { requester, models: { Course } }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return Course.create({ creator: requester._id, ...args }).then(course => {
-        return global.pubsub.publish(eventName.COURSE_CREATED, { courseCreated: course }).then(done => {
-          return course;
-        });
-      });
+      return Course.create({ creator: requester._id, parent_resource: null, parent_resource_type: null, ...args }).then(
+        course => {
+          return global.pubsub.publish(eventName.COURSE_CREATED, { courseCreated: course }).then(done => {
+            return course;
+          });
+        }
+      );
     },
     updateCourse(parent, { _id, ...patch }, { requester, models: { Course } }, info) {
       if (!requester) throw new ForbiddenError("Not allowed");
@@ -69,7 +71,6 @@ module.exports = {
     }
   },
   Course: {
-    auths: (parent, args, { models: { Auth } }, info) => Auth.find({ _id: { $in: parent.auths } }),
     user_groups: (parent, args, { models: { UserGroup } }, info) =>
       UserGroup.find({ _id: { $in: parent.user_groups } }),
     registration_sections: (parent, args, { models: { RegistrationSection } }, info) =>

@@ -9,7 +9,8 @@ module.exports = gql`
     auths: [Auth!]!
     start: Date!
     end: Date!
-    parent_resource: SharedResource!
+    parent_resource: ParentResource!
+    parent_resource_type: String!
   }
 
   extend type Query {
@@ -18,7 +19,13 @@ module.exports = gql`
   }
 
   extend type Mutation {
-    createLecture(name: String!, start: Date!, end: Date!, parent_resource: ID!): Lecture!
+    createLecture(
+      name: String!
+      start: Date!
+      end: Date!
+      parent_resource: ID!
+      parent_resource_type: String!
+    ): Lecture!
     updateLecture(_id: ID!, name: String, start: Date, end: Date): Lecture!
     deleteLecture(_id: ID!): Lecture!
   }

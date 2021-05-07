@@ -11,6 +11,8 @@ module.exports = gql`
     user_groups: [UserGroup!]!
     lectures: [Lecture!]!
     meeting_times: [WeekDayEvent!]!
+    parent_resource: ParentResource!
+    parent_resource_type: String!
   }
 
   extend type Query {

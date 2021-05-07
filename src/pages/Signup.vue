@@ -2,21 +2,21 @@
   <q-page id="login-page" class="container">
     <div class="vertical-center">
       <VeneuLogo class="spinner" />
-      <div>
-        <i><h1>Signup</h1></i>
-      </div>
       <ApolloMutation
         :mutation="require('../graphql/CreateUser.gql')"
         :variables="{ email }"
-        class="form"
+        class="form q-px-md"
         @done="handleSignup"
       >
         <template slot-scope="{ mutate }">
-          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-y-md q-pa-lg q-ma-lg neu-convex">
+          <q-form @submit.prevent="formValid && mutate()" class="q-gutter-y-md q-pa-md q-ma-md neu-convex">
+            <div>
+              <i><h1>Signup</h1></i>
+            </div>
             <q-input
               standout="bg-primary text-white"
               color="primary"
-              class="text-primary q-pa-none q-ma-none"
+              class="text-primary q-pa-none q-ma-none q-mt-md"
               v-model="email"
               label="Email"
             >

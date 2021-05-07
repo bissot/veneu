@@ -1,4 +1,5 @@
 const { AuthenticationError, ForbiddenError } = require("apollo-server-express");
+const mongoose = require("mongoose");
 
 const eventName = {
   USERGROUP_CREATED: "USERGROUP_CREATED",
@@ -20,13 +21,34 @@ module.exports = {
     }
   },
   Mutation: {
-    createUserGroup: (parent, { name, parent_resource }, { requester, models: { UserGroup } }, info) => {
+    createUserGroup: (parent, { name, parent_resource, parent_resource_type }, { requester, models }, info) => {
       if (!requester) throw new ForbiddenError("Not allowed");
-      return UserGroup.create({ name, creator: requester._id, parent_resource }).then(userGroup => {
-        return global.pubsub.publish(eventName.COURSE_CREATED, { userGroupCreated: userGroup }).then(done => {
-          return userGroup;
+      if (parent_resource_type == "User" && parent_resource == requester._id) {
+        return models.UserGroup.create({ name, creator: requester._id, parent_resource, parent_resource_type }).then(
+          userGroup => {
+            return global.pubsub.publish(eventName.COURSE_CREATED, { userGroupCreated: userGroup }).then(done => {
+              return userGroup;
+            });
+          }
+        );
+      } else if (
+        requester.auths.find(
+          a => a.shared_resource == parent_resource && ["ADMIN", "INSTRUCTOR", "TEACHING_ASSISTANT"].includes(a.role)
+        )
+      ) {
+        return models.UserGroup.create({
+          name,
+          creator: requester._id,
+          parent_resource,
+          parent_resource_type
+        }).then(userGroup => {
+          return global.pubsub.publish(eventName.COURSE_CREATED, { userGroupCreated: userGroup }).then(done => {
+            return userGroup;
+          });
         });
-      });
+      } else {
+        throw new Error("Resource does not exist for your scope");
+      }
     },
     updateUserGroup(parent, { _id, ...patch }, { requester, models: { UserGroup } }, info) {
       if (!requester || requester._id != _id) throw new ForbiddenError("Not allowed");
@@ -59,18 +81,6 @@ module.exports = {
     }
   },
   UserGroup: {
-    parent_resource: (parent, args, { models: { Course, UserGroup, RegistrationSection } }, info) => {
-      return Promise.all([
-        Course.findById({ _id: parent.parent_resource }),
-        UserGroup.findById({ _id: parent.parent_resource }),
-        RegistrationSection.findById({ _id: parent.parent_resource })
-      ]).then(res => {
-        return res[0] || res[1] || res[2];
-      });
-    },
-    auths: (parent, args, { models: { Auth } }, info) => {
-      return Auth.find({ _id: { $in: parent.auths } });
-    },
     user_groups: (parent, args, { models: { UserGroup } }, info) => {
       return UserGroup.find({ _id: { $in: parent.user_groups } });
     },

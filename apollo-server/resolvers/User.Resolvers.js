@@ -3,14 +3,14 @@ const { AuthenticationError, ForbiddenError } = require("apollo-server-express")
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
-const fs = require('fs');
-const hbs = require('nodemailer-express-handlebars');
+const fs = require("fs");
+const hbs = require("nodemailer-express-handlebars");
 
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
 const { OAuth2 } = google.auth;
 const OAUTH_PLAYGROUND = "https://developers.google.com/oauthplayground";
-const { GMAIL_OAUTH_ID, GMAIL_OAUTH_SECRET, GMAIL_OAUTH_REFRESH } = process.env;
+const { GMAIL_OAUTH_ID, GMAIL_OAUTH_SECRET, GMAIL_OAUTH_REFRESH, GMAIL } = process.env;
 const oauth2Client = new OAuth2(GMAIL_OAUTH_ID, GMAIL_OAUTH_SECRET, OAUTH_PLAYGROUND);
 
 const eventName = {
@@ -37,61 +37,69 @@ module.exports = {
       return User.create({
         email
       }).then(user => {
-        oauth2Client.setCredentials({
-          refresh_token: GMAIL_OAUTH_REFRESH
-        });
-        oauth2Client.getAccessToken((err, accessToken) => {
-          var transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-              type: "OAuth2",
-              user: "venue.do.not.reply@gmail.com",
-              clientId: GMAIL_OAUTH_ID,
-              clientSecret: GMAIL_OAUTH_SECRET,
-              refreshToken: GMAIL_OAUTH_REFRESH,
-              accessToken
-            }
+        if (user) {
+          oauth2Client.setCredentials({
+            refresh_token: GMAIL_OAUTH_REFRESH
           });
-          transporter.use('compile', hbs({
-            viewEngine: {
-              extName: '.handlebars',
-              partialsDir: './email_templates/',
-              layoutsDir: './email_templates/',
-              defaultLayout: ''
-            },
-            viewPath: './email_templates/',
-            extName: '.handlebars'
-          }));
-
-          if (transporter) {
-            var mailOptions = {
-              from: "venue.do.not.reply@gmail.com",
-              to: email,
-              subject: "Veneu Account Creation",
-              template: 'newUser',
-              context: {
-              url: process.env.BASE_URL + "firstlogin/" + user.access_code
-              },
-              attachments: [{
-                filename: 'venue-logo.png',
-                path: './email_templates/venue-logo.png',
-                cid: 'logo'
-              }]
-            };
-
-            transporter.sendMail(mailOptions, function(error, info) {
-              if (error || info == null) {
-                console.log(error);
+          oauth2Client.getAccessToken((err, accessToken) => {
+            var transporter = nodemailer.createTransport({
+              service: "gmail",
+              auth: {
+                type: "OAuth2",
+                user: GMAIL,
+                clientId: GMAIL_OAUTH_ID,
+                clientSecret: GMAIL_OAUTH_SECRET,
+                refreshToken: GMAIL_OAUTH_REFRESH,
+                accessToken
               }
             });
-          } else {
-            console.log("MAILER FAILED");
-          }
-        });
 
-        return global.pubsub.publish(eventName.USER_CREATED, { userCreated: user }).then(done => {
-          return user;
-        });
+            if (transporter) {
+              transporter.use(
+                "compile",
+                hbs({
+                  viewEngine: {
+                    extName: ".handlebars",
+                    partialsDir: "./email_templates/",
+                    layoutsDir: "./email_templates/",
+                    defaultLayout: ""
+                  },
+                  viewPath: "./email_templates/",
+                  extName: ".handlebars"
+                })
+              );
+              var mailOptions = {
+                from: GMAIL,
+                to: email,
+                subject: "Veneu Account Creation",
+                template: "newUser",
+                context: {
+                  url: process.env.BASE_URL + "firstlogin/" + user.access_code
+                },
+                attachments: [
+                  {
+                    filename: "venue-logo.png",
+                    path: "./email_templates/venue-logo.png",
+                    cid: "logo"
+                  }
+                ]
+              };
+
+              transporter.sendMail(mailOptions, function(error, info) {
+                if (error || info == null) {
+                  console.log(error);
+                }
+              });
+            } else {
+              console.log("MAILER FAILED");
+            }
+          });
+          return global.pubsub.publish(eventName.USER_CREATED, { userCreated: user }).then(done => {
+            return user;
+          });
+        } else {
+          return null;
+        }
       });
     },
     updateUser(parent, { _id, ...patch }, { requester, models: { User } }, info) {

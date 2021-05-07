@@ -28,7 +28,14 @@ const Lecture = new mongoose.Schema(
       type: Date,
       required: true
     },
-    parent_resource: mongoose.Schema.Types.ObjectId
+    parent_resource: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
+    },
+    parent_resource_type: {
+      type: String,
+      required: true
+    }
   },
   {
     timestamps: { createdAt: "created_at", updatedAt: "updated_at" }
@@ -37,10 +44,34 @@ const Lecture = new mongoose.Schema(
   .pre("deleteOne", { document: true }, function(next) {
     Promise.all([
       mongoose.model("Auth").deleteMany({ shared_resource: this._id }),
-      mongoose.model("RegistrationSection").updateOne({ _id: this.parent_resource }, { $pull: { lectures: this._id } }),
-      mongoose.model("UserGroup").updateOne({ _id: this.parent_resource }, { $pull: { lectures: this._id } }),
-      mongoose.model("Course").updateOne({ _id: this.parent_resource }, { $pull: { lectures: this._id } })
+      mongoose
+        .model(this.parent_resource_type)
+        .updateOne({ _id: this.parent_resource }, { $pull: { lectures: this._id } })
     ]).then(next);
+  })
+  .pre("deleteMany", function(next) {
+    this.model.find(this.getFilter()).then(lectures => {
+      if (lectures.length) {
+        const lecturesids = lectures.map(a => a._id);
+        const lecturesparents = lectures.map(a => a.parent_resource);
+        Promise.all([
+          mongoose.model("Auth").deleteMany({ shared_resource: { $in: lecturesids } }),
+          mongoose
+            .model("Course")
+            .updateMany({ _id: { $in: lecturesparents } }, { $pullAll: { lectures: lecturesids } }),
+          mongoose
+            .model("RegistrationSection")
+            .updateMany({ _id: { $in: lecturesparents } }, { $pullAll: { lectures: lecturesids } }),
+          mongoose
+            .model("UserGroup")
+            .updateMany({ _id: { $in: lecturesparents } }, { $pullAll: { lectures: lecturesids } })
+        ]).then(resolved => {
+          next();
+        });
+      } else {
+        next();
+      }
+    });
   })
   .pre("save", function(next) {
     this.wasNew = this.isNew;
@@ -56,8 +87,13 @@ const Lecture = new mongoose.Schema(
           user: this.creator._id,
           role: "INSTRUCTOR"
         })
+        .then(done => {
+          return mongoose
+            .model(this.parent_resource_type)
+            .updateOne({ _id: this.parent_resource }, { $addToSet: { lectures: this._id } });
+        })
         .then(auth => {
-          global.pubsub.publish("AUTH_CREATED", {
+          return global.pubsub.publish("AUTH_CREATED", {
             authCreated: auth
           });
         });

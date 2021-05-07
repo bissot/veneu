@@ -4,15 +4,19 @@ import VueRouter from "vue-router";
 import AdminOverview from "./components/AdminOverview";
 import AdminUsers from "./components/AdminUsers";
 import Landing from "./pages/Landing";
-import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import FirstTimeLogin from "./pages/FirstTimeLogin.vue";
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Course from "./pages/Course.vue";
+import RegistrationSection from "./pages/RegistrationSection.vue";
+import Lecture from "./pages/Lecture.vue";
+
 import CreateCourse from "./pages/CreateCourse.vue";
 import CreateUserGroup from "./pages/CreateUserGroup.vue";
 import CreateRegistrationSection from "./pages/CreateRegistrationSection.vue";
-import FirstTimeLogin from "./pages/FirstTimeLogin.vue";
-import RegistrationSection from "./pages/RegistrationSection.vue";
+import CreateLecture from "./pages/CreateLecture.vue";
+import Settings from "./components/Settings.vue";
 
 import CheckinShow from "./pages/CheckinShow.vue";
 import CheckinScan from "./pages/CheckinScan.vue";
@@ -123,6 +127,30 @@ const router = new VueRouter({
       path: "/registration-section/:_id",
       name: "RegistrationSection",
       component: RegistrationSection,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/create-lecture",
+      name: "CreateLecture",
+      component: CreateLecture,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/settings",
+      name: "Settings",
+      component: Settings,
+      meta: {
+        auth: false
+      }
+    },
+    {
+      path: "/lecture/:_id",
+      name: "Lecture",
+      component: Lecture,
       meta: {
         auth: true
       }
